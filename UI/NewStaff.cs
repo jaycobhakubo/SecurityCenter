@@ -57,6 +57,13 @@ namespace GTI.Modules.SecurityCenter
 
         private bool isReloading; //DE10178
 
+        public int SelectedStaffId
+        {
+            get;
+            set;
+        }
+
+
         #endregion
 
         public NewStaff()
@@ -317,6 +324,7 @@ namespace GTI.Modules.SecurityCenter
             }
             //post the information to the right side 
             LoadAStaffInformation(mCurrentSelectedStaffRow);
+            SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             SetWhetherControlsLocked();
         }
 
@@ -521,9 +529,9 @@ namespace GTI.Modules.SecurityCenter
         }
 
 
-        public void ReloadStaffPositionCmbx()
+        public void ReloadStaffPositionListBox(int staffID)
         {
-            LoadPositionToComboBox();
+            LoadListBoxPosition(staffID);
         }
 
         /// <summary>
@@ -618,6 +626,16 @@ namespace GTI.Modules.SecurityCenter
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
 
+            LoadListBoxPosition(staffID);
+
+            Utilities.LogInfoLeave();
+        }
+
+
+
+
+        private void LoadListBoxPosition(int staffID)
+        {
             positionListBox.Items.Clear();//clear it
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
             if (mAssignedPositions != null &&
@@ -633,7 +651,10 @@ namespace GTI.Modules.SecurityCenter
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
             }
-            Utilities.LogInfoLeave();
+            positionListBox.Hide();
+            //positionListBox.Show();
+       //     positionListBox.Refresh();
+
         }
 
 

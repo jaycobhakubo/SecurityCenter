@@ -205,8 +205,10 @@ namespace GTI.Modules.SecurityCenter
                             this.SuspendLayout();
                             mInitStaffForm.WindowState = FormWindowState.Maximized;
                             mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
-                            ReloadInitStaff();
+                            //ReloadInitStaff();
                             //mInitStaffForm.BringToFront();
+                            mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
+                            Application.DoEvents();
                             this.ResumeLayout(true);
                             this.PerformLayout();
                         }
@@ -229,7 +231,7 @@ namespace GTI.Modules.SecurityCenter
             waiting.WaitImage = Properties.Resources.Waiting;
             waiting.CancelButtonVisible = true;
             waiting.ProgressBarVisible = false;
-            mInitStaffForm.ReloadStaffPositionCmbx();
+            mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
             LoadStaffPosition(waiting, Configuration.operatorID);//knc
             waiting.ShowDialog(); //Block until we are done
 
@@ -243,10 +245,11 @@ namespace GTI.Modules.SecurityCenter
 
                     this.SuspendLayout();
                     mInitStaffForm.MdiParent = this;
+                    mInitStaffForm.Show();  
+
                     Application.DoEvents();
                     this.ResumeLayout(true);
                     this.PerformLayout();
-                    mInitStaffForm.Show();  
 
                     //if (mInitStaffForm != null)
                     //{
