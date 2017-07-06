@@ -520,6 +520,12 @@ namespace GTI.Modules.SecurityCenter
             return positionStrings;
         }
 
+
+        public void ReloadStaffPositionCmbx()
+        {
+            LoadPositionToComboBox();
+        }
+
         /// <summary>
         /// Load all positions to the position combobox
         /// </summary>

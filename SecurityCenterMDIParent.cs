@@ -173,39 +173,50 @@ namespace GTI.Modules.SecurityCenter
 
         private void PositionForm_FormClosed(object sender, EventArgs e)//knc
         {
-            if (mPositionForm.IsNewPosition == false)
+
+
+            if (((Position)sender).DialogResult == DialogResult.Yes)
             {
-
-                if (mPositionForm.IsPositionNameChanged == true) //If new position is false then its modified
+                if (mPositionForm.IsNewPosition == false)
                 {
-                    //ttp 50053, support copy position function
-                    EnableCopyMenu(false);
-                    EnablePasteMenu(false);
-                    CheckPositionsCount();//RALLY DE 6739
 
+                    if (mPositionForm.IsPositionNameChanged == true) //If new position is false then its modified
+                    {
+                        //ttp 50053, support copy position function
+                        EnableCopyMenu(false);
+                        EnablePasteMenu(false);
+                        CheckPositionsCount();//RALLY DE 6739
 
-                    //editPositionToolStripMenuItem.Enabled = true;
-                    //newPositionToolStripMenuItem.Enabled = true;
-                    if (((Position)sender).DialogResult != DialogResult.Cancel &&
-                        ((Position)sender).DialogResult != DialogResult.None)
-                    {
-                        ReloadInitStaff();
-                    }
-                    else if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
-                    {
-                        this.SuspendLayout();
-                        mInitStaffForm.WindowState = FormWindowState.Maximized;
-                        mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
-                        //mInitStaffForm.BringToFront();
-                        this.ResumeLayout(true);
-                        this.PerformLayout();
-                    }
-                    else
-                    {
-                        MakeupMDI();
+                        /*
+                        //editPositionToolStripMenuItem.Enabled = true;
+                        //newPositionToolStripMenuItem.Enabled = true;
+                        if (((Position)sender).DialogResult != DialogResult.Cancel &&
+                            ((Position)sender).DialogResult != DialogResult.None)
+                        {
+                            ReloadInitStaff();
+                        }
+                         */
+                        //else 
+
+                        if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
+                        {
+                            //mInitStaffForm.ReloadStaffPositionCmbx();
+         
+                            this.SuspendLayout();
+                            mInitStaffForm.WindowState = FormWindowState.Maximized;
+                            mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
+                            ReloadInitStaff();
+                            //mInitStaffForm.BringToFront();
+                            this.ResumeLayout(true);
+                            this.PerformLayout();
+                        }
+                        else
+                        {
+                            MakeupMDI();
+                        }
                     }
                 }
-            }      
+            }
                 mInitStaffForm.BringToFront();        
         }
         private void ReloadInitStaff()//knc
@@ -218,6 +229,7 @@ namespace GTI.Modules.SecurityCenter
             waiting.WaitImage = Properties.Resources.Waiting;
             waiting.CancelButtonVisible = true;
             waiting.ProgressBarVisible = false;
+            mInitStaffForm.ReloadStaffPositionCmbx();
             LoadStaffPosition(waiting, Configuration.operatorID);//knc
             waiting.ShowDialog(); //Block until we are done
 
@@ -225,13 +237,25 @@ namespace GTI.Modules.SecurityCenter
             {
                 try
                 {
-                    //mStaffList = new GetStaffList(Configuration.operatorID, true);
-                    //mStaffList.Send(); //we have got all staff datas
-                    if (mInitStaffForm != null)
-                    {
-                        mInitStaffForm.Close();
-                    }
-                    ShowInitStaff();//knc
+
+                    mStaffList = new GetStaffList(Configuration.operatorID, true);//Why do we want the staff list here
+                    mStaffList.Send(); //we have got all staff datas
+
+                    this.SuspendLayout();
+                    mInitStaffForm.MdiParent = this;
+                    Application.DoEvents();
+                    this.ResumeLayout(true);
+                    this.PerformLayout();
+                    mInitStaffForm.Show();  
+
+                    //if (mInitStaffForm != null)
+                    //{
+                    //    mInitStaffForm.Close();
+                    //}
+                    //ShowInitStaff();//knc
+
+                  //No need to reiniatialize we just have to reload the listbox
+
                 }
                 catch (Exception ex)
                 {
