@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>D:\GameTech\Common\EliteMCP.exe</StartProgram>
+    <StartArguments>-window -runonce -guid={04E26A95-4F28-458b-8A66-F4C677D386C2}  -server=10.0.11.107</StartArguments>
+    <StartWorkingDirectory>D:\GameTech\Common</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>

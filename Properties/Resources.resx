@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="assemblyTitle" xml:space="preserve">
+    <value>Security Center</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BG00" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BG00.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BG01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BG01.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BG02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BG02.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlueButtonDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BlueButtonDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlueButtonUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BlueButtonUp.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EditPosition" xml:space="preserve">
+    <value>Edit Position</value>
+  </data>
+  <data name="EditStaff" xml:space="preserve">
+    <value>Edit Staff</value>
+  </data>
+  <data name="errorFailedLoadInitStaff" xml:space="preserve">
+    <value>Failed to load View Staff</value>
+  </data>
+  <data name="errorFailedSavePosition" xml:space="preserve">
+    <value>Failed to save position</value>
+  </data>
+  <data name="errorFailedSaveStaff" xml:space="preserve">
+    <value>Failed to save the staff</value>
+  </data>
+  <data name="errorFailedSaveStaffDup" xml:space="preserve">
+    <value>The staff's login number is duplicate, Please use another login number</value>
+  </data>
+  <data name="AccountLockedError" xml:space="preserve">
+    <value>The staff's Account lock status is not saved</value>
+  </data>
+  <data name="errorFailedToGetData" xml:space="preserve">
+    <value>Failed to get data</value>
+  </data>
+  <data name="errorFailedToSaveModuleFeatures" xml:space="preserve">
+    <value>Failed to save position's modules and features </value>
+  </data>
+  <data name="errorGeneral" xml:space="preserve">
+    <value>Error : </value>
+  </data>
+  <data name="errorInvalidPhoneNumber" xml:space="preserve">
+    <value>Phone number can be number, space or  "-"</value>
+  </data>
+  <data name="errorParse" xml:space="preserve">
+    <value>Failed to Parse Settings</value>
+  </data>
+  <data name="errorRun" xml:space="preserve">
+    <value>Failed to run when loading data</value>
+  </data>
+  <data name="errorStart" xml:space="preserve">
+    <value>Critical error, application is being closed now</value>
+  </data>
+  <data name="errorUnexpected" xml:space="preserve">
+    <value>Unexpected behavior</value>
+  </data>
+  <data name="infoSaveChange" xml:space="preserve">
+    <value>Do you want to save change? </value>
+  </data>
+  <data name="modulesAll" xml:space="preserve">
+    <value>All Modules</value>
+  </data>
+  <data name="NewPosition" xml:space="preserve">
+    <value>New Position</value>
+  </data>
+  <data name="NewPositionName" xml:space="preserve">
+    <value>New Position Name</value>
+  </data>
+  <data name="NewStaff" xml:space="preserve">
+    <value>New Staff</value>
+  </data>
+  <data name="PermissionLevel0" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="PermissionLevel1" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="PermissionLevel2" xml:space="preserve">
+    <value>Write</value>
+  </data>
+  <data name="Pleaseselectstaff" xml:space="preserve">
+    <value>Please select a staff for editing</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="securityCenter" xml:space="preserve">
+    <value>Security Center</value>
+  </data>
+  <data name="splashInfoLoadModuleLevelData" xml:space="preserve">
+    <value>Loading Module Level Data ...</value>
+  </data>
+  <data name="splashInfoLoadStaffPositionModule" xml:space="preserve">
+    <value>Loading All Staff Data ...</value>
+  </data>
+  <data name="splashInfoLoadStationSettings" xml:space="preserve">
+    <value>Loading Station Settings ...</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Staff</value>
+  </data>
+  <data name="titleSecurityCenter" xml:space="preserve">
+    <value>Security Center -- FortuNet, Inc.</value>
+  </data>
+  <data name="ViewStaff" xml:space="preserve">
+    <value>View Staff</value>
+  </data>
+  <data name="Waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Waiting.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="warningCancel" xml:space="preserve">
+    <value>Do you want to cancel your change?</value>
+  </data>
+  <data name="warningDupLoginNumber" xml:space="preserve">
+    <value>Duplicate Login Number is not allowed, please choose a new Login Number</value>
+  </data>
+  <data name="warningDupMagCard" xml:space="preserve">
+    <value>Duplicate magnetic card is not allowed, please choose a new magnetic card</value>
+  </data>
+  <data name="warningPasswordBeforeSave" xml:space="preserve">
+    <value>Password is required for a new staff</value>
+  </data>
+  <data name="MinimumPasswordLength" xml:space="preserve">
+    <value>New passwords must be {0} or more characters in length</value>
+  </data>
+  <data name="PasswordComplexitySetting" xml:space="preserve">
+    <value>Password should meet minimum complexity settings</value>
+  </data>
+  <data name="warningverifyingPassword" xml:space="preserve">
+    <value>Please verify password before saving</value>
+  </data>
+  <data name="warningPasswordNotSame" xml:space="preserve">
+    <value>Passwords do not match!</value>
+  </data>
+  <data name="MPasswordReuseError" xml:space="preserve">
+    <value>New passwords must be {0} or more characters in length and must be different than any of the previous {1} passwords.</value>
+  </data>
+  <data name="PasswordReuseError" xml:space="preserve">
+    <value>New passwords must be different than any of the previous {0} passwords.</value>
+  </data>
+  <data name="Passwords" xml:space="preserve">
+    <value>New passwords must be {0} or more characters in length and must be different than any of the previous {1} passwords. Further, passwords must contain at least two of the four character groups: English upper case letters (A-Z).                
+    Numerals (0-9).                 
+             English lower case letters (a-z). 
+                                                 Non-alphabetic characters (i.e. !, #, $, @, %, ^, +, =).
+                                             All passwords expire {2} days after they are created.
+</value>
+  </data>
+  <data name="warningPositionName" xml:space="preserve">
+    <value>Position name can not be empty or duplicate</value>
+  </data>
+  <data name="warningRequiredFiledBeforeSave" xml:space="preserve">
+    <value>Please complete required fields in order to save the staff correctly</value>
+  </data>
+  <data name="warningSave" xml:space="preserve">
+    <value>Do you want to save your change?</value>
+  </data>
+  <data name="StaffNotFound" xml:space="preserve">
+    <value>Staff not found.</value>
+  </data>
+  <data name="GetStaffDataFailed" xml:space="preserve">
+    <value>Failed to retrieve your staff information from the server.  Reason: {0}</value>
+  </data>
+  <data name="GetOperatorDataFailed" xml:space="preserve">
+    <value>Failed to retrieve operator information from the server.  Reason: {0}</value>
+  </data>
+  <data name="GetStaffPermsFailed" xml:space="preserve">
+    <value>Failed to retrieve your permissions from the server. Reason: {0}</value>
+  </data>
+  <data name="InvalidMessageResponse" xml:space="preserve">
+    <value>Invalid {0} response received from server.</value>
+  </data>
+  <data name="MessagePayloadWrongSize" xml:space="preserve">
+    <value>{0} message payload is the wrong size.</value>
+  </data>
+  <data name="SecurityCenterName" xml:space="preserve">
+    <value>Security Center</value>
+  </data>
+  <data name="ServerCommFailed" xml:space="preserve">
+    <value>Server communication lost.</value>
+  </data>
+  <data name="ServerErrorCode" xml:space="preserve">
+    <value>Server returned error code: {0}</value>
+  </data>
+  <data name="CopyOf" xml:space="preserve">
+    <value>Copy of </value>
+  </data>
+  <data name="activitySettingError" xml:space="preserve">
+    <value>The current position cannot be inactivated due to staff currently assigned that position.</value>
+  </data>
+  <data name="DoYouWantToSaveCase1" xml:space="preserve">
+    <value>Do you want to save permission changes?</value>
+  </data>
+  <data name="DoYouWantToSaveCase2" xml:space="preserve">
+    <value>Do you want to save activity changes?</value>
+  </data>
+  <data name="DoYouWantToSaveCase3" xml:space="preserve">
+    <value>Do you want to save activity and permission changes?</value>
+  </data>
+  <data name="warningDOBAfterDateOfHire" xml:space="preserve">
+    <value>Date of birth is after the hire date</value>
+  </data>
+  <data name="ConfirmLogOut" xml:space="preserve">
+    <value>Are you sure you want to logout from the machine?</value>
+  </data>
+  <data name="ConfirmLogoutTitle" xml:space="preserve">
+    <value>Machine logout</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
+  </data>
+</root>

@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{393C8EEE-2CCB-48BE-94D7-F92587DC3D51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GTI.Modules.SecurityCenter</RootNamespace>
+    <AssemblyName>SecurityCenter</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>SecurityCenter.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <ApplicationIcon>Resources\Security.ico</ApplicationIcon>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/SecurityCenter/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\IGTIModule.cs" />
+    <Compile Include="Business\SecurityCenterModule.cs" />
+    <Compile Include="Business\Utilities.cs" />
+    <Compile Include="Data\GetStaffMachineStatus.cs" />
+    <Compile Include="Data\GetModuleFeatures.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\GetNextAvailableStaffLoginNumber.cs" />
+    <Compile Include="Data\GetPositionModule.cs" />
+    <Compile Include="Data\SetStaffMachineLogout.cs" />
+    <Compile Include="Data\SetModulePermission.cs" />
+    <Compile Include="Data\SetPosition.cs" />
+    <Compile Include="Data\SetPositionModuleFeatures.cs" />
+    <Compile Include="Data\SetPositionModules.cs" />
+    <Compile Include="Data\SetStaff.cs" />
+    <Compile Include="Data\GetStaffPositions.cs" />
+    <Compile Include="Data\SetStaffPassword.cs" />
+    <Compile Include="Data\SetStaffPosition.cs" />
+    <Compile Include="ModuleTreeNode.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityCenterMDIParent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SecurityCenterMDIParent.Designer.cs">
+      <DependentUpon>SecurityCenterMDIParent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Configuration.cs" />
+    <Compile Include="Data\ComandIDs.cs" />
+    <Compile Include="Data\GetPositionModuleFeatures.cs" />
+    <Compile Include="Data\GetModuleList.cs" />
+    <Compile Include="Data\GetPositionList.cs" />
+    <Compile Include="Data\GetStaffList.cs" />
+    <Compile Include="Data\ModuleFeaturesData.cs" />
+    <Compile Include="Data\ModulesData.cs" />
+    <Compile Include="Data\PositionData.cs" />
+    <Compile Include="Data\StaffData.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SecurityCenterMDIParent.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SecurityCenterMDIParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AssignPositions.resx">
+      <DependentUpon>AssignPositions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Machine.resx">
+      <DependentUpon>Machine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\NewStaff.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewStaff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Position.resx">
+      <DependentUpon>Position.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="UI\AssignPositions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AssignPositions.designer.cs">
+      <DependentUpon>AssignPositions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Machine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Machine.Designer.cs">
+      <DependentUpon>Machine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\NewStaff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\NewStaff.Designer.cs">
+      <DependentUpon>NewStaff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Position.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Position.designer.cs">
+      <DependentUpon>Position.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BG02.jpg" />
+    <None Include="SecurityCenter.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BG01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BG00.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlueButtonUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlueButtonDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Waiting.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Security.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DLLs\GTIControls\GTIControls.csproj">
+      <Project>{A2B9C7C4-AE7E-48DC-B39C-C9442CF017F6}</Project>
+      <Name>GTIControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DLLs\ManagedEliteModule\ManagedEliteModule.csproj">
+      <Project>{308EF933-6B4E-48B2-9C54-85318FE50C63}</Project>
+      <Name>ManagedEliteModule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
