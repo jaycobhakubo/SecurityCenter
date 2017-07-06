@@ -871,6 +871,9 @@ namespace GTI.Modules.SecurityCenter
             return isValidated;
         }
 
+
+
+
         /// <summary>
         /// Method to Validate the Password when complexity is required
         /// </summary>
@@ -1118,6 +1121,7 @@ namespace GTI.Modules.SecurityCenter
             hireDateTimePicker.Value = hireDateTimePicker.MinDate;
             //is active member
             checkBoxActive.Checked = true;
+           
             checkBoxlocked.Checked = false;
 
             //phone 1
