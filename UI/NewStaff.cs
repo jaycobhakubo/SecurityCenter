@@ -651,7 +651,7 @@ namespace GTI.Modules.SecurityCenter
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
             }
-            positionListBox.Hide();
+            //positionListBox.Hide();
             //positionListBox.Show();
        //     positionListBox.Refresh();
 

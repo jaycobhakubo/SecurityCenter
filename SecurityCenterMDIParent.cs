@@ -202,15 +202,20 @@ namespace GTI.Modules.SecurityCenter
                         {
                             //mInitStaffForm.ReloadStaffPositionCmbx();
          
-                            this.SuspendLayout();
-                            mInitStaffForm.WindowState = FormWindowState.Maximized;
-                            mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
+                            //this.SuspendLayout();
+                            //mInitStaffForm.WindowState = FormWindowState.Maximized;
+                            //mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
                             //ReloadInitStaff();
-                            //mInitStaffForm.BringToFront();
+                            WaitForm waiting = new WaitForm();
+                            LoadStaffPosition(waiting, Configuration.operatorID);
+                            waiting.ShowDialog();
                             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
                             Application.DoEvents();
-                            this.ResumeLayout(true);
-                            this.PerformLayout();
+                            //mInitStaffForm.BringToFront();
+      
+                            Application.DoEvents();
+                            //this.ResumeLayout(true);
+                            //this.PerformLayout();
                         }
                         else
                         {
@@ -219,7 +224,7 @@ namespace GTI.Modules.SecurityCenter
                     }
                 }
             }
-                mInitStaffForm.BringToFront();        
+             
         }
         private void ReloadInitStaff()//knc
         {
@@ -232,7 +237,7 @@ namespace GTI.Modules.SecurityCenter
             waiting.CancelButtonVisible = true;
             waiting.ProgressBarVisible = false;
             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
-            LoadStaffPosition(waiting, Configuration.operatorID);//knc
+            LoadStaffPosition(waiting, Configuration.operatorID);//knc_1
             waiting.ShowDialog(); //Block until we are done
 
             if (m_isNewPosition == false) //Dont do anything on new position save event.
