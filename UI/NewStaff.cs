@@ -636,32 +636,22 @@ namespace GTI.Modules.SecurityCenter
 
         private void LoadListBoxPosition(int staffID)
         {
-            positionListBox.Items.Clear();//clear it
+            positionListBox.Items.Clear();
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
             if (mAssignedPositions != null &&
                 mAssignedPositions.PositionTable != null &&
                 mAssignedPositions.PositionTable.Rows.Count > 0)
             {
 
-                // ListViewItem tmpItem;
                 foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
                 {
-                    //tmpItem = new ListViewItem(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
-                    //tmpItem.Tag = position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
             }
-            //positionListBox.Hide();
-            //positionListBox.Show();
-       //     positionListBox.Refresh();
-
         }
 
 
-        private void LoadPositionInStaffUI()
-        {
 
-        }
 
         private bool IsSaveStaffInformationChange()
         {
