@@ -56,10 +56,10 @@ namespace GTI.Modules.SecurityCenter
             this.cancelbutton.Click += new EventHandler(cancelbutton_Click);
             this.saveButton.Click += new EventHandler(saveButton_Click);
             this.saveNewImageButton.Click += new System.EventHandler(this.saveNewImageButton_Click);
-            this.positionComboBox.Validating += new CancelEventHandler(positionComboBox_Validating); 
-            this.positionComboBox.Validated += new EventHandler(positionComboBox_Validated); 
-            this.positionComboBox.SelectedIndexChanged += new System.EventHandler(this.positionComboBox_SelectedIndexChanged);
-            this.positionComboBox.KeyUp +=new KeyEventHandler(positionComboBox_KeyUp);
+            this.cmbx_PositionName.Validating += new CancelEventHandler(cmbx_PositionName_Validating); 
+            this.cmbx_PositionName.Validated += new EventHandler(cmbx_PositionName_Validated); 
+            this.cmbx_PositionName.SelectedIndexChanged += new System.EventHandler(this.cmbx_PositionName_SelectedIndexChanged);
+            this.cmbx_PositionName.KeyUp +=new KeyEventHandler(cmbx_PositionName_KeyUp);
             treeView1.AfterCheck += new TreeViewEventHandler(treeView1_AfterCheck);                    
         }
 
@@ -75,7 +75,7 @@ namespace GTI.Modules.SecurityCenter
         internal void Copy()        //ttp 50053, support copy position function
         {
             string copyText;
-            copyText = Configuration.POSITIONPREFIX +Configuration.POSITIONDELIMINATOR + positionComboBox.Text;
+            copyText = Configuration.POSITIONPREFIX +Configuration.POSITIONDELIMINATOR + cmbx_PositionName.Text;
             if (mCurrentPositionIndex > -1 && mPositionIDs.Length > mCurrentPositionIndex)
             {
                 copyText += Configuration.POSITIONDELIMINATOR + mPositionIDs[mCurrentPositionIndex].ToString();
@@ -95,7 +95,7 @@ namespace GTI.Modules.SecurityCenter
                 }
 
                 SetNewPosition(Resources.CopyOf + pasteText.Substring(0, pasteText.IndexOf(Configuration.POSITIONDELIMINATOR)));     // FIX: DE1778
-                positionComboBox_Validated(this, null);
+                cmbx_PositionName_Validated(this, null);
                 CheckTreeNodeByPositionID(int.Parse(pasteText.Substring(pasteText.IndexOf(Configuration.POSITIONDELIMINATOR) + Configuration.POSITIONDELIMINATOR.Length)));
 
             }
@@ -145,7 +145,7 @@ namespace GTI.Modules.SecurityCenter
             }
             else
             {
-                positionComboBox.DropDownStyle = ComboBoxStyle.DropDown ;
+                cmbx_PositionName.DropDownStyle = ComboBoxStyle.DropDown ;
                 LoadPositionToComboBox(0);
             }
             Utilities.LogInfoLeave();
@@ -153,12 +153,12 @@ namespace GTI.Modules.SecurityCenter
 
         private void SetNewPosition(string positionName)        //ttp 50053, support copy position function
         {
-            positionComboBox.DropDownStyle = ComboBoxStyle.Simple;
-            positionComboBox.Items.Clear();
-            positionComboBox.Items.Add(positionName); //index 0
-            positionComboBox.SelectedIndex = 0;
+            cmbx_PositionName.DropDownStyle = ComboBoxStyle.Simple;
+            cmbx_PositionName.Items.Clear();
+            cmbx_PositionName.Items.Add(positionName); //index 0
+            cmbx_PositionName.SelectedIndex = 0;
         }
-        private void LoadPositionToComboBox(int index)
+        private void LoadPositionToComboBox(int index)//knc
         {
             Utilities.LogInfoIN();
            
@@ -170,7 +170,7 @@ namespace GTI.Modules.SecurityCenter
             DataView mPositionsView = new DataView(mPositionsData.PositionTable);
             mPositionIDs = new int[mPositionsView.Count];
             mPositionsView.Sort = PositionData.POSITION_COLUMN_POSITIONNAME;
-            positionComboBox.Items.Clear();
+            cmbx_PositionName.Items.Clear();
             int count = 0;
             bool hasInactive = false;
             foreach (DataRowView viewRow in mPositionsView)
@@ -178,7 +178,7 @@ namespace GTI.Modules.SecurityCenter
 
                 if (allRadioButton.Checked == true)                //if all is checked
                 {
-                    this.positionComboBox.Items.Add(viewRow.Row[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
+                    this.cmbx_PositionName.Items.Add(viewRow.Row[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                     mPositionIDs[count++] = int.Parse(viewRow.Row[PositionData.POSITION_COLUMN_POSITIONID].ToString());
                 }
 
@@ -186,7 +186,7 @@ namespace GTI.Modules.SecurityCenter
                 {
                     if ((bool)viewRow.Row[PositionData.POSITION_COLUMN_ACTIVITYFLAG])
                     {
-                        this.positionComboBox.Items.Add(
+                        this.cmbx_PositionName.Items.Add(
                             viewRow.Row[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                         mPositionIDs[count++] =
                             int.Parse(viewRow.Row[PositionData.POSITION_COLUMN_POSITIONID].ToString());
@@ -197,7 +197,7 @@ namespace GTI.Modules.SecurityCenter
                 {
                     if (!(bool)viewRow.Row[PositionData.POSITION_COLUMN_ACTIVITYFLAG])
                     {
-                        this.positionComboBox.Items.Add(
+                        this.cmbx_PositionName.Items.Add(
                             viewRow.Row[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                         mPositionIDs[count++] =
                             int.Parse(viewRow.Row[PositionData.POSITION_COLUMN_POSITIONID].ToString());
@@ -225,9 +225,9 @@ namespace GTI.Modules.SecurityCenter
             }
             //END RALLY DE10127
 
-            if (positionComboBox.Items.Count > index && index > -1) //load permission of modules and features for this position
+            if (cmbx_PositionName.Items.Count > index && index > -1) //load permission of modules and features for this position
             {
-                positionComboBox.SelectedIndex = index; //always default of first
+                cmbx_PositionName.SelectedIndex = index; //always default of first
                 if (mPositionIDs != null && mPositionIDs.Length > 0)
                 {
                     bool activity = mPositionsData.GetPositionActivityByID(mPositionIDs[index]);
@@ -239,13 +239,13 @@ namespace GTI.Modules.SecurityCenter
            
         }
 
-        private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbx_PositionName_SelectedIndexChanged(object sender, EventArgs e)
         {
     
             if (mIsNewPosition == true) return;
             isLoading = true;
 
-            if (positionComboBox.SelectedIndex > -1 &&            //save change if any
+            if (cmbx_PositionName.SelectedIndex > -1 &&            //save change if any
                 mCurrentPositionIndex >= 0 && mPositionIDs[mCurrentPositionIndex] > 0 &&
                 IsPositionModified(mPositionIDs[mCurrentPositionIndex]) == true )
             {
@@ -260,7 +260,7 @@ namespace GTI.Modules.SecurityCenter
                     if (saveResult == false)
                     {
                         mActivityChecked = false;
-                        positionComboBox.SelectedIndex = mCurrentPositionIndex;
+                        cmbx_PositionName.SelectedIndex = mCurrentPositionIndex;
                         return;
                     }
                     //reload the combo box if the radio buttons are checked and the activity is changed
@@ -271,7 +271,7 @@ namespace GTI.Modules.SecurityCenter
                         mActivityChecked = false;
 
                         //get positionID of new item checked
-                        DataRow row = mPositionsData.GetPositionRowByID(mPositionIDs[positionComboBox.SelectedIndex]);
+                        DataRow row = mPositionsData.GetPositionRowByID(mPositionIDs[cmbx_PositionName.SelectedIndex]);
                         int positionID = (int)row[PositionData.POSITION_COLUMN_POSITIONID];
 
                         //load combobox which refreshes mPositionID's
@@ -285,7 +285,7 @@ namespace GTI.Modules.SecurityCenter
                            {
                                //this should cause this event to fire again so 
                                //we will return
-                               positionComboBox.SelectedIndex = i;
+                               cmbx_PositionName.SelectedIndex = i;
                                
                                return;
                            }
@@ -331,7 +331,7 @@ namespace GTI.Modules.SecurityCenter
                 //FIX: RALLY 1573 added position activity END
             }
 
-            mCurrentPositionIndex = positionComboBox.SelectedIndex; //update index 
+            mCurrentPositionIndex = cmbx_PositionName.SelectedIndex; //update index 
             
             //FIX: RALLY 1573 added postion activity START
             bool active = mPositionsData.GetPositionActivityByID(mPositionIDs[mCurrentPositionIndex]);
@@ -354,19 +354,19 @@ namespace GTI.Modules.SecurityCenter
             isLoading = false; 
         }
         //handle enter key
-        private void positionComboBox_KeyUp(object sender, KeyEventArgs ke)
+        private void cmbx_PositionName_KeyUp(object sender, KeyEventArgs ke)
         {
             if (ke.KeyCode == Keys.Enter)
             {
-                positionComboBox_Validated(sender, ke);
+                cmbx_PositionName_Validated(sender, ke);
             }
         
         }
 
         // Rally DE1885
-        private void positionComboBox_Validating(object sender, CancelEventArgs e)
+        private void cmbx_PositionName_Validating(object sender, CancelEventArgs e)
         {
-            if(positionComboBox.Text.Equals("") == true || IsExistingName(positionComboBox.Text) == true)
+            if(cmbx_PositionName.Text.Equals("") == true || IsExistingName(cmbx_PositionName.Text) == true)
             {
                 //DE12313 (20150223): Check if it's a new position or if Edit.
                 if (IsNewPosition == true)
@@ -378,24 +378,24 @@ namespace GTI.Modules.SecurityCenter
             }
         }
 
-        private void positionComboBox_Validated(object sender, EventArgs e)
+        private void cmbx_PositionName_Validated(object sender, EventArgs e)
         {
             // Rally DE1885
-           /*if (positionComboBox.Text.Equals("") == true ||
-              // positionComboBox.Text.Equals(Properties.Resources.NewPosition) ||
-               IsExistingName(positionComboBox.Text) == true )
+           /*if (cmbx_PositionName.Text.Equals("") == true ||
+              // cmbx_PositionName.Text.Equals(Properties.Resources.NewPosition) ||
+               IsExistingName(cmbx_PositionName.Text) == true )
             {//do nothing, we do not allow to have a position name called New Position, "" or current position
                 MessageForm.Show(Properties.Resources.warningPositionName, Properties.Resources.securityCenter);
-               positionComboBox.Focus(); 
+               cmbx_PositionName.Focus(); 
                return;
             }
             else*/ if (mIsNewPosition)
             {//new position
                 //ttp 50053
-               // positionComboBox.Items.Add(positionComboBox.Text);
+               // cmbx_PositionName.Items.Add(cmbx_PositionName.Text);
                 //DataRow newPostion = mPositionsData.PositionTable.NewRow();
                 mNewPostionRow = mPositionsData.PositionTable.NewRow();
-                mNewPostionRow[PositionData.POSITION_COLUMN_POSITIONNAME] = positionComboBox.Text;
+                mNewPostionRow[PositionData.POSITION_COLUMN_POSITIONNAME] = cmbx_PositionName.Text;
                 mNewPostionRow[PositionData.POSITION_COLUMN_POSITIONID] = 0;
                 mNewPostionRow[PositionData.POSITION_COLUMN_ACTIVITYFLAG] = positionActivityFlagCheckbox.Checked;
                 mNewPostionRow[Constants.Status] = Constants.Status_New;
@@ -406,12 +406,14 @@ namespace GTI.Modules.SecurityCenter
                 mCurrentPositionIndex = -1; //new position
                 //LoadModulesAndFeatures();
             }
-            else if (positionComboBox.SelectedIndex < 0)//modifying a position
+            else if (cmbx_PositionName.SelectedIndex < 0)//modifying a position
             {
                 DataRow row = mPositionsData.GetPositionRowByID(mPositionIDs[mCurrentPositionIndex]);
                 if (row != null)
                 {
-                    row[PositionData.POSITION_COLUMN_POSITIONNAME] = positionComboBox.Text; // mCurrentPositionName;
+                    IsPositionNameChanged = (row[PositionData.POSITION_COLUMN_POSITIONNAME].ToString() != cmbx_PositionName.Text);
+        
+                    row[PositionData.POSITION_COLUMN_POSITIONNAME] = cmbx_PositionName.Text; // mCurrentPositionName;
                     row[Constants.Status] = Constants.Status_Modified;
                     row[PositionData.POSITION_COLUMN_ACTIVITYFLAG] = positionActivityFlagCheckbox.Checked;
                     //LoadModulesAndFeatures();
@@ -422,9 +424,11 @@ namespace GTI.Modules.SecurityCenter
             //LoadPositionToComboBox();
         }
 
-        private bool IsExistingName(string newName)
+        public bool IsPositionNameChanged { get; set; }
+
+        private bool IsExistingName(string newName)//knc
         {
-            //if (positionComboBox.SelectionLength < 0)
+            //if (cmbx_PositionName.SelectionLength < 0)
               //  return false;
 
             if (newName.Length <= 0)
@@ -437,7 +441,7 @@ namespace GTI.Modules.SecurityCenter
                     return true;
                 }
                 /*if (newName.Equals(positionRow[PositionData.POSITION_COLUMN_POSITIONNAME].ToString()) &&
-                    newName.Equals (positionComboBox.Items[positionComboBox.SelectedIndex].ToString()) != true)
+                    newName.Equals (cmbx_PositionName.Items[cmbx_PositionName.SelectedIndex].ToString()) != true)
                 {
                     return true;
                  * 
@@ -969,7 +973,7 @@ namespace GTI.Modules.SecurityCenter
             {
                 if (mPositionsData == null)
                     mPositionsData = new PositionData();
-                mPositionsData.PositionTable.Rows.Add(mNewPostionRow);
+                mPositionsData.PositionTable.Rows.Add(mNewPostionRow);//knc
             }
             //end of ttp 50053
             if (mCurrentPositionIndex >= 0 && 
@@ -1105,7 +1109,7 @@ namespace GTI.Modules.SecurityCenter
             
             return false;
         }
-        private bool SaveCurrentPosition(int positionID)
+        private bool SaveCurrentPosition(int positionID)//knc
         {
              Utilities.LogInfoIN();
            
@@ -1222,12 +1226,12 @@ namespace GTI.Modules.SecurityCenter
 
         private void CheckChanged()
         {
-            if (positionComboBox.SelectedIndex > -1 &&
+            if (cmbx_PositionName.SelectedIndex > -1 &&
                        mCurrentPositionIndex >= 0 && mPositionIDs[mCurrentPositionIndex] > 0 &&
                        IsPositionModified(mPositionIDs[mCurrentPositionIndex]) == true)
             {
                 //something has changed make sure that the change is handled before we move on
-                positionComboBox_SelectedIndexChanged(null, null);
+                cmbx_PositionName_SelectedIndexChanged(null, null);
             }
         }
 
@@ -1253,7 +1257,7 @@ namespace GTI.Modules.SecurityCenter
         {
             //this just checks existing positions.  The flag should not be set on new positions
             //check to see if it is a valid position
-            if(positionComboBox.SelectedIndex < 0 || positionComboBox.Items.Count == 0)
+            if(cmbx_PositionName.SelectedIndex < 0 || cmbx_PositionName.Items.Count == 0)
             {
                 return;
             }
@@ -1261,7 +1265,7 @@ namespace GTI.Modules.SecurityCenter
             if (!mIsNewPosition)
             {
                 //get the position id
-                int positionID = mPositionIDs[positionComboBox.SelectedIndex];
+                int positionID = mPositionIDs[cmbx_PositionName.SelectedIndex];
                 DataRow tempRow = mPositionsData.GetPositionRowByID(positionID);
 
                 //set the temp row to status modifed and check the flag

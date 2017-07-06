@@ -176,41 +176,37 @@ namespace GTI.Modules.SecurityCenter
             if (mPositionForm.IsNewPosition == false)
             {
 
-
-
-                //ttp 50053, support copy position function
-                EnableCopyMenu(false);
-                EnablePasteMenu(false);
-                CheckPositionsCount();//RALLY DE 6739
-
-
-                //editPositionToolStripMenuItem.Enabled = true;
-                //newPositionToolStripMenuItem.Enabled = true;
-                if (((Position)sender).DialogResult != DialogResult.Cancel &&
-                    ((Position)sender).DialogResult != DialogResult.None)
+                if (mPositionForm.IsPositionNameChanged == true) //If new position is false then its modified
                 {
-                    ReloadInitStaff();
+                    //ttp 50053, support copy position function
+                    EnableCopyMenu(false);
+                    EnablePasteMenu(false);
+                    CheckPositionsCount();//RALLY DE 6739
+
+
+                    //editPositionToolStripMenuItem.Enabled = true;
+                    //newPositionToolStripMenuItem.Enabled = true;
+                    if (((Position)sender).DialogResult != DialogResult.Cancel &&
+                        ((Position)sender).DialogResult != DialogResult.None)
+                    {
+                        ReloadInitStaff();
+                    }
+                    else if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
+                    {
+                        this.SuspendLayout();
+                        mInitStaffForm.WindowState = FormWindowState.Maximized;
+                        mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
+                        //mInitStaffForm.BringToFront();
+                        this.ResumeLayout(true);
+                        this.PerformLayout();
+                    }
+                    else
+                    {
+                        MakeupMDI();
+                    }
                 }
-                else if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
-                {
-                    this.SuspendLayout();
-                    mInitStaffForm.WindowState = FormWindowState.Maximized;
-                    mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
-                    mInitStaffForm.BringToFront();
-                    this.ResumeLayout(true);
-                    this.PerformLayout();
-                }
-                else
-                {
-                    MakeupMDI();
-                }
-            }
-            else
-            {
-                mInitStaffForm.BringToFront();
-            }
-           
-            
+            }      
+                mInitStaffForm.BringToFront();        
         }
         private void ReloadInitStaff()//knc
         {
