@@ -187,16 +187,7 @@ namespace GTI.Modules.SecurityCenter
                         EnablePasteMenu(false);
                         CheckPositionsCount();//RALLY DE 6739
 
-                        /*
-                        //editPositionToolStripMenuItem.Enabled = true;
-                        //newPositionToolStripMenuItem.Enabled = true;
-                        if (((Position)sender).DialogResult != DialogResult.Cancel &&
-                            ((Position)sender).DialogResult != DialogResult.None)
-                        {
-                            ReloadInitStaff();
-                        }
-                         */
-                        //else 
+     
 
                         if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
                         {
@@ -210,8 +201,9 @@ namespace GTI.Modules.SecurityCenter
                             LoadStaffPosition(waiting, Configuration.operatorID);
                             waiting.ShowDialog();
                             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
+                            LoadStaffPosition(waiting, Configuration.operatorID);//knc_1
                             Application.DoEvents();
-                            //mInitStaffForm.BringToFront();
+                            mInitStaffForm.BringToFront();
       
                             Application.DoEvents();
                             //this.ResumeLayout(true);
