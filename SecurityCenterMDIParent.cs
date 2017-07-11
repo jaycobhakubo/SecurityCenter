@@ -169,17 +169,12 @@ namespace GTI.Modules.SecurityCenter
         }
         //END RALLY DE 6739
 
-        private bool m_isNewPosition = false;
-
-        private void PositionForm_FormClosed(object sender, EventArgs e)//knc
+        private void PositionForm_FormClosed(object sender, EventArgs e)
         {
-
-
             if (((Position)sender).DialogResult == DialogResult.Yes)
             {
                 if (mPositionForm.IsNewPosition == false)
                 {
-
                     if (mPositionForm.IsPositionNameChanged == true) //If new position is false then its modified
                     {
                         //ttp 50053, support copy position function
@@ -187,16 +182,13 @@ namespace GTI.Modules.SecurityCenter
                         EnablePasteMenu(false);
                         CheckPositionsCount();//RALLY DE 6739
 
-     
-
                         if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
-                        {
-                          
+                        {                        
                             WaitForm waiting = new WaitForm();
                             LoadStaffPosition(waiting, Configuration.operatorID);
                             waiting.ShowDialog();
                             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
-                            LoadStaffPosition(waiting, Configuration.operatorID);//knc_1
+                            LoadStaffPosition(waiting, Configuration.operatorID);
                             Application.DoEvents();
                             mInitStaffForm.BringToFront();     
                             Application.DoEvents();
@@ -214,59 +206,50 @@ namespace GTI.Modules.SecurityCenter
             }
              
         }
-        private void ReloadInitStaff()//knc
+        private void ReloadInitStaff()
         {
             this.Cursor = Cursors.WaitCursor;
             WaitForm waiting = new WaitForm();
             waiting.Message = Properties.Resources.splashInfoLoadStaffPositionModule;
-
-            //waiting.StartPosition = FormStartPosition.CenterParent;
             waiting.WaitImage = Properties.Resources.Waiting;
             waiting.CancelButtonVisible = true;
             waiting.ProgressBarVisible = false;
             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
-            LoadStaffPosition(waiting, Configuration.operatorID);//knc_1
+            LoadStaffPosition(waiting, Configuration.operatorID);
             waiting.ShowDialog(); //Block until we are done
 
-            if (m_isNewPosition == false) //Dont do anything on new position save event.
+            try
             {
-                try
-                {
 
-                    mStaffList = new GetStaffList(Configuration.operatorID, true);//Why do we want the staff list here
-                    mStaffList.Send(); //we have got all staff datas
+                mStaffList = new GetStaffList(Configuration.operatorID, true);//Why do we want the staff list here
+                mStaffList.Send(); //we have got all staff datas
 
-                    this.SuspendLayout();
-                    mInitStaffForm.MdiParent = this;
-                    mInitStaffForm.Show();  
+                this.SuspendLayout();
+                mInitStaffForm.MdiParent = this;
+                mInitStaffForm.Show();  
 
-                    Application.DoEvents();
-                    this.ResumeLayout(true);
-                    this.PerformLayout();
+                Application.DoEvents();
+                this.ResumeLayout(true);
+                this.PerformLayout();
 
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogSevere((new StackFrame(true)).GetMethod().ToString(), (new StackFrame(true)).GetFileName() + "--" + ex.Message, (new StackFrame(true)).GetFileLineNumber());
-                    MessageForm.Show(Properties.Resources.errorFailedLoadInitStaff, Properties.Resources.securityCenter);
-                }
-                finally
-                {
-                    if (!waiting.IsDisposed) waiting.CloseForm();
-                    this.Cursor = Cursors.Default;
-                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogSevere((new StackFrame(true)).GetMethod().ToString(), (new StackFrame(true)).GetFileName() + "--" + ex.Message, (new StackFrame(true)).GetFileLineNumber());
+                MessageForm.Show(Properties.Resources.errorFailedLoadInitStaff, Properties.Resources.securityCenter);
+            }
+            finally
+            {
+                if (!waiting.IsDisposed) waiting.CloseForm();
+                this.Cursor = Cursors.Default;
+            }
+            
         }
-        private void ShowInitStaff()//knc
+        private void ShowInitStaff()
         {
             this.SuspendLayout();      
             mInitStaffForm = new NewStaff();
             mInitStaffForm.MdiParent = this;
-            //mInitStaffForm.OnStaffSelected += new StaffSelectedEventHandler(InitStaff_Staff_Click);
-                          
-           // mInitStaffForm.TopMost = true; 
-            //mInitStaffForm.Text = Properties.Resources.ViewStaff;
-         
             mInitStaffForm.WindowState = FormWindowState.Maximized;
             mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
             mInitStaffForm.FormClosed +=new FormClosedEventHandler(mNewStaffForm_FormClosed);
@@ -276,6 +259,7 @@ namespace GTI.Modules.SecurityCenter
             this.PerformLayout();
             mInitStaffForm.Show();     
         }
+
 
 
         private void MakeupMDI()
@@ -442,7 +426,7 @@ namespace GTI.Modules.SecurityCenter
         //END RALLY DE 6739
         
 
-        private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)//knc
+        private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             checkPositionModified();            
             SetNewPostionContextMenu(true);
@@ -495,7 +479,7 @@ namespace GTI.Modules.SecurityCenter
                 //newPositionToolStripMenuItem.Enabled = false;
             }
         }
-        private void editPositionToolStripMenuItem_Click(object sender, EventArgs e)//knc
+        private void editPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             checkPositionModified(); 
             SetNewPostionContextMenu(false);

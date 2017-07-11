@@ -55,15 +55,7 @@ namespace GTI.Modules.SecurityCenter
         private int mAddressID = NEW_ID;
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
-
         private bool isReloading; //DE10178
-
-        public int SelectedStaffId
-        {
-            get;
-            set;
-        }
-
 
         #endregion
 
@@ -548,7 +540,7 @@ namespace GTI.Modules.SecurityCenter
         /// <summary>
         /// Load all positions to the position combobox
         /// </summary>
-        private void LoadPositionToComboBox()//knc
+        private void LoadPositionToComboBox()
         {
             Utilities.LogInfoIN();
             GetPositionList positionList = new GetPositionList(-1);
@@ -640,13 +632,8 @@ namespace GTI.Modules.SecurityCenter
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
 
-            LoadListBoxPosition(staffID);
-
-            Utilities.LogInfoLeave();
+            LoadListBoxPosition(staffID);          
         }
-
-
-
 
         private void LoadListBoxPosition(int staffID)
         {
@@ -662,6 +649,7 @@ namespace GTI.Modules.SecurityCenter
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
             }
+            Utilities.LogInfoLeave();
         }
 
 
@@ -1151,10 +1139,8 @@ namespace GTI.Modules.SecurityCenter
             //hire date
             hireDateTimePicker.Value = hireDateTimePicker.MinDate;
             //is active member
-            checkBoxActive.Checked = true;
-           
+            checkBoxActive.Checked = true;         
             checkBoxlocked.Checked = false;
-
             //phone 1
             homePhoneTextBox.Text = string.Empty;
             //phone 2
@@ -1298,5 +1284,16 @@ namespace GTI.Modules.SecurityCenter
                 dtPicker.Value = DateTime.Today;
             }
         }
+
+        #region Properties
+
+        public int SelectedStaffId
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
     }
 }

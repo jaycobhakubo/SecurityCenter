@@ -158,7 +158,7 @@ namespace GTI.Modules.SecurityCenter
             cmbx_PositionName.Items.Add(positionName); //index 0
             cmbx_PositionName.SelectedIndex = 0;
         }
-        private void LoadPositionToComboBox(int index)//knc
+        private void LoadPositionToComboBox(int index)
         {
             Utilities.LogInfoIN();
            
@@ -424,9 +424,7 @@ namespace GTI.Modules.SecurityCenter
             //LoadPositionToComboBox();
         }
 
-        public bool IsPositionNameChanged { get; set; }
-
-        private bool IsExistingName(string newName)//knc
+        private bool IsExistingName(string newName)
         {
             //if (cmbx_PositionName.SelectionLength < 0)
               //  return false;
@@ -973,7 +971,7 @@ namespace GTI.Modules.SecurityCenter
             {
                 if (mPositionsData == null)
                     mPositionsData = new PositionData();
-                mPositionsData.PositionTable.Rows.Add(mNewPostionRow);//knc
+                mPositionsData.PositionTable.Rows.Add(mNewPostionRow);
             }
             //end of ttp 50053
             if (mCurrentPositionIndex >= 0 && 
@@ -1109,7 +1107,7 @@ namespace GTI.Modules.SecurityCenter
             
             return false;
         }
-        private bool SaveCurrentPosition(int positionID)//knc
+        private bool SaveCurrentPosition(int positionID)
         {
              Utilities.LogInfoIN();
            
@@ -1274,8 +1272,8 @@ namespace GTI.Modules.SecurityCenter
                 //send the position id, the name and the activity flag to setPosition
             }
         }
-
-        public bool IsModified { get; set; }
+		public bool IsModified { get; set; }
+        public bool IsPositionNameChanged { get; set; }
        
     }
 }
