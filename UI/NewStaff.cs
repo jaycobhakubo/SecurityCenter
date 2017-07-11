@@ -209,7 +209,7 @@ namespace GTI.Modules.SecurityCenter
             SetWhetherControlsLocked(); // DE13019 - If fields are disabled, need to re-enable them
         }
 
-        private void saveStaffImageButton_Click(object sender, EventArgs e)//knc
+        private void saveStaffImageButton_Click(object sender, EventArgs e)
         {
             if (ValidateStaff() == true)
             {
@@ -362,7 +362,10 @@ namespace GTI.Modules.SecurityCenter
             //refresh positions in the list
             positionListBox.Items.Clear();
             //ListViewItem tmpItem;
-            foreach (DataRow p in mAssignedPositions.PositionTable.Rows)
+
+            var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+            foreach (DataRow p in PositionInOrder)
             {
                 //tmpItem = new ListViewItem(p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 //tmpItem.Tag = p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
@@ -627,7 +630,7 @@ namespace GTI.Modules.SecurityCenter
                 tmpDate = staffRowByID[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString();
                 DOBDateTimePicker.Value = DateTime.Parse(tmpDate, CultureInfo.InvariantCulture);
             }
-            else
+            elses
             {
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
@@ -644,7 +647,9 @@ namespace GTI.Modules.SecurityCenter
                 mAssignedPositions.PositionTable.Rows.Count > 0)
             {
 
-                foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
+                var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+                foreach (DataRow position in PositionInOrder)
                 {
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }

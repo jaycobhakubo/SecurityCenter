@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Linq;
+
 using GTI.Modules.Shared;
 using GTI.Modules.SecurityCenter.Data;
 namespace GTI.Modules.SecurityCenter
@@ -55,19 +57,23 @@ namespace GTI.Modules.SecurityCenter
            
             assignedPostionslistBox.Items.Clear();
             availablePositionListBox.Items.Clear();
+            var AssignedPositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
             //there is no dub on two lists
             ListViewItem tmpItem;
-            foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
+            foreach (DataRow position in AssignedPositionInOrder)
             {
                 tmpItem = new ListViewItem(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 tmpItem.Tag = position[PositionData.POSITION_COLUMN_POSITIONID].ToString();
                 this.assignedPostionslistBox.Items.Add(tmpItem);
             }
+
             bool assigned = false;
-            foreach (DataRow position in mAvailablePositions.PositionTable.Rows)
+            var AvailablePositionInOrder = mAvailablePositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+            foreach (DataRow position in AvailablePositionInOrder)
             {
                 assigned = false;
-                foreach (DataRow position2 in mAssignedPositions.PositionTable.Rows)
+
+                foreach (DataRow position2 in AssignedPositionInOrder)
                 {
                     if (position[PositionData.POSITION_COLUMN_POSITIONID].ToString().
                         Equals(position2[PositionData.POSITION_COLUMN_POSITIONID].ToString()))
