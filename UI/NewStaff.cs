@@ -20,6 +20,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Linq;
 
 using GTI.Modules.Shared;
 using GTI.Modules.SecurityCenter.Data;
@@ -534,6 +535,16 @@ namespace GTI.Modules.SecurityCenter
             LoadListBoxPosition(staffID);
         }
 
+        public void ReloadUIStaffPositionCmbx()
+        {
+            LoadPositionToComboBox();
+
+            if (positionComboBox.SelectedIndex != 0)
+            {
+                positionComboBox.SelectedIndex = 0;
+            }
+        }
+
         /// <summary>
         /// Load all positions to the position combobox
         /// </summary>
@@ -558,7 +569,10 @@ namespace GTI.Modules.SecurityCenter
             //clear up before load
             positionComboBox.Items.Clear();
             positionComboBox.Items.Add("All");
-            foreach (DataRow position in mAvailablePositions.PositionTable.Rows)
+
+            var PositionInOrder = mAvailablePositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+            foreach (DataRow position in PositionInOrder)
             {
                 //FIX: RALLY DE1573 Only Show active postions START
                 if ((bool)position[PositionData.POSITION_COLUMN_ACTIVITYFLAG])

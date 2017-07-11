@@ -191,23 +191,17 @@ namespace GTI.Modules.SecurityCenter
 
                         if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
                         {
-                            //mInitStaffForm.ReloadStaffPositionCmbx();
-         
-                            //this.SuspendLayout();
-                            //mInitStaffForm.WindowState = FormWindowState.Maximized;
-                            //mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
-                            //ReloadInitStaff();
+                          
                             WaitForm waiting = new WaitForm();
                             LoadStaffPosition(waiting, Configuration.operatorID);
                             waiting.ShowDialog();
                             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
                             LoadStaffPosition(waiting, Configuration.operatorID);//knc_1
                             Application.DoEvents();
-                            mInitStaffForm.BringToFront();
-      
+                            mInitStaffForm.BringToFront();     
                             Application.DoEvents();
-                            //this.ResumeLayout(true);
-                            //this.PerformLayout();
+                            this.ResumeLayout(true);
+                            this.PerformLayout();
                         }
                         else
                         {
@@ -215,6 +209,8 @@ namespace GTI.Modules.SecurityCenter
                         }
                     }
                 }
+
+                mInitStaffForm.ReloadUIStaffPositionCmbx();
             }
              
         }
@@ -247,14 +243,6 @@ namespace GTI.Modules.SecurityCenter
                     Application.DoEvents();
                     this.ResumeLayout(true);
                     this.PerformLayout();
-
-                    //if (mInitStaffForm != null)
-                    //{
-                    //    mInitStaffForm.Close();
-                    //}
-                    //ShowInitStaff();//knc
-
-                  //No need to reiniatialize we just have to reload the listbox
 
                 }
                 catch (Exception ex)
