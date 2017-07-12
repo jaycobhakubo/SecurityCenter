@@ -630,7 +630,7 @@ namespace GTI.Modules.SecurityCenter
                 tmpDate = staffRowByID[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString();
                 DOBDateTimePicker.Value = DateTime.Parse(tmpDate, CultureInfo.InvariantCulture);
             }
-            elses
+            else
             {
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
