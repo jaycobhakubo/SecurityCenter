@@ -20,7 +20,6 @@ using System.IO;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using System.Linq;
 
 using GTI.Modules.Shared;
 using GTI.Modules.SecurityCenter.Data;
@@ -55,6 +54,7 @@ namespace GTI.Modules.SecurityCenter
         private int mAddressID = NEW_ID;
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
+
         private bool isReloading; //DE10178
 
         #endregion
@@ -78,6 +78,7 @@ namespace GTI.Modules.SecurityCenter
 
             LoadDataToListView(1, "All");
             positionComboBox.SelectedIndex = 0;
+
             if (staffListView.Items.Count > 0)
             {
                 staffListView.Reset();
@@ -317,7 +318,6 @@ namespace GTI.Modules.SecurityCenter
             }
             //post the information to the right side 
             LoadAStaffInformation(mCurrentSelectedStaffRow);
-            SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             SetWhetherControlsLocked();
         }
 
@@ -362,10 +362,7 @@ namespace GTI.Modules.SecurityCenter
             //refresh positions in the list
             positionListBox.Items.Clear();
             //ListViewItem tmpItem;
-
-            var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
-
-            foreach (DataRow p in PositionInOrder)
+            foreach (DataRow p in mAssignedPositions.PositionTable.Rows)
             {
                 //tmpItem = new ListViewItem(p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 //tmpItem.Tag = p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
@@ -524,22 +521,6 @@ namespace GTI.Modules.SecurityCenter
             return positionStrings;
         }
 
-
-        public void ReloadStaffPositionListBox(int staffID)
-        {
-            LoadListBoxPosition(staffID);
-        }
-
-        public void ReloadUIStaffPositionCmbx()
-        {
-            LoadPositionToComboBox();
-
-            if (positionComboBox.SelectedIndex != 0)
-            {
-                positionComboBox.SelectedIndex = 0;
-            }
-        }
-
         /// <summary>
         /// Load all positions to the position combobox
         /// </summary>
@@ -564,10 +545,7 @@ namespace GTI.Modules.SecurityCenter
             //clear up before load
             positionComboBox.Items.Clear();
             positionComboBox.Items.Add("All");
-
-            var PositionInOrder = mAvailablePositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
-
-            foreach (DataRow position in PositionInOrder)
+            foreach (DataRow position in mAvailablePositions.PositionTable.Rows)
             {
                 //FIX: RALLY DE1573 Only Show active postions START
                 if ((bool)position[PositionData.POSITION_COLUMN_ACTIVITYFLAG])
@@ -635,30 +613,23 @@ namespace GTI.Modules.SecurityCenter
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
 
-            LoadListBoxPosition(staffID);          
-        }
-
-        private void LoadListBoxPosition(int staffID)
-        {
-            positionListBox.Items.Clear();
+            positionListBox.Items.Clear();//clear it
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
             if (mAssignedPositions != null &&
                 mAssignedPositions.PositionTable != null &&
                 mAssignedPositions.PositionTable.Rows.Count > 0)
             {
 
-                var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
-
-                foreach (DataRow position in PositionInOrder)
+                // ListViewItem tmpItem;
+                foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
                 {
+                    //tmpItem = new ListViewItem(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
+                    //tmpItem.Tag = position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
             }
             Utilities.LogInfoLeave();
         }
-
-
-
 
         private bool IsSaveStaffInformationChange()
         {
@@ -894,9 +865,6 @@ namespace GTI.Modules.SecurityCenter
 
             return isValidated;
         }
-
-
-
 
         /// <summary>
         /// Method to Validate the Password when complexity is required
@@ -1144,8 +1112,9 @@ namespace GTI.Modules.SecurityCenter
             //hire date
             hireDateTimePicker.Value = hireDateTimePicker.MinDate;
             //is active member
-            checkBoxActive.Checked = true;         
+            checkBoxActive.Checked = true;
             checkBoxlocked.Checked = false;
+
             //phone 1
             homePhoneTextBox.Text = string.Empty;
             //phone 2
@@ -1289,16 +1258,5 @@ namespace GTI.Modules.SecurityCenter
                 dtPicker.Value = DateTime.Today;
             }
         }
-
-        #region Properties
-
-        public int SelectedStaffId
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
     }
 }

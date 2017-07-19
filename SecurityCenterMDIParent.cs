@@ -171,78 +171,31 @@ namespace GTI.Modules.SecurityCenter
 
         private void PositionForm_FormClosed(object sender, EventArgs e)
         {
-            if (((Position)sender).DialogResult == DialogResult.Yes)
+            //ttp 50053, support copy position function
+            EnableCopyMenu ( false);
+            EnablePasteMenu (false) ;
+            CheckPositionsCount();//RALLY DE 6739
+            //editPositionToolStripMenuItem.Enabled = true;
+            //newPositionToolStripMenuItem.Enabled = true;
+            if (((Position)sender).DialogResult != DialogResult.Cancel &&
+                ((Position)sender).DialogResult != DialogResult.None )
             {
-                if (mPositionForm.IsNewPosition == false)
-                {
-                    if (mPositionForm.IsPositionNameChanged == true) //If new position is false then its modified
-                    {
-                        //ttp 50053, support copy position function
-                        EnableCopyMenu(false);
-                        EnablePasteMenu(false);
-                        CheckPositionsCount();//RALLY DE 6739
-
-                        if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
-                        {                        
-                            WaitForm waiting = new WaitForm();
-                            LoadStaffPosition(waiting, Configuration.operatorID);
-                            waiting.ShowDialog();
-                            mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
-                            LoadStaffPosition(waiting, Configuration.operatorID);
-                            Application.DoEvents();
-                            mInitStaffForm.BringToFront();     
-                            Application.DoEvents();
-                            this.ResumeLayout(true);
-                            this.PerformLayout();
-                        }
-                        else
-                        {
-                            MakeupMDI();
-                        }
-                    }
-                }
-
-                mInitStaffForm.ReloadUIStaffPositionCmbx();
+                ReloadInitStaff();
             }
-             
-        }
-        private void ReloadInitStaff()
-        {
-            this.Cursor = Cursors.WaitCursor;
-            WaitForm waiting = new WaitForm();
-            waiting.Message = Properties.Resources.splashInfoLoadStaffPositionModule;
-            waiting.WaitImage = Properties.Resources.Waiting;
-            waiting.CancelButtonVisible = true;
-            waiting.ProgressBarVisible = false;
-            mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
-            LoadStaffPosition(waiting, Configuration.operatorID);
-            waiting.ShowDialog(); //Block until we are done
-
-            try
+            else if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
             {
-
-                mStaffList = new GetStaffList(Configuration.operatorID, true);//Why do we want the staff list here
-                mStaffList.Send(); //we have got all staff datas
-
                 this.SuspendLayout();
-                mInitStaffForm.MdiParent = this;
-                mInitStaffForm.Show();  
-
-                Application.DoEvents();
+                mInitStaffForm.WindowState = FormWindowState.Maximized;
+                mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
+                mInitStaffForm.BringToFront();
                 this.ResumeLayout(true);
                 this.PerformLayout();
-
             }
-            catch (Exception ex)
+            else
             {
-                Logger.LogSevere((new StackFrame(true)).GetMethod().ToString(), (new StackFrame(true)).GetFileName() + "--" + ex.Message, (new StackFrame(true)).GetFileLineNumber());
-                MessageForm.Show(Properties.Resources.errorFailedLoadInitStaff, Properties.Resources.securityCenter);
+                MakeupMDI();
             }
-            finally
-            {
-                if (!waiting.IsDisposed) waiting.CloseForm();
-                this.Cursor = Cursors.Default;
-            }
+           
             
         }
         private void ShowInitStaff()
@@ -250,18 +203,19 @@ namespace GTI.Modules.SecurityCenter
             this.SuspendLayout();      
             mInitStaffForm = new NewStaff();
             mInitStaffForm.MdiParent = this;
+            //mInitStaffForm.OnStaffSelected += new StaffSelectedEventHandler(InitStaff_Staff_Click);
+                          
+           // mInitStaffForm.TopMost = true; 
+           // mInitStaffForm.Text = Properties.Resources.ViewStaff;
+            mInitStaffForm.Show();
             mInitStaffForm.WindowState = FormWindowState.Maximized;
             mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
             mInitStaffForm.FormClosed +=new FormClosedEventHandler(mNewStaffForm_FormClosed);
             this.Text = Properties.Resources.titleSecurityCenter;
             Application.DoEvents();
             this.ResumeLayout(true);
-            this.PerformLayout();
-            mInitStaffForm.Show();     
+            this.PerformLayout();                   
         }
-
-
-
         private void MakeupMDI()
         {
             if (this.MdiChildren.Length > 0)
@@ -296,7 +250,40 @@ namespace GTI.Modules.SecurityCenter
            
         }
 
-     
+        private void ReloadInitStaff()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            WaitForm waiting = new WaitForm();            
+            waiting.Message = Properties.Resources.splashInfoLoadStaffPositionModule;
+            
+            //waiting.StartPosition = FormStartPosition.CenterParent;
+            waiting.WaitImage = Properties.Resources.Waiting;
+            waiting.CancelButtonVisible = true;
+            waiting.ProgressBarVisible = false;
+            LoadStaffPosition(waiting, Configuration.operatorID);
+            waiting.ShowDialog(); //Block until we are done
+
+            try
+            {
+               //mStaffList = new GetStaffList(Configuration.operatorID, true);
+               //mStaffList.Send(); //we have got all staff datas
+               if( mInitStaffForm != null)
+                {
+                    mInitStaffForm.Close();
+                }                
+                ShowInitStaff ();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogSevere((new StackFrame(true)).GetMethod().ToString(), (new StackFrame(true)).GetFileName() + "--" + ex.Message, (new StackFrame(true)).GetFileLineNumber());
+                MessageForm.Show(Properties.Resources.errorFailedLoadInitStaff, Properties.Resources.securityCenter);
+            }
+            finally 
+            {
+                if (! waiting.IsDisposed) waiting.CloseForm();
+                this.Cursor = Cursors.Default;
+            }            
+        }
 
         private void LoadStaffPosition(WaitForm waitingForm, int operatorID)
         {

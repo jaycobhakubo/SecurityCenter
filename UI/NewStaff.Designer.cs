@@ -40,6 +40,7 @@ namespace GTI.Modules.SecurityCenter
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.newStaffGroupBox = new System.Windows.Forms.GroupBox();
+            this.checkBoxLeftHanded = new System.Windows.Forms.CheckBox();
             this.checkBoxlocked = new System.Windows.Forms.CheckBox();
             this.checkBoxActive = new System.Windows.Forms.CheckBox();
             this.HireDateLabel = new System.Windows.Forms.Label();
@@ -83,7 +84,6 @@ namespace GTI.Modules.SecurityCenter
             this.newSTaffImageButton = new GTI.Controls.ImageButton();
             this.saveStaffImageButton = new GTI.Controls.ImageButton();
             this.mCloseButton = new GTI.Controls.ImageButton();
-            this.checkBoxLeftHanded = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.newStaffGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loginNumericUpDown)).BeginInit();
@@ -143,6 +143,7 @@ namespace GTI.Modules.SecurityCenter
             // 
             // staffListView
             // 
+            this.staffListView.AllowEraseBackground = true;
             this.staffListView.BackColor = System.Drawing.Color.White;
             this.staffListView.BackgroundImageTiled = true;
             this.staffListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -227,6 +228,12 @@ namespace GTI.Modules.SecurityCenter
             this.newStaffGroupBox.Name = "newStaffGroupBox";
             this.newStaffGroupBox.TabStop = false;
             // 
+            // checkBoxLeftHanded
+            // 
+            resources.ApplyResources(this.checkBoxLeftHanded, "checkBoxLeftHanded");
+            this.checkBoxLeftHanded.Name = "checkBoxLeftHanded";
+            this.checkBoxLeftHanded.UseVisualStyleBackColor = true;
+            // 
             // checkBoxlocked
             // 
             resources.ApplyResources(this.checkBoxlocked, "checkBoxlocked");
@@ -279,6 +286,8 @@ namespace GTI.Modules.SecurityCenter
             this.SwipCardImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SwipCardImageButton.ImageNormal")));
             this.SwipCardImageButton.ImagePressed = ((System.Drawing.Image)(resources.GetObject("SwipCardImageButton.ImagePressed")));
             this.SwipCardImageButton.Name = "SwipCardImageButton";
+            this.SwipCardImageButton.RepeatRate = 150;
+            this.SwipCardImageButton.RepeatWhenHeldFor = 750;
             this.SwipCardImageButton.UseVisualStyleBackColor = false;
             this.SwipCardImageButton.Click += new System.EventHandler(this.SwipCardImageButton_Click);
             // 
@@ -320,6 +329,8 @@ namespace GTI.Modules.SecurityCenter
             this.assignPositionButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("assignPositionButton.ImageNormal")));
             this.assignPositionButton.ImagePressed = ((System.Drawing.Image)(resources.GetObject("assignPositionButton.ImagePressed")));
             this.assignPositionButton.Name = "assignPositionButton";
+            this.assignPositionButton.RepeatRate = 150;
+            this.assignPositionButton.RepeatWhenHeldFor = 750;
             this.assignPositionButton.Click += new System.EventHandler(this.assignPositionButton_Click);
             // 
             // passwordLabel
@@ -479,6 +490,8 @@ namespace GTI.Modules.SecurityCenter
             this.newSTaffImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("newSTaffImageButton.ImageNormal")));
             this.newSTaffImageButton.ImagePressed = ((System.Drawing.Image)(resources.GetObject("newSTaffImageButton.ImagePressed")));
             this.newSTaffImageButton.Name = "newSTaffImageButton";
+            this.newSTaffImageButton.RepeatRate = 150;
+            this.newSTaffImageButton.RepeatWhenHeldFor = 750;
             this.newSTaffImageButton.UseVisualStyleBackColor = false;
             this.newSTaffImageButton.Click += new System.EventHandler(this.newSTaffImageButton_Click);
             // 
@@ -490,6 +503,8 @@ namespace GTI.Modules.SecurityCenter
             this.saveStaffImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("saveStaffImageButton.ImageNormal")));
             this.saveStaffImageButton.ImagePressed = ((System.Drawing.Image)(resources.GetObject("saveStaffImageButton.ImagePressed")));
             this.saveStaffImageButton.Name = "saveStaffImageButton";
+            this.saveStaffImageButton.RepeatRate = 150;
+            this.saveStaffImageButton.RepeatWhenHeldFor = 750;
             this.saveStaffImageButton.UseVisualStyleBackColor = false;
             this.saveStaffImageButton.Click += new System.EventHandler(this.saveStaffImageButton_Click);
             // 
@@ -501,14 +516,10 @@ namespace GTI.Modules.SecurityCenter
             this.mCloseButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("mCloseButton.ImageNormal")));
             this.mCloseButton.ImagePressed = ((System.Drawing.Image)(resources.GetObject("mCloseButton.ImagePressed")));
             this.mCloseButton.Name = "mCloseButton";
+            this.mCloseButton.RepeatRate = 150;
+            this.mCloseButton.RepeatWhenHeldFor = 750;
             this.mCloseButton.UseVisualStyleBackColor = false;
             this.mCloseButton.Click += new System.EventHandler(this.mCloseButton_Click);
-            // 
-            // checkBoxLeftHanded
-            // 
-            resources.ApplyResources(this.checkBoxLeftHanded, "checkBoxLeftHanded");
-            this.checkBoxLeftHanded.Name = "checkBoxLeftHanded";
-            this.checkBoxLeftHanded.UseVisualStyleBackColor = true;
             // 
             // NewStaff
             // 
@@ -521,9 +532,8 @@ namespace GTI.Modules.SecurityCenter
             this.Controls.Add(this.newStaffGroupBox);
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.GradientEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewStaff";
             this.ShowIcon = false;

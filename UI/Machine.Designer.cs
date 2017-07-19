@@ -47,6 +47,7 @@
             // 
             // MachineListView
             // 
+            this.MachineListView.AllowEraseBackground = true;
             this.MachineListView.BackColor = System.Drawing.SystemColors.Window;
             this.MachineListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.MachineIDHeader,
@@ -140,6 +141,8 @@
             this.MachineRefreshButton.Location = new System.Drawing.Point(522, 563);
             this.MachineRefreshButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.MachineRefreshButton.Name = "MachineRefreshButton";
+            this.MachineRefreshButton.RepeatRate = 150;
+            this.MachineRefreshButton.RepeatWhenHeldFor = 750;
             this.MachineRefreshButton.Size = new System.Drawing.Size(132, 30);
             this.MachineRefreshButton.TabIndex = 2;
             this.MachineRefreshButton.Text = "&Refresh";
@@ -157,6 +160,8 @@
             this.MachineLogoutButton.Location = new System.Drawing.Point(318, 563);
             this.MachineLogoutButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.MachineLogoutButton.Name = "MachineLogoutButton";
+            this.MachineLogoutButton.RepeatRate = 150;
+            this.MachineLogoutButton.RepeatWhenHeldFor = 750;
             this.MachineLogoutButton.Size = new System.Drawing.Size(132, 30);
             this.MachineLogoutButton.TabIndex = 3;
             this.MachineLogoutButton.Text = "&Logout";
@@ -176,11 +181,11 @@
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MachineForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Machine";
             this.contextMachineLogOut.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);

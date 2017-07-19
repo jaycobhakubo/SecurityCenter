@@ -40,9 +40,9 @@ namespace GTI.Modules.SecurityCenter
             this.currentPositionLabel = new System.Windows.Forms.Label();
             this.availablePositionlabel = new System.Windows.Forms.Label();
             this.availablePositionListBox = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.assignedPostionslistBox = new System.Windows.Forms.ListView();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mCancelButton = new GTI.Controls.ImageButton();
             this.mOKButton = new GTI.Controls.ImageButton();
             this.removeButton = new GTI.Controls.ImageButton();
@@ -130,6 +130,8 @@ namespace GTI.Modules.SecurityCenter
             this.mCancelButton.Location = new System.Drawing.Point(601, 460);
             this.mCancelButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.mCancelButton.Name = "mCancelButton";
+            this.mCancelButton.RepeatRate = 150;
+            this.mCancelButton.RepeatWhenHeldFor = 750;
             this.mCancelButton.Size = new System.Drawing.Size(110, 30);
             this.mCancelButton.TabIndex = 7;
             this.mCancelButton.Text = "&Cancel";
@@ -145,6 +147,8 @@ namespace GTI.Modules.SecurityCenter
             this.mOKButton.Location = new System.Drawing.Point(466, 460);
             this.mOKButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.mOKButton.Name = "mOKButton";
+            this.mOKButton.RepeatRate = 150;
+            this.mOKButton.RepeatWhenHeldFor = 750;
             this.mOKButton.Size = new System.Drawing.Size(110, 30);
             this.mOKButton.TabIndex = 6;
             this.mOKButton.Text = "&OK";
@@ -160,6 +164,8 @@ namespace GTI.Modules.SecurityCenter
             this.removeButton.Location = new System.Drawing.Point(315, 233);
             this.removeButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.removeButton.Name = "removeButton";
+            this.removeButton.RepeatRate = 150;
+            this.removeButton.RepeatWhenHeldFor = 750;
             this.removeButton.Size = new System.Drawing.Size(110, 30);
             this.removeButton.TabIndex = 3;
             this.removeButton.Text = "<<";
@@ -175,6 +181,8 @@ namespace GTI.Modules.SecurityCenter
             this.assignButton.Location = new System.Drawing.Point(315, 197);
             this.assignButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.assignButton.Name = "assignButton";
+            this.assignButton.RepeatRate = 150;
+            this.assignButton.RepeatWhenHeldFor = 750;
             this.assignButton.Size = new System.Drawing.Size(110, 30);
             this.assignButton.TabIndex = 2;
             this.assignButton.Text = ">>";
@@ -198,7 +206,6 @@ namespace GTI.Modules.SecurityCenter
             this.Controls.Add(this.currentPositionLabel);
             this.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AssignPositions";
             this.ShowIcon = false;
