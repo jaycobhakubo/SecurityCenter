@@ -48,7 +48,7 @@ namespace GTI.Modules.SecurityCenter
             this.CenterToScreen();
 
             mInitStaffForm =  CreateChildStaffUI();
-          ShowChildForm(mInitStaffForm);
+            ShowChildForm(mInitStaffForm);
 
             if (!m_curStaff.CheckModuleFeature(EliteModule.SecurityCenter, 11))
             {
@@ -64,8 +64,19 @@ namespace GTI.Modules.SecurityCenter
             UI.MdiParent = this;
             UI.BringToFront();
             UI.Show();
-            //UI.WindowState = FormWindowState.Maximized;
-            //UI.StartPosition = FormStartPosition.CenterParent;
+        }
+
+        public void ShowPositionForm(bool isNewPosition)
+        {
+            if (IsFormLoaded("Position"))
+            {
+                return;
+            }
+            else
+            {
+                mPositionForm = CreatePositionUI(isNewPosition);
+
+            }
         }
 
         #endregion
@@ -81,15 +92,7 @@ namespace GTI.Modules.SecurityCenter
         {
             this.SuspendLayout();
             var  x = new NewStaff();
-            //x.StartPosition = FormStartPosition.CenterScreen;
-            //x.ShowIcon = false;
-            //x.ShowInTaskbar = false;
-            //x.ControlBox = ControlBox;
-            //x.BackgroundImageLayout = ImageLayout.None;
-            //x.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            //x.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            //x.MinimizeBox = false;
-            //x.MaximizeBox = true;
+            x.Dock = DockStyle.Fill;
             x.FormClosed += new FormClosedEventHandler(mNewStaffForm_FormClosed);
             this.Text = Properties.Resources.titleSecurityCenter;
             Application.DoEvents();
@@ -132,20 +135,7 @@ namespace GTI.Modules.SecurityCenter
 
 
 
-        public void ShowPositionForm(bool isNewPosition)
-        {
-            if (IsFormLoaded("Position"))
-            {
-                //Bring the form to the front
-                // mPositionForm.IsLoading = false;
-                return;
-            }
-            else
-            {
-             mPositionForm =   CreatePositionUI(isNewPosition);
-
-            }
-        }
+    
         //ttp 50053, support copy position function
         public void EnableCopyMenu(bool isEnable)
         {
@@ -336,17 +326,12 @@ namespace GTI.Modules.SecurityCenter
                 foreach (Form frmTest in mdiChild)
                 {
                     string strTemp = frmTest.Name;
-                    //strTemp = strTemp.IndexOf(strFormName).ToString();
                     if (strTemp.Equals (strFormName))
                     {
                         blnFound = true;
-                        //frmTest.SuspendLayout();
-                        //SetMDIFormValues(frmTest);
                         frmTest.WindowState = FormWindowState.Maximized;
                         frmTest.Dock = DockStyle.Fill;
                         frmTest.BringToFront();
-                        //frmTest.ResumeLayout();
-                        //frmTest.PerformLayout();
                         break;
                     }
                 }
