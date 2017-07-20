@@ -81,6 +81,15 @@ namespace GTI.Modules.SecurityCenter
         {
             this.SuspendLayout();
             var  x = new NewStaff();
+            //x.StartPosition = FormStartPosition.CenterScreen;
+            //x.ShowIcon = false;
+            //x.ShowInTaskbar = false;
+            //x.ControlBox = ControlBox;
+            //x.BackgroundImageLayout = ImageLayout.None;
+            //x.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            //x.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
+            //x.MinimizeBox = false;
+            //x.MaximizeBox = true;
             x.FormClosed += new FormClosedEventHandler(mNewStaffForm_FormClosed);
             this.Text = Properties.Resources.titleSecurityCenter;
             Application.DoEvents();
