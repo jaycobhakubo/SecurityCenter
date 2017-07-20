@@ -32,6 +32,7 @@ namespace GTI.Modules.SecurityCenter
         #endregion
 
         #region Constructors
+
         public SecurityCenterMDIParent()
         {
             Utilities.LogInfoIN();;
@@ -41,63 +42,13 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoLeave();;
 
         }
-        #endregion
 
-        #region Data Properties
-        public Staff CurentStaff
-        {
-            set { m_curStaff = value; }
-        }   
-
-        internal GetStaffList StaffList
-        {
-            get { return mStaffList; }
-        }
-        //internal GetPositionList PositionList
-        //{
-        //    get { return mPositionList; }
-        //}
-        internal GetModuleList ModuleList
-        {
-            get { return mModuleList; }
-        }
-        internal void ComeToFront(object sender, EventArgs e)
-        {
-            this.Activate();
-        }
-        internal GetModuleFeatures ModuleFeatureList
-        {
-            get { return mModuleFeatureList; }
-        }
-        public void LoadData()
-        {
-            Utilities.LogInfoIN();;
-            LoadStaff();   //load staff, position, modules, and modulefeatures table// Prepare and send the message to get the counts.
-            mModuleList = new GetModuleList();            //modules and features 
-            mModuleList.Send();
-            mModuleFeatureList = new GetModuleFeatures();
-            mModuleFeatureList.Send();
-            CheckPositionsCount();//RALLY DE 6739
-            Utilities.LogInfoLeave();          
-        }
-        internal void LoadStaff()
-        { 
-            mStaffList = new GetStaffList(Configuration.operatorID, true);
-            mStaffList.Send(); //we have got all staff datas
-            Configuration.StaffLoginNumber = mStaffList.GetLoginNumberByStaffID(Configuration.LoginStaffID);       
-        }
-        #endregion
-        public void ExitSecurityCenter(object sender, EventArgs e)
-        {
-            ExitToolsStripMenuItem_Click(sender, e);
-            //clean up if any
-        }      
-        
         private void SecurityCenterMDIParent_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
-            //this.editStaffToolStripMenuItem.Enabled = false;
-            ShowInitStaff();
+
+            mInitStaffForm =  CreateChildStaffUI();
+          ShowChildForm(mInitStaffForm);
 
             if (!m_curStaff.CheckModuleFeature(EliteModule.SecurityCenter, 11))
             {
@@ -105,6 +56,60 @@ namespace GTI.Modules.SecurityCenter
                 psotitionMenu.Visible = false;
             }
         }
+
+
+
+        private void ShowChildForm(GradientForm UI)
+        {        
+            UI.MdiParent = this;
+            UI.BringToFront();
+            UI.Show();
+            //UI.WindowState = FormWindowState.Maximized;
+            //UI.StartPosition = FormStartPosition.CenterParent;
+        }
+
+        #endregion
+
+        #region EVENT
+
+        #endregion
+
+        #region METHODS
+
+        //Create UI for Staff
+        private NewStaff CreateChildStaffUI()
+        {
+            this.SuspendLayout();
+            var  x = new NewStaff();
+            x.FormClosed += new FormClosedEventHandler(mNewStaffForm_FormClosed);
+            this.Text = Properties.Resources.titleSecurityCenter;
+            Application.DoEvents();
+            this.ResumeLayout(true);
+            this.PerformLayout();
+            return x;
+        }
+
+        //Create UI for position
+        private Position CreatePositionUI(bool isNewPosition)
+        {
+            this.SuspendLayout();
+            var  x = new Position(isNewPosition);          
+            x.FormClosed += new FormClosedEventHandler(PositionForm_FormClosed);
+            this.Text = Properties.Resources.titleSecurityCenter;
+            Application.DoEvents();
+            this.ResumeLayout(true);
+            this.PerformLayout();
+            return x;
+        }
+        #endregion
+
+        public void ExitSecurityCenter(object sender, EventArgs e)
+        {
+            ExitToolsStripMenuItem_Click(sender, e);
+            //clean up if any
+        }      
+        
+      
         public void ShowNewStaff()
         {
             EnableCopyMenu(false);            // Rally DE1778 - If the user cannot copy or paste anything then don't display the edit feature.
@@ -113,42 +118,24 @@ namespace GTI.Modules.SecurityCenter
             if (IsFormLoaded("NewStaff"))
             {
                 return;                //Bring the form to the front
-            }
-
-            this.SuspendLayout();
-            mNewStaffForm = new NewStaff();            // Create a new instance of the child form.
-            mNewStaffForm.MdiParent = this;       // Make it a child of this MDI form before showing it.
-            mNewStaffForm.WindowState = FormWindowState.Maximized;
-            mNewStaffForm.FormClosed += new FormClosedEventHandler(mNewStaffForm_FormClosed);
-            mNewStaffForm.Show();            //childForm.Text = "Window " + childFormNumber++;
-            this.Text = Properties.Resources.titleSecurityCenter;           
-            this.ResumeLayout(true);
-            this.PerformLayout();        
+            }  
         }
+
+
+
         public void ShowPositionForm(bool isNewPosition)
         {
-           
             if (IsFormLoaded("Position"))
             {
                 //Bring the form to the front
-                mPositionForm.IsLoading = false;
+                // mPositionForm.IsLoading = false;
                 return;
-            } 
-            
-            this.SuspendLayout();
-            // Create a new instance of the child form.
-            mPositionForm = new Position(isNewPosition);
-            //mPositionFormNumber++;
-            // Make it a child of this MDI form before showing it.                
-            mPositionForm.MdiParent = this;
-            mPositionForm.WindowState = FormWindowState.Maximized;
-            mPositionForm.FormClosed += new FormClosedEventHandler(PositionForm_FormClosed);
-            //mPositionForm.Text = Properties.Resources.Position + mPositionFormNumber;
-            mPositionForm.IsLoading = false;
-            mPositionForm.Show();
-            this.Text = Properties.Resources.titleSecurityCenter;
-            this.ResumeLayout(true);
-            this.PerformLayout();
+            }
+            else
+            {
+             mPositionForm =   CreatePositionUI(isNewPosition);
+
+            }
         }
         //ttp 50053, support copy position function
         public void EnableCopyMenu(bool isEnable)
@@ -198,24 +185,7 @@ namespace GTI.Modules.SecurityCenter
            
             
         }
-        private void ShowInitStaff()
-        {
-            this.SuspendLayout();      
-            mInitStaffForm = new NewStaff();
-            mInitStaffForm.MdiParent = this;
-            //mInitStaffForm.OnStaffSelected += new StaffSelectedEventHandler(InitStaff_Staff_Click);
-                          
-           // mInitStaffForm.TopMost = true; 
-           // mInitStaffForm.Text = Properties.Resources.ViewStaff;
-            mInitStaffForm.Show();
-            mInitStaffForm.WindowState = FormWindowState.Maximized;
-            mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
-            mInitStaffForm.FormClosed +=new FormClosedEventHandler(mNewStaffForm_FormClosed);
-            this.Text = Properties.Resources.titleSecurityCenter;
-            Application.DoEvents();
-            this.ResumeLayout(true);
-            this.PerformLayout();                   
-        }
+   
         private void MakeupMDI()
         {
             if (this.MdiChildren.Length > 0)
@@ -270,8 +240,9 @@ namespace GTI.Modules.SecurityCenter
                if( mInitStaffForm != null)
                 {
                     mInitStaffForm.Close();
-                }                
-                ShowInitStaff ();
+                }
+               ShowChildForm(mInitStaffForm);
+                //ShowInitStaff ();
             }
             catch (Exception ex)
             {
@@ -418,6 +389,7 @@ namespace GTI.Modules.SecurityCenter
             checkPositionModified();            
             SetNewPostionContextMenu(true);
             ShowPositionForm(true);
+            ShowChildForm(mPositionForm);
            
         }
         //ttp 50053, support copy position function
@@ -442,7 +414,11 @@ namespace GTI.Modules.SecurityCenter
                     return;
             }
             if (mPositionForm != null)
-                mPositionForm.Close();
+            {
+               // mPositionForm.Visible = false;
+               // mPositionForm.SendToBack();
+            }
+                //mPositionForm.Close()
         }
         internal void SetNewPostionContextMenu(bool isNew)
         {
@@ -481,6 +457,7 @@ namespace GTI.Modules.SecurityCenter
 
         private void newStaffToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ShowChildForm(mInitStaffForm);
             checkPositionModified();
             checkMachineModified();
             //ShowNewStaff();
@@ -668,10 +645,57 @@ namespace GTI.Modules.SecurityCenter
         {
             if (mMachineForm != null)
             {
-                mMachineForm.Close();
+                //mMachineForm.Visible = true;
+                //mMachineForm.SendToBack();
+               // mMachineForm.Close();
             }
         }
         //End Rally TA10562
+
+        #region Data Properties
+        public Staff CurentStaff
+        {
+            set { m_curStaff = value; }
+        }
+
+        internal GetStaffList StaffList
+        {
+            get { return mStaffList; }
+        }
+        //internal GetPositionList PositionList
+        //{
+        //    get { return mPositionList; }
+        //}
+        internal GetModuleList ModuleList
+        {
+            get { return mModuleList; }
+        }
+        internal void ComeToFront(object sender, EventArgs e)
+        {
+            this.Activate();
+        }
+        internal GetModuleFeatures ModuleFeatureList
+        {
+            get { return mModuleFeatureList; }
+        }
+        public void LoadData()
+        {
+            Utilities.LogInfoIN(); ;
+            LoadStaff();   //load staff, position, modules, and modulefeatures table// Prepare and send the message to get the counts.
+            mModuleList = new GetModuleList();            //modules and features 
+            mModuleList.Send();
+            mModuleFeatureList = new GetModuleFeatures();
+            mModuleFeatureList.Send();
+            CheckPositionsCount();//RALLY DE 6739
+            Utilities.LogInfoLeave();
+        }
+        internal void LoadStaff()
+        {
+            mStaffList = new GetStaffList(Configuration.operatorID, true);
+            mStaffList.Send(); //we have got all staff datas
+            Configuration.StaffLoginNumber = mStaffList.GetLoginNumberByStaffID(Configuration.LoginStaffID);
+        }
+        #endregion
 
     }
 }

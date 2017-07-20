@@ -523,8 +523,8 @@ namespace GTI.Modules.SecurityCenter
             // 
             // NewStaff
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ControlBox = false;
             this.Controls.Add(this.newSTaffImageButton);
             this.Controls.Add(this.saveStaffImageButton);
