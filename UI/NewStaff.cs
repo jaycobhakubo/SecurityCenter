@@ -205,7 +205,7 @@ namespace GTI.Modules.SecurityCenter
             SetWhetherControlsLocked(); // DE13019 - If fields are disabled, need to re-enable them
         }
 
-        private void saveStaffImageButton_Click(object sender, EventArgs e)//knc
+        private void saveStaffImageButton_Click(object sender, EventArgs e)
         {
             if (ValidateStaff() == true)
             {
@@ -444,7 +444,7 @@ namespace GTI.Modules.SecurityCenter
         /// Load staff data to the list view based on the filter: staff status and position
         /// </summary>
         /// <param name="activeFilter"></param>
-        private void LoadDataToListView(Int16 activeFilter, string position)//knc
+        private void LoadDataToListView(Int16 activeFilter, string position)
         {
             Cursor.Current = Cursors.WaitCursor;
             Utilities.LogInfoIN();
@@ -663,7 +663,7 @@ namespace GTI.Modules.SecurityCenter
 
 
 
-        private bool IsSaveStaffInformationChange()//knc
+        private bool IsSaveStaffInformationChange()
         {
             //then do a clean check to save if it is dirty form
             bool saved = false;
