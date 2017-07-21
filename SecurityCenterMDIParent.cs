@@ -80,7 +80,7 @@ namespace GTI.Modules.SecurityCenter
             CheckPositionsCount();//RALLY DE 6739
             Utilities.LogInfoLeave();          
         }
-        internal void LoadStaff()//knc
+        internal void LoadStaff()
         { 
             mStaffList = new GetStaffList(Configuration.operatorID, true);
             mStaffList.Send(); //we have got all staff datas

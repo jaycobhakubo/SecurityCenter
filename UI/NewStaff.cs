@@ -61,10 +61,7 @@ namespace GTI.Modules.SecurityCenter
 
         public NewStaff()
         {
-            InitializeComponent();
-            // Rally DE1569 - Fields on screen allow both #'s and letters and data does not save properly when this occurs.
-            //passwordTextBox.KeyPress += new KeyPressEventHandler(passwordTextBox_KeyPress);
-            //verifiedPasswordTextBox.KeyPress += new KeyPressEventHandler(passwordTextBox_KeyPress);
+            InitializeComponent();    
             mMagCardReader = new MagneticCardReader(Configuration.mMSRSettings); // PDTS 1064
         }
 
@@ -441,7 +438,6 @@ namespace GTI.Modules.SecurityCenter
                 MessageForm.Show(Properties.Resources.errorFailedToGetData + " " + ex.Message, Properties.Resources.securityCenter);
             }
             loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
-
         }
 
         /// <summary>
