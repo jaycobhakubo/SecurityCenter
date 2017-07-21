@@ -20,6 +20,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Linq;
 
 using GTI.Modules.Shared;
 using GTI.Modules.SecurityCenter.Data;
@@ -54,7 +55,6 @@ namespace GTI.Modules.SecurityCenter
         private int mAddressID = NEW_ID;
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
-
         private bool isReloading; //DE10178
 
         #endregion
@@ -75,7 +75,6 @@ namespace GTI.Modules.SecurityCenter
             //load staff who is active
             Utilities.LogInfoIN();
             LoadPositionToComboBox();
-
             LoadDataToListView(1, "All");
             positionComboBox.SelectedIndex = 0;
 
@@ -83,7 +82,6 @@ namespace GTI.Modules.SecurityCenter
             {
                 staffListView.Reset();
                 FocusStaffListView(0);
-
             }
 
             //RALLY DE 4806 Allow entry of new staff on loadup if there are no staff
@@ -210,7 +208,7 @@ namespace GTI.Modules.SecurityCenter
             SetWhetherControlsLocked(); // DE13019 - If fields are disabled, need to re-enable them
         }
 
-        private void saveStaffImageButton_Click(object sender, EventArgs e)
+        private void saveStaffImageButton_Click(object sender, EventArgs e)//knc
         {
             if (ValidateStaff() == true)
             {
@@ -256,6 +254,7 @@ namespace GTI.Modules.SecurityCenter
             //be very careful to change logic here, 
             //we handle Cancel change, this event will fire twice for a change
             if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
+
                 mUnchanged == false)
             {
                 //if(passwordTextBox.Text.Trim().Length >0  || verifiedPasswordTextBox.Text.Trim().Length>0)
@@ -296,7 +295,6 @@ namespace GTI.Modules.SecurityCenter
                     isReloading = false;
                     return;
                 }
-
                 isReloading = false;
             }
 
@@ -318,6 +316,7 @@ namespace GTI.Modules.SecurityCenter
             }
             //post the information to the right side 
             LoadAStaffInformation(mCurrentSelectedStaffRow);
+            SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             SetWhetherControlsLocked();
         }
 
@@ -373,43 +372,52 @@ namespace GTI.Modules.SecurityCenter
             //END FIX RALLY DE 3193 this brings up a save dialog which it should not according to the "sandbox veiw"
         }
 
+
+        private short m_ActiveFilter = -1; 
+
         private void activeRadioButton_CheckedChanged(object sender, EventArgs e)
         {
+            m_ActiveFilter = 1;
             if (activeRadioButton.Checked == true)
             {
-                LoadDataToListView(1, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
             }
         }
 
         private void allRadioButton_CheckedChanged(object sender, EventArgs e)
         {
+            m_ActiveFilter = -1;
             if (allRadioButton.Checked == true)
             {
-                LoadDataToListView(-1, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
             }
         }
 
         private void inactiveRadioButton_CheckedChanged(object sender, EventArgs e)
         {
+            m_ActiveFilter = 0;
             if (inactiveRadioButton.Checked == true)
             {
-                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
             }
         }
 
         private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            m_ActiveFilter = 0;
             if (inactiveRadioButton.Checked == true)
             {
-                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
+               
+                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
             }
             else if (activeRadioButton.Checked == true)
             {
-                LoadDataToListView(1, positionComboBox.SelectedItem.ToString());
+                m_ActiveFilter = 1;
+                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
             }
             else
             {
-                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
             }
             FocusStaffListView(mCurrentSelectedListViewIndex);
         }
@@ -440,7 +448,7 @@ namespace GTI.Modules.SecurityCenter
         /// Load staff data to the list view based on the filter: staff status and position
         /// </summary>
         /// <param name="activeFilter"></param>
-        private void LoadDataToListView(Int16 activeFilter, string position)
+        private void LoadDataToListView(Int16 activeFilter, string position)//knc
         {
             Cursor.Current = Cursors.WaitCursor;
             Utilities.LogInfoIN();
@@ -462,7 +470,7 @@ namespace GTI.Modules.SecurityCenter
                 DataRow[] staffRows = mStaffTable.Select(tempString, StaffData.STAFF_TALBE_COLUMN_LASTNAME);
                 System.Windows.Forms.ListViewItem tempItem;
                 //clear it out
-                staffListView.Items.Clear();
+                staffListView.Items.Clear();//knc
                 staffListView.BeginUpdate();
                 foreach (DataRow row in staffRows)
                 {
@@ -517,8 +525,28 @@ namespace GTI.Modules.SecurityCenter
             }
             if (!string.IsNullOrEmpty(positionStrings))
                 positionStrings = positionStrings.Substring(0, positionStrings.Length - 1);
-
             return positionStrings;
+        }
+
+
+        public void ReloadStaffPositionListBox(int staffID)
+        {
+            LoadListBoxPosition(staffID);
+        }
+
+        public void ReloadUIStaffPositionCmbx()
+        {
+            LoadPositionToComboBox();
+
+            if (positionComboBox.SelectedIndex != 0)
+            {
+                positionComboBox.SelectedIndex = 0;
+            }
+        }
+
+        private void ReloadUIStaffListView(Int16 activeFilter, string position)
+        {
+             LoadDataToListView(activeFilter, position);
         }
 
         /// <summary>
@@ -545,7 +573,10 @@ namespace GTI.Modules.SecurityCenter
             //clear up before load
             positionComboBox.Items.Clear();
             positionComboBox.Items.Add("All");
-            foreach (DataRow position in mAvailablePositions.PositionTable.Rows)
+
+            var PositionInOrder = mAvailablePositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+            foreach (DataRow position in PositionInOrder)
             {
                 //FIX: RALLY DE1573 Only Show active postions START
                 if ((bool)position[PositionData.POSITION_COLUMN_ACTIVITYFLAG])
@@ -613,25 +644,30 @@ namespace GTI.Modules.SecurityCenter
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
 
-            positionListBox.Items.Clear();//clear it
+            LoadListBoxPosition(staffID);          
+        }
+
+        private void LoadListBoxPosition(int staffID)
+        {
+            positionListBox.Items.Clear();
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
             if (mAssignedPositions != null &&
                 mAssignedPositions.PositionTable != null &&
                 mAssignedPositions.PositionTable.Rows.Count > 0)
             {
 
-                // ListViewItem tmpItem;
                 foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
                 {
-                    //tmpItem = new ListViewItem(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
-                    //tmpItem.Tag = position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
             }
             Utilities.LogInfoLeave();
         }
 
-        private bool IsSaveStaffInformationChange()
+
+
+
+        private bool IsSaveStaffInformationChange()//knc
         {
             //then do a clean check to save if it is dirty form
             bool saved = false;
@@ -645,6 +681,7 @@ namespace GTI.Modules.SecurityCenter
                     if (SaveStaff())
                     {
                         ReloadFormAfterSave();
+                        LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
                         mIsDirtyForm = false;
                         saved = true;
                     }
@@ -865,6 +902,9 @@ namespace GTI.Modules.SecurityCenter
 
             return isValidated;
         }
+
+
+
 
         /// <summary>
         /// Method to Validate the Password when complexity is required
@@ -1112,9 +1152,8 @@ namespace GTI.Modules.SecurityCenter
             //hire date
             hireDateTimePicker.Value = hireDateTimePicker.MinDate;
             //is active member
-            checkBoxActive.Checked = true;
+            checkBoxActive.Checked = true;         
             checkBoxlocked.Checked = false;
-
             //phone 1
             homePhoneTextBox.Text = string.Empty;
             //phone 2
@@ -1144,7 +1183,7 @@ namespace GTI.Modules.SecurityCenter
         /// <summary>
         /// Reload the form after saving a modified or new staff
         /// </summary>
-        private void ReloadFormAfterSave()
+        private void ReloadFormAfterSave()//knc
         {
             //ttp 50307
             mWaitingForm = new WaitForm();
@@ -1177,7 +1216,7 @@ namespace GTI.Modules.SecurityCenter
         //ttp 50307
         private void DoLoadStaffPositionData(object sender, DoWorkEventArgs doEA)
         {
-            ((SecurityCenterMDIParent)this.MdiParent).LoadStaff();
+            ((SecurityCenterMDIParent)this.MdiParent).LoadStaff();//knc
         }
 
         private void DoLoadStaffPositionDataCompleted(object sender, RunWorkerCompletedEventArgs RunEA)
@@ -1258,5 +1297,16 @@ namespace GTI.Modules.SecurityCenter
                 dtPicker.Value = DateTime.Today;
             }
         }
+
+        #region Properties
+
+        public int SelectedStaffId
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
     }
 }
