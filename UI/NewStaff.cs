@@ -241,17 +241,19 @@ namespace GTI.Modules.SecurityCenter
 
         private void staffListView_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             //checkpasswordsettings = false;
             //there is only one item selected once, we do not allow multi-selection
-            if (staffListView.SelectedItems.Count == 0)
+            if (staffListView.SelectedItems.Count == 0)//3x load
             {
                 return;
             }
 
             //be very careful to change logic here, 
             //we handle Cancel change, this event will fire twice for a change
+            
+            ///mIsDirtyForm  = ithaschanged
             if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
-
                 mUnchanged == false)
             {
                 //if(passwordTextBox.Text.Trim().Length >0  || verifiedPasswordTextBox.Text.Trim().Length>0)
@@ -262,7 +264,6 @@ namespace GTI.Modules.SecurityCenter
                     staffListView.Select();
                     staffListView.SelectedItems[0].Selected = false;
                     staffListView.Items[mCurrentSelectedListViewIndex].Selected = true;
-
                     isReloading = false;
                     return;
                 }
@@ -282,6 +283,11 @@ namespace GTI.Modules.SecurityCenter
 
             else if (mIsDirtyForm == true && mUnchanged == true)
             {
+                if (m_IsCancel == true)
+                {
+                    return;
+                }
+
                 isReloading = true;
                 if (IsSaveStaffInformationChange() == false)
                 {//set it back before we do anything because it is still dirty       
@@ -316,6 +322,8 @@ namespace GTI.Modules.SecurityCenter
             SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             SetWhetherControlsLocked();
         }
+
+        private bool m_IsCancel = false;
 
         /// <summary>
         /// Enables or Diables the Controls Based on the Account Lock status.
@@ -663,10 +671,11 @@ namespace GTI.Modules.SecurityCenter
 
 
 
-        private bool IsSaveStaffInformationChange()
+        private bool IsSaveStaffInformationChange()//knc
         {
             //then do a clean check to save if it is dirty form
             bool saved = false;
+            m_IsCancel = false;
             //then there is change, ask if user want to save the change
             DialogResult result = MessageForm.Show(this, Properties.Resources.warningSave, Properties.Resources.securityCenter, MessageFormTypes.YesNoCancel);
             mUnchanged = true;
@@ -691,6 +700,7 @@ namespace GTI.Modules.SecurityCenter
             }
             else //cancel, go back whatever it is before
             {
+                m_IsCancel = true;
                 saved = false;
             }
             return saved;
