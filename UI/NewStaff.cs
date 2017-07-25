@@ -244,7 +244,7 @@ namespace GTI.Modules.SecurityCenter
             
             //checkpasswordsettings = false;
             //there is only one item selected once, we do not allow multi-selection
-            if (staffListView.SelectedItems.Count == 0)//3x load
+            if (staffListView.SelectedItems.Count == 0)
             {
                 return;
             }
@@ -474,7 +474,7 @@ namespace GTI.Modules.SecurityCenter
                 DataRow[] staffRows = mStaffTable.Select(tempString, StaffData.STAFF_TALBE_COLUMN_LASTNAME);
                 System.Windows.Forms.ListViewItem tempItem;
                 //clear it out
-                staffListView.Items.Clear();//knc
+                staffListView.Items.Clear();
                 staffListView.BeginUpdate();
                 foreach (DataRow row in staffRows)
                 {
@@ -671,7 +671,7 @@ namespace GTI.Modules.SecurityCenter
 
 
 
-        private bool IsSaveStaffInformationChange()//knc
+        private bool IsSaveStaffInformationChange()
         {
             //then do a clean check to save if it is dirty form
             bool saved = false;
@@ -1189,7 +1189,7 @@ namespace GTI.Modules.SecurityCenter
         /// <summary>
         /// Reload the form after saving a modified or new staff
         /// </summary>
-        private void ReloadFormAfterSave()//knc
+        private void ReloadFormAfterSave()
         {
             //ttp 50307
             mWaitingForm = new WaitForm();
@@ -1222,7 +1222,7 @@ namespace GTI.Modules.SecurityCenter
         //ttp 50307
         private void DoLoadStaffPositionData(object sender, DoWorkEventArgs doEA)
         {
-            ((SecurityCenterMDIParent)this.MdiParent).LoadStaff();//knc
+            ((SecurityCenterMDIParent)this.MdiParent).LoadStaff();
         }
 
         private void DoLoadStaffPositionDataCompleted(object sender, RunWorkerCompletedEventArgs RunEA)
