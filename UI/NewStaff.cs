@@ -61,7 +61,10 @@ namespace GTI.Modules.SecurityCenter
 
         public NewStaff()
         {
-            InitializeComponent();    
+            InitializeComponent();
+            // Rally DE1569 - Fields on screen allow both #'s and letters and data does not save properly when this occurs.
+            //passwordTextBox.KeyPress += new KeyPressEventHandler(passwordTextBox_KeyPress);
+            //verifiedPasswordTextBox.KeyPress += new KeyPressEventHandler(passwordTextBox_KeyPress);
             mMagCardReader = new MagneticCardReader(Configuration.mMSRSettings); // PDTS 1064
         }
 
@@ -72,13 +75,14 @@ namespace GTI.Modules.SecurityCenter
             //load staff who is active
             Utilities.LogInfoIN();
             LoadPositionToComboBox();
+
             LoadDataToListView(1, "All");
             positionComboBox.SelectedIndex = 0;
-
             if (staffListView.Items.Count > 0)
             {
                 staffListView.Reset();
                 FocusStaffListView(0);
+
             }
 
             //RALLY DE 4806 Allow entry of new staff on loadup if there are no staff
@@ -241,7 +245,6 @@ namespace GTI.Modules.SecurityCenter
 
         private void staffListView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             //checkpasswordsettings = false;
             //there is only one item selected once, we do not allow multi-selection
             if (staffListView.SelectedItems.Count == 0)
@@ -251,8 +254,6 @@ namespace GTI.Modules.SecurityCenter
 
             //be very careful to change logic here, 
             //we handle Cancel change, this event will fire twice for a change
-            
-            ///mIsDirtyForm  = ithaschanged
             if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
                 mUnchanged == false)
             {
@@ -264,6 +265,7 @@ namespace GTI.Modules.SecurityCenter
                     staffListView.Select();
                     staffListView.SelectedItems[0].Selected = false;
                     staffListView.Items[mCurrentSelectedListViewIndex].Selected = true;
+
                     isReloading = false;
                     return;
                 }
@@ -283,11 +285,6 @@ namespace GTI.Modules.SecurityCenter
 
             else if (mIsDirtyForm == true && mUnchanged == true)
             {
-                if (m_IsCancel == true)
-                {
-                    return;
-                }
-
                 isReloading = true;
                 if (IsSaveStaffInformationChange() == false)
                 {//set it back before we do anything because it is still dirty       
@@ -298,6 +295,7 @@ namespace GTI.Modules.SecurityCenter
                     isReloading = false;
                     return;
                 }
+
                 isReloading = false;
             }
 
@@ -322,8 +320,6 @@ namespace GTI.Modules.SecurityCenter
             SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             SetWhetherControlsLocked();
         }
-
-        private bool m_IsCancel = false;
 
         /// <summary>
         /// Enables or Diables the Controls Based on the Account Lock status.
@@ -366,7 +362,10 @@ namespace GTI.Modules.SecurityCenter
             //refresh positions in the list
             positionListBox.Items.Clear();
             //ListViewItem tmpItem;
-            foreach (DataRow p in mAssignedPositions.PositionTable.Rows)
+
+            var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+            foreach (DataRow p in PositionInOrder)
             {
                 //tmpItem = new ListViewItem(p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 //tmpItem.Tag = p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
@@ -377,52 +376,43 @@ namespace GTI.Modules.SecurityCenter
             //END FIX RALLY DE 3193 this brings up a save dialog which it should not according to the "sandbox veiw"
         }
 
-
-        private short m_ActiveFilter = -1; 
-
         private void activeRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            m_ActiveFilter = 1;
             if (activeRadioButton.Checked == true)
             {
-                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(1, positionComboBox.SelectedItem.ToString());
             }
         }
 
         private void allRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            m_ActiveFilter = -1;
             if (allRadioButton.Checked == true)
             {
-                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(-1, positionComboBox.SelectedItem.ToString());
             }
         }
 
         private void inactiveRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            m_ActiveFilter = 0;
             if (inactiveRadioButton.Checked == true)
             {
-                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
             }
         }
 
         private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            m_ActiveFilter = 0;
             if (inactiveRadioButton.Checked == true)
             {
-               
-                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
             }
             else if (activeRadioButton.Checked == true)
             {
-                m_ActiveFilter = 1;
-                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(1, positionComboBox.SelectedItem.ToString());
             }
             else
             {
-                LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
+                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
             }
             FocusStaffListView(mCurrentSelectedListViewIndex);
         }
@@ -446,6 +436,7 @@ namespace GTI.Modules.SecurityCenter
                 MessageForm.Show(Properties.Resources.errorFailedToGetData + " " + ex.Message, Properties.Resources.securityCenter);
             }
             loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
+
         }
 
         /// <summary>
@@ -529,6 +520,7 @@ namespace GTI.Modules.SecurityCenter
             }
             if (!string.IsNullOrEmpty(positionStrings))
                 positionStrings = positionStrings.Substring(0, positionStrings.Length - 1);
+
             return positionStrings;
         }
 
@@ -546,11 +538,6 @@ namespace GTI.Modules.SecurityCenter
             {
                 positionComboBox.SelectedIndex = 0;
             }
-        }
-
-        private void ReloadUIStaffListView(Int16 activeFilter, string position)
-        {
-             LoadDataToListView(activeFilter, position);
         }
 
         /// <summary>
@@ -660,7 +647,9 @@ namespace GTI.Modules.SecurityCenter
                 mAssignedPositions.PositionTable.Rows.Count > 0)
             {
 
-                foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
+                var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+                foreach (DataRow position in PositionInOrder)
                 {
                     positionListBox.Items.Add(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 }
@@ -675,7 +664,6 @@ namespace GTI.Modules.SecurityCenter
         {
             //then do a clean check to save if it is dirty form
             bool saved = false;
-            m_IsCancel = false;
             //then there is change, ask if user want to save the change
             DialogResult result = MessageForm.Show(this, Properties.Resources.warningSave, Properties.Resources.securityCenter, MessageFormTypes.YesNoCancel);
             mUnchanged = true;
@@ -686,7 +674,6 @@ namespace GTI.Modules.SecurityCenter
                     if (SaveStaff())
                     {
                         ReloadFormAfterSave();
-                        LoadDataToListView(m_ActiveFilter, positionComboBox.SelectedItem.ToString());
                         mIsDirtyForm = false;
                         saved = true;
                     }
@@ -700,7 +687,6 @@ namespace GTI.Modules.SecurityCenter
             }
             else //cancel, go back whatever it is before
             {
-                m_IsCancel = true;
                 saved = false;
             }
             return saved;
