@@ -122,6 +122,7 @@ namespace GTI.Modules.SecurityCenter
             }
             IsModified = false;
         }
+
         private void LoadPositions()
         {
             Utilities.LogInfoIN();
@@ -158,6 +159,7 @@ namespace GTI.Modules.SecurityCenter
             cmbx_PositionName.Items.Add(positionName); //index 0
             cmbx_PositionName.SelectedIndex = 0;
         }
+
         private void LoadPositionToComboBox(int index)
         {
             Utilities.LogInfoIN();
@@ -167,12 +169,14 @@ namespace GTI.Modules.SecurityCenter
             {
                 return;
             }
+
             DataView mPositionsView = new DataView(mPositionsData.PositionTable);
             mPositionIDs = new int[mPositionsView.Count];
             mPositionsView.Sort = PositionData.POSITION_COLUMN_POSITIONNAME;
             cmbx_PositionName.Items.Clear();
             int count = 0;
             bool hasInactive = false;
+
             foreach (DataRowView viewRow in mPositionsView)
             {
 
@@ -955,7 +959,7 @@ namespace GTI.Modules.SecurityCenter
                 IsModified = false;               
             }
         }        
-        private void saveButton_Click(object sender, EventArgs e)
+        private void saveButton_Click(object sender, EventArgs e)//knc
         {
             IsModified = false;
             Utilities.LogInfoIN();
