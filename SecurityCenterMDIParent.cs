@@ -390,7 +390,7 @@ namespace GTI.Modules.SecurityCenter
         {
             if (mInitStaffForm != null && mInitStaffForm.IsDisposed != true)
             {
-                ShowStaffForm();
+               // ShowStaffForm();
             }
             else
             {
@@ -398,7 +398,7 @@ namespace GTI.Modules.SecurityCenter
             }
         }
 
-#endregion
+#endregion //CLOSING UI
 
 
 #region BACKGROUNDWORKERS
@@ -519,15 +519,7 @@ namespace GTI.Modules.SecurityCenter
                 EnablePositionEditMenu(false);
             }            
         }
-        //END RALLY DE 6739
-        
-
-        private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)//knc
-        {
-            checkPositionModified();            
-            SetNewPostionContextMenu(true);
-            ShowPositionForm(true);         
-        }
+    
 
 
         private void checkPositionModified()
@@ -592,14 +584,39 @@ namespace GTI.Modules.SecurityCenter
             
         }
 
+
+        //END RALLY DE 6739
+
+        private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)//knc
+        {
+            checkPositionModified();        //knc 
+            checkMachineModified();
+            SetNewPostionContextMenu(true);
+            ShowPositionForm(true);
+        }
+
         private void manageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             checkPositionModified();
             checkMachineModified();
+            ShowStaffForm();
             //ShowNewStaff();
             editPositionToolStripMenuItem.Enabled = true;
             newPositionToolStripMenuItem.Enabled = true;
         }
+
+
+        /// <summary>
+        /// Closes the MachineForm
+        /// </summary>
+        private void checkMachineModified()
+        {
+            if (mMachineForm != null)
+            {
+                mMachineForm.Close();
+            }
+        }
+        //End Rally TA10562
 
        
 
@@ -732,18 +749,7 @@ namespace GTI.Modules.SecurityCenter
        
       
 
-        /// <summary>
-        /// Closes the MachineForm
-        /// </summary>
-        private void checkMachineModified()
-        {
-            if (mMachineForm != null)
-            {
-                mMachineForm.Close();
-            }
-        }
-        //End Rally TA10562
-
+      
     }
 }
 
