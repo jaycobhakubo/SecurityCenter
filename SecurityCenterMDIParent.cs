@@ -571,18 +571,7 @@ namespace GTI.Modules.SecurityCenter
                 //newPositionToolStripMenuItem.Enabled = false;
             }
         }
-        private void editPositionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            checkPositionModified(); 
-            SetNewPostionContextMenu(false);
-            if (IsFormLoaded("Position"))
-            {
-                //Bring the form to the front
-                return;
-            }
-            ShowPositionForm(false);
-            
-        }
+      
 
 
         //END RALLY DE 6739
@@ -603,6 +592,22 @@ namespace GTI.Modules.SecurityCenter
             //ShowNewStaff();
             editPositionToolStripMenuItem.Enabled = true;
             newPositionToolStripMenuItem.Enabled = true;
+        }
+
+        private void editPositionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            checkPositionModified();
+            checkMachineModified();
+            SetNewPostionContextMenu(false);
+
+            if (IsFormLoaded("Position"))
+            {
+                //Bring the form to the front
+                return;
+            }
+
+            ShowPositionForm(false);
+
         }
 
 
