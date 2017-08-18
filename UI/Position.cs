@@ -959,7 +959,7 @@ namespace GTI.Modules.SecurityCenter
                 IsModified = false;               
             }
         }        
-        private void saveButton_Click(object sender, EventArgs e)//knc
+        private void saveButton_Click(object sender, EventArgs e)
         {
             IsModified = false;
             Utilities.LogInfoIN();

@@ -19,7 +19,7 @@ namespace GTI.Modules.SecurityCenter
         #region Variables
 
         private Staff m_curStaff;
-        private NewStaff mInitStaffForm;//knc
+        private NewStaff mInitStaffForm;
         private NewStaff mNewStaffForm;
         private Position mPositionForm;
         private MachineForm mMachineForm;
@@ -576,9 +576,9 @@ namespace GTI.Modules.SecurityCenter
 
         //END RALLY DE 6739
 
-        private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)//knc
+        private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            checkPositionModified();        //knc 
+            checkPositionModified();       
             checkMachineModified();
             SetNewPostionContextMenu(true);
             ShowPositionForm(true);

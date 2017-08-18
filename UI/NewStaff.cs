@@ -209,7 +209,7 @@ namespace GTI.Modules.SecurityCenter
             SetWhetherControlsLocked(); // DE13019 - If fields are disabled, need to re-enable them
         }
 
-        private void saveStaffImageButton_Click(object sender, EventArgs e)//knc
+        private void saveStaffImageButton_Click(object sender, EventArgs e)
         {
             if (ValidateStaff() == true)
             {
@@ -1188,7 +1188,7 @@ namespace GTI.Modules.SecurityCenter
             BackgroundWorker m_worker = new BackgroundWorker();
             m_worker.WorkerReportsProgress = true;
             m_worker.WorkerSupportsCancellation = true;
-            m_worker.DoWork += new DoWorkEventHandler(DoLoadStaffPositionData);//knc
+            m_worker.DoWork += new DoWorkEventHandler(DoLoadStaffPositionData);
             //m_worker.ProgressChanged += new ProgressChangedEventHandler(mWaitingForm.ReportProgress);
             m_worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(DoLoadStaffPositionDataCompleted);
             m_worker.RunWorkerAsync();
