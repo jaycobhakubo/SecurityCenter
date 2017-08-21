@@ -252,6 +252,8 @@ namespace GTI.Modules.SecurityCenter
                 return;
             }
 
+            int skip = 1;
+
             //be very careful to change logic here, 
             //we handle Cancel change, this event will fire twice for a change
             if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
@@ -260,7 +262,7 @@ namespace GTI.Modules.SecurityCenter
                 //if(passwordTextBox.Text.Trim().Length >0  || verifiedPasswordTextBox.Text.Trim().Length>0)
                 //checkpasswordsettings = true;
                 isReloading = true;
-                if (IsSaveStaffInformationChange() == false)
+                if (IsSaveStaffInformationChange() == false)//knc1
                 {//set it back before do anything because it is still dirty       
                     staffListView.Select();
                     staffListView.SelectedItems[0].Selected = false;
@@ -283,10 +285,10 @@ namespace GTI.Modules.SecurityCenter
                 return;
             }
 
-            else if (mIsDirtyForm == true && mUnchanged == true)
+            else if (mIsDirtyForm == true && mUnchanged == true && 1 == 2 && skip == 0)
             {
                 isReloading = true;
-                if (IsSaveStaffInformationChange() == false)
+                if (IsSaveStaffInformationChange() == false)//knc2
                 {//set it back before we do anything because it is still dirty       
                     staffListView.Select();
                     staffListView.SelectedItems[0].Selected = false;
@@ -674,7 +676,7 @@ namespace GTI.Modules.SecurityCenter
                     if (SaveStaff())
                     {
                         ReloadFormAfterSave();
-                        mIsDirtyForm = false;
+                        mIsDirtyForm = false; 
                         saved = true;
                     }
                 }
@@ -687,6 +689,7 @@ namespace GTI.Modules.SecurityCenter
             }
             else //cancel, go back whatever it is before
             {
+                mIsDirtyForm = false;
                 saved = false;
             }
             return saved;
@@ -718,7 +721,7 @@ namespace GTI.Modules.SecurityCenter
                 || IsAddressAndPasswordModified(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()) == true
                 )
             {
-                mIsDirtyForm = true;
+                mIsDirtyForm = true;//knc_1
                 return mIsDirtyForm;
             }
 
@@ -1128,7 +1131,7 @@ namespace GTI.Modules.SecurityCenter
             {
                 this.Cursor = Cursors.Default;
             }
-            mIsDirtyForm = false; //it is clean after save
+            mIsDirtyForm = false; //it is clean after save //Yes saved 
             Utilities.LogInfoLeave();
             return true;
         }
