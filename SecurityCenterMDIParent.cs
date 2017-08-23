@@ -81,7 +81,7 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoLeave();          
         }
 
-        internal void LoadStaff()
+        internal void LoadStaff()//knc
         { 
             mStaffList = new GetStaffList(Configuration.operatorID, true);
             mStaffList.Send(); //we have got all staff datas
@@ -136,7 +136,7 @@ namespace GTI.Modules.SecurityCenter
 
 
       
-        private void ReloadInitStaff()
+        private void ReloadInitStaff()//NO Used
         {
             this.Cursor = Cursors.WaitCursor;
             WaitForm waiting = new WaitForm();
@@ -332,7 +332,7 @@ namespace GTI.Modules.SecurityCenter
                             LoadStaffPosition(waiting, Configuration.operatorID);
                             waiting.ShowDialog();
                             mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
-                            LoadStaffPosition(waiting, Configuration.operatorID);
+                            //LoadStaffPosition(waiting, Configuration.operatorID);
                             Application.DoEvents();
 
                             mInitStaffForm.WindowState = FormWindowState.Maximized;

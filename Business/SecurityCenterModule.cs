@@ -201,22 +201,6 @@ namespace GTI.Modules.SecurityCenter
                 Utilities.InitLog();
                 Utilities.Log("SecurityCenter start running...", LoggerLevel.Information);
 
-                //Start Fix RALY DE 2991
-                //// Get our current operator
-                //try
-                //{
-                //    m_currentOp = GetOperator(comm.GetOperatorId());
-                //}
-                //catch (Exception e)
-                //{
-                //    MessageForm.Show(mSplashScreen, string.Format(CultureInfo.CurrentCulture, Resources.GetOperatorDataFailed, e.Message), Resources.SecurityCenterName);
-
-                //    Utilities.Log("Get operator data failed: " + e.Message, LoggerLevel.Severe);
-                //    return;
-                //}
-                //End FIX RALLY DE 2991
-
-                // Get our Staff and module permissions
                 try
                 {
                     m_currentStaff = GetStaff(comm.GetStaffId());

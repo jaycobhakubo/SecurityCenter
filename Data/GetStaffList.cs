@@ -76,7 +76,7 @@ namespace GTI.Modules.SecurityCenter.Data
 
         }
 
-        protected override void UnpackResponse()
+        protected override void UnpackResponse()//knc
         {
             base.UnpackResponse();
 
@@ -283,6 +283,7 @@ namespace GTI.Modules.SecurityCenter.Data
             return null;
 
         }
+
         public int GetLoginNumberByStaffID(int staffID)
         {
             foreach (DataRow staff in mStaffData.StaffTable.Rows)
