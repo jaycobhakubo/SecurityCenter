@@ -76,7 +76,7 @@ namespace GTI.Modules.SecurityCenter.Data
 
         }
 
-        protected override void UnpackResponse()//knc
+        protected override void UnpackResponse()
         {
             base.UnpackResponse();
 

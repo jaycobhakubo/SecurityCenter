@@ -95,7 +95,6 @@
     <Compile Include="Data\GetStaffPositions.cs" />
     <Compile Include="Data\SetStaffPassword.cs" />
     <Compile Include="Data\SetStaffPosition.cs" />
-    <Compile Include="ME\NewStaff%2820170821%29.cs" />
     <Compile Include="ModuleTreeNode.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
