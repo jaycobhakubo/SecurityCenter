@@ -43,72 +43,6 @@ namespace GTI.Modules.SecurityCenter
         }
         #endregion
 
-        #region EVENTS
-        //EXIT
-        public void ExitSecurityCenter(object sender, EventArgs e){ExitToolsStripMenuItem_Click(sender, e);}
-        private void ExitToolsStripMenuItem_Click(object sender, EventArgs e){this.Close();}
-
-        //STAFF->MANAGE
-        private void manageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mIsEditPosition = false;
-            checkMachineModified();
-            checkPositionModified();
-             ShowStaffForm();//knc
-            //ShowNewStaff();
-            editPositionToolStripMenuItem.Enabled = true;
-            newPositionToolStripMenuItem.Enabled = true;
-        }
-        
-        #endregion
-
-        private void ManageUI(string Command)
-        {
-            //check if edit position is modified 
-            //only if it is active 
-            if (Command != "EditPosition")
-            {
-                if (mPositionForm != null)
-                {
-                    if (mPositionForm.IsDisposed == false)
-                    {
-                       checkPositionModified();
-                        //mPositionForm.Close();
-                    }
-                }
-            }
-
-            if (Command != "MachineClick")
-            {
-                if (mMachineForm != null)
-                {
-                    if (mMachineForm.IsDisposed == false)
-                    {
-                        // mPositionForm.Close();
-                        checkMachineModified();
-                    }
-                }
-            }
-            
-            if (mInitStaffForm != null)
-            {
-                if (mInitStaffForm.IsDisposed == false)
-                {
-                    mInitStaffForm.Close();
-                }
-            }
-
-            if (mNewStaffForm != null)
-            {
-                if (mNewStaffForm.IsDisposed == false)
-                {
-                    mNewStaffForm.Close();
-                }
-            }
-
-        }
-
-
         #region Data Properties
         public Staff CurentStaff
         {
@@ -119,10 +53,7 @@ namespace GTI.Modules.SecurityCenter
         {
             get { return mStaffList; }
         }
-        //internal GetPositionList PositionList
-        //{
-        //    get { return mPositionList; }
-        //}
+
         internal GetModuleList ModuleList
         {
             get { return mModuleList; }
@@ -148,8 +79,7 @@ namespace GTI.Modules.SecurityCenter
         }
 
         internal void LoadStaff()
-        {
-            mIsEditPosition = false;
+        { 
             mStaffList = new GetStaffList(Configuration.operatorID, true);
             mStaffList.Send(); //we have got all staff datas
             Configuration.StaffLoginNumber = mStaffList.GetLoginNumberByStaffID(Configuration.LoginStaffID);       
@@ -158,7 +88,12 @@ namespace GTI.Modules.SecurityCenter
         #endregion
 
 
-      
+        public void ExitSecurityCenter(object sender, EventArgs e)
+        {
+            ExitToolsStripMenuItem_Click(sender, e);
+            //clean up if any
+        }      
+        
         private void SecurityCenterMDIParent_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
@@ -171,11 +106,6 @@ namespace GTI.Modules.SecurityCenter
                 psotitionMenu.Visible = false;
             }
         }
-
-
-
-     
-        
 
         //ttp 50053, support copy position function
         public void EnableCopyMenu(bool isEnable)
@@ -268,10 +198,11 @@ namespace GTI.Modules.SecurityCenter
         private void ShowStaffForm() //Just created this one
         {
             this.SuspendLayout();
+            mInitStaffForm = new NewStaff();
+            mInitStaffForm.MdiParent = this;
             mInitStaffForm.WindowState = FormWindowState.Maximized;
-            mInitStaffForm.Dock = DockStyle.Fill;
-            mInitStaffForm.StartPosition = FormStartPosition.CenterParent;
-            mInitStaffForm.BringToFront();
+            mInitStaffForm.Show();
+            this.Text = Properties.Resources.titleSecurityCenter;
             this.ResumeLayout(true);
             this.PerformLayout();
         }
@@ -308,7 +239,6 @@ namespace GTI.Modules.SecurityCenter
             mNewStaffForm.MdiParent = this;       // Make it a child of this MDI form before showing it.
             mNewStaffForm.WindowState = FormWindowState.Maximized;
             mNewStaffForm.Dock = DockStyle.Fill;
-            mNewStaffForm.StartPosition = FormStartPosition.CenterParent;
             mNewStaffForm.FormClosed += new FormClosedEventHandler(mNewStaffForm_FormClosed);
             mNewStaffForm.Show();            //childForm.Text = "Window " + childFormNumber++;
             this.Text = Properties.Resources.titleSecurityCenter;
@@ -320,23 +250,17 @@ namespace GTI.Modules.SecurityCenter
         //Position Form
         public void ShowPositionForm(bool isNewPosition)
         {
-
             if (IsFormLoaded("Position"))
             {
-                //Bring the form to the front
-                mPositionForm.IsLoading = false;
+                mPositionForm.IsLoading = false;        //Bring the form to the front
                 return;
             }
 
             this.SuspendLayout();
-            // Create a new instance of the child form.
-            mPositionForm = new Position(isNewPosition);
-            //mPositionFormNumber++;
-            // Make it a child of this MDI form before showing it.                
-            mPositionForm.MdiParent = this;
+            mPositionForm = new Position(isNewPosition);            // Create a new instance of the child form.
+            mPositionForm.MdiParent = this;            // Make it a child of this MDI form before showing it.   
             mPositionForm.WindowState = FormWindowState.Maximized;
-            mPositionForm.FormClosed += new FormClosedEventHandler(PositionForm_FormClosed);//knc
-            //mPositionForm.Text = Properties.Resources.Position + mPositionFormNumber;
+            mPositionForm.FormClosed += new FormClosedEventHandler(PositionForm_FormClosed);
             mPositionForm.IsLoading = false;
             mPositionForm.Show();
             this.Text = Properties.Resources.titleSecurityCenter;
@@ -352,14 +276,11 @@ namespace GTI.Modules.SecurityCenter
         /// <param name="e">The event args</param>
         private void MachineMenu_Click(object sender, EventArgs e)
         {
-            mIsEditPosition = false;
-            ManageUI("MachineClick");
-
+            CloseUIStaff();
             if (IsFormLoaded("MachineForm"))
             {
                 return;
             }
-
             this.SuspendLayout();
             mMachineForm = new MachineForm();
             mMachineForm.MdiParent = this;
@@ -379,7 +300,7 @@ namespace GTI.Modules.SecurityCenter
 #region  EVENTs CLOSING UI
 
         //POSITION 
-        private void PositionForm_FormClosed(object sender, EventArgs e)//knc
+        private void PositionForm_FormClosed(object sender, EventArgs e)
         {
             if (((Position)sender).DialogResult == DialogResult.Yes)
             {
@@ -417,7 +338,7 @@ namespace GTI.Modules.SecurityCenter
                 }
 
                 mInitStaffForm.ReloadUIStaffPositionCmbx();
-                ShowStaffForm();//knc
+                ShowStaffForm();
             }
             //MakeupMDI();
 
@@ -471,7 +392,6 @@ namespace GTI.Modules.SecurityCenter
 
         private void LoadStaffPosition(WaitForm waitingForm, int operatorID)
         {
-
             mWaitingForm= waitingForm;
             // Set the wait message.
             mWaitingForm.Message = Properties.Resources.splashInfoLoadStaffPositionModule;
@@ -483,8 +403,7 @@ namespace GTI.Modules.SecurityCenter
             m_worker.DoWork += new DoWorkEventHandler(DoLoadStaffPositionData);
             m_worker.ProgressChanged += new ProgressChangedEventHandler(mWaitingForm.ReportProgress);
             m_worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(DoLoadStaffPositionDataCompleted);
-            m_worker.RunWorkerAsync(operatorID);
-        
+            m_worker.RunWorkerAsync(operatorID);        
         }
 
         private void DoLoadStaffPositionData(object sender, DoWorkEventArgs doEA)
@@ -507,21 +426,22 @@ namespace GTI.Modules.SecurityCenter
             mWaitingForm.CloseForm();
             mWaitingForm = null;      
         }
+ #endregion
 
         private void CancelBackgroundWork(object sender, EventArgs e)
         {
             m_worker.CancelAsync();
         }
- #endregion
-
- 
 
 
-      
+        private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
         private bool IsFormLoaded(string strFormName)
         {
-            //this.SuspendLayout();
+
             bool blnFound = false;
            
             if (this.MdiChildren.Length > 0)
@@ -530,14 +450,11 @@ namespace GTI.Modules.SecurityCenter
                 foreach (Form frmTest in mdiChild)
                 {
                     string strTemp = frmTest.Name;
-                    //strTemp = strTemp.IndexOf(strFormName).ToString();
                     if (strTemp.Equals (strFormName))
                     {
                         blnFound = true;
                         frmTest.SuspendLayout();
-                        SetMDIFormValues(frmTest);//knc
-                        //frmTest.WindowState = FormWindowState.Maximized;
-                        //frmTest.Dock = DockStyle.Fill;
+                        SetMDIFormValues(frmTest);
                         frmTest.BringToFront();
                         frmTest.ResumeLayout();
                         frmTest.PerformLayout();
@@ -545,15 +462,9 @@ namespace GTI.Modules.SecurityCenter
                     }
                 }
             }
-            //this.ResumeLayout(true);
-            //this.PerformLayout();
-
             return blnFound;
         }
-
-
-
-     
+    
         //START RALLY DE 6739
         private void CheckPositionsCount()
         {
@@ -578,10 +489,8 @@ namespace GTI.Modules.SecurityCenter
                 EnablePositionEditMenu(false);
             }            
         }
-    
 
-
-        private void checkPositionModified()//knc
+        private void checkPositionModified()
         {
             if (mPositionForm != null && mPositionForm.IsModified)
             {
@@ -595,7 +504,12 @@ namespace GTI.Modules.SecurityCenter
             }
 
             if (mPositionForm != null)
-                mPositionForm.Close();
+            {
+                if (mPositionForm.IsDisposed == false)
+                {
+                    mPositionForm.Close();
+                }
+            }
         }
 
         //ttp 50053, support copy position function
@@ -634,29 +548,86 @@ namespace GTI.Modules.SecurityCenter
 
 
         //END RALLY DE 6739
+        private bool mIsEditPosition = false;
+        private bool mIsNewPosition = false;
 
         private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            checkPositionModified();                
+    
+            if (mIsEditPosition == true)
+            {
+                mPositionForm.Close();
+            }
+            checkMachineModified();
             mIsEditPosition = false;
-            ManageUI("NewPosition");
+            mIsNewPosition = true;
             SetNewPostionContextMenu(true);
             ShowPositionForm(true);
         }
 
-        
-
-
-        private bool mIsEditPosition = false;
         private void editPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (mIsEditPosition == false)
+            if (mInitStaffForm != null)
             {
-                ManageUI("EditPosition");             
-                SetNewPostionContextMenu(false);               
-                ShowPositionForm(false);
+                if (mInitStaffForm.IsDisposed == false)
+                {
+                    mInitStaffForm.Close();
+                }
             }
+
+            if (mNewStaffForm != null)
+            {
+                if (mNewStaffForm.IsDisposed == false)
+                {
+                    mNewStaffForm.Close();
+                }
+            }
+            //checkPositionModified();
+            checkMachineModified();
+            if (mIsNewPosition == true)
+            {
+                mPositionForm.Close();
+            }
+            mIsNewPosition = false;
             mIsEditPosition = true;
+            SetNewPostionContextMenu(false);
+            ShowPositionForm(false);
+
         }
+
+        private void manageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            checkPositionModified();
+            checkMachineModified();
+            ShowStaffForm();
+            //ShowNewStaff();
+            editPositionToolStripMenuItem.Enabled = true;
+            newPositionToolStripMenuItem.Enabled = true;
+        }
+
+
+        private void CloseUIStaff()
+        {
+            if (mInitStaffForm != null)
+            {
+                if (mInitStaffForm.IsDisposed == false)
+                {
+                    mInitStaffForm.Close();
+                }
+            }
+
+            if (mNewStaffForm != null)
+            {
+                if (mNewStaffForm.IsDisposed == false)
+                {
+                    mNewStaffForm.Close();
+                }
+            }
+        }
+
+  
 
 
         /// <summary>
@@ -666,7 +637,10 @@ namespace GTI.Modules.SecurityCenter
         {
             if (mMachineForm != null)
             {
-                mMachineForm.Close();
+                if (mMachineForm.IsDisposed == false)
+                {
+                    mMachineForm.Close();
+                }
             }
         }
         //End Rally TA10562
@@ -675,7 +649,6 @@ namespace GTI.Modules.SecurityCenter
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mIsEditPosition = false;
             //about window
             AboutBox about = new AboutBox();
             about.AssemblyDescription = AssemblyDescription;
@@ -777,7 +750,6 @@ namespace GTI.Modules.SecurityCenter
         //ttp 50053, support copy position function
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mIsEditPosition = false;
             if (this.ActiveMdiChild is Position)
             { 
                 //copy the data to the clipboard
@@ -791,7 +763,6 @@ namespace GTI.Modules.SecurityCenter
         //ttp 50053, support copy position function
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mIsEditPosition = false;
             if (this.ActiveMdiChild is Position)
             {
                 Position position = (Position)this.ActiveMdiChild;
@@ -800,16 +771,6 @@ namespace GTI.Modules.SecurityCenter
                     position.Paste();//paste the data from clipboard to current form
                 }
             }
-        }
-
-        private void menuStrip_TabIndexChanged(object sender, EventArgs e)
-        {
-            mIsEditPosition = false;
-        }
-
-        private void menuStrip_ContextMenuStripChanged(object sender, EventArgs e)
-        {
-            mIsEditPosition = false;
         }
 
        

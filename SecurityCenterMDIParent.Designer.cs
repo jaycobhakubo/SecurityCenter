@@ -63,8 +63,6 @@ namespace GTI.Modules.SecurityCenter
             this.menuStrip.Size = new System.Drawing.Size(1018, 30);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
-            this.menuStrip.ContextMenuStripChanged += new System.EventHandler(this.menuStrip_ContextMenuStripChanged);
-            this.menuStrip.TabIndexChanged += new System.EventHandler(this.menuStrip_TabIndexChanged);
             // 
             // fileToolStripMenuItem
             // 
@@ -77,7 +75,7 @@ namespace GTI.Modules.SecurityCenter
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(152, 26);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(108, 26);
             this.exitToolStripMenuItem1.Text = "E&xit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.ExitSecurityCenter);
             // 
@@ -121,7 +119,7 @@ namespace GTI.Modules.SecurityCenter
             // 
             this.manageToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.manageToolStripMenuItem.Name = "manageToolStripMenuItem";
-            this.manageToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.manageToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.manageToolStripMenuItem.Text = "Manage";
             this.manageToolStripMenuItem.Click += new System.EventHandler(this.manageToolStripMenuItem_Click);
             // 

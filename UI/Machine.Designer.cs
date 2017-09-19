@@ -143,7 +143,6 @@
             this.MachineRefreshButton.Name = "MachineRefreshButton";
             this.MachineRefreshButton.RepeatRate = 150;
             this.MachineRefreshButton.RepeatWhenHeldFor = 750;
-            this.MachineRefreshButton.SecondaryTextPadding = new System.Windows.Forms.Padding(5);
             this.MachineRefreshButton.Size = new System.Drawing.Size(132, 30);
             this.MachineRefreshButton.TabIndex = 2;
             this.MachineRefreshButton.Text = "&Refresh";
@@ -163,7 +162,6 @@
             this.MachineLogoutButton.Name = "MachineLogoutButton";
             this.MachineLogoutButton.RepeatRate = 150;
             this.MachineLogoutButton.RepeatWhenHeldFor = 750;
-            this.MachineLogoutButton.SecondaryTextPadding = new System.Windows.Forms.Padding(5);
             this.MachineLogoutButton.Size = new System.Drawing.Size(132, 30);
             this.MachineLogoutButton.TabIndex = 3;
             this.MachineLogoutButton.Text = "&Logout";
