@@ -98,7 +98,8 @@ namespace GTI.Modules.SecurityCenter
         {
             this.CenterToScreen();
             //this.editStaffToolStripMenuItem.Enabled = false;
-            ShowInitStaff();
+            //ShowInitStaff();
+            ShowStaffForm();
 
             if (!m_curStaff.CheckModuleFeature(EliteModule.SecurityCenter, 11))
             {
@@ -178,7 +179,7 @@ namespace GTI.Modules.SecurityCenter
             {
                 Form child = this.MdiChildren[0];
                 child.WindowState = FormWindowState.Maximized;
-                child.Dock = DockStyle.Fill;
+             //   child.Dock = DockStyle.Fill;
                 child.BringToFront();
             }
         }
@@ -189,7 +190,7 @@ namespace GTI.Modules.SecurityCenter
             frmTemp.ControlBox = false;
             frmTemp.MdiParent = this;
             frmTemp.WindowState = FormWindowState.Maximized;
-            frmTemp.Dock = DockStyle.Fill;
+          //  frmTemp.Dock = DockStyle.Fill;
             frmTemp.Visible = true;
         }
 
@@ -238,7 +239,7 @@ namespace GTI.Modules.SecurityCenter
             mNewStaffForm = new NewStaff();            // Create a new instance of the child form.
             mNewStaffForm.MdiParent = this;       // Make it a child of this MDI form before showing it.
             mNewStaffForm.WindowState = FormWindowState.Maximized;
-            mNewStaffForm.Dock = DockStyle.Fill;
+            //mNewStaffForm.Dock = DockStyle.Fill;
             mNewStaffForm.FormClosed += new FormClosedEventHandler(mNewStaffForm_FormClosed);
             mNewStaffForm.Show();            //childForm.Text = "Window " + childFormNumber++;
             this.Text = Properties.Resources.titleSecurityCenter;
@@ -292,9 +293,6 @@ namespace GTI.Modules.SecurityCenter
             this.PerformLayout();
         }
 
-
-
-
 #endregion
 
 #region  EVENTs CLOSING UI
@@ -323,7 +321,7 @@ namespace GTI.Modules.SecurityCenter
                             Application.DoEvents();
 
                             mInitStaffForm.WindowState = FormWindowState.Maximized;
-                            mInitStaffForm.Dock = DockStyle.Fill;
+                                //mInitStaffForm.Dock = DockStyle.Fill;
                             mInitStaffForm.BringToFront();
 
                             Application.DoEvents();
@@ -345,7 +343,7 @@ namespace GTI.Modules.SecurityCenter
         }
 
         //STAFF 
-        private void mNewStaffForm_FormClosed(object sender, FormClosedEventArgs  e)
+        private void mNewStaffForm_FormClosed(object sender, FormClosedEventArgs  e)//knc
         {            
             manageToolStripMenuItem.Enabled = true;
             //if (isAddedStaff == true)
@@ -539,7 +537,6 @@ namespace GTI.Modules.SecurityCenter
                 //ttp 50053, support copy position function
                 EnableCopyMenu(true);
                 EnablePasteMenu(false);
-
                 //editPositionToolStripMenuItem.Enabled = true;
                 //newPositionToolStripMenuItem.Enabled = false;
             }
@@ -599,12 +596,15 @@ namespace GTI.Modules.SecurityCenter
 
         private void manageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            checkPositionModified();
-            checkMachineModified();
-            ShowStaffForm();
-            //ShowNewStaff();
-            editPositionToolStripMenuItem.Enabled = true;
-            newPositionToolStripMenuItem.Enabled = true;
+            if (mInitStaffForm == null || mInitStaffForm.IsDisposed == true)
+            {
+                  checkPositionModified();
+                    checkMachineModified();
+                    ShowStaffForm();
+                    //ShowNewStaff();
+                    editPositionToolStripMenuItem.Enabled = true;
+                    newPositionToolStripMenuItem.Enabled = true;       
+            }
         }
 
 
