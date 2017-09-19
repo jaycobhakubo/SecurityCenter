@@ -72,16 +72,21 @@ namespace GTI.Modules.SecurityCenter
                 {
                     if (mPositionForm.IsDisposed == false)
                     {
-                        checkPositionModified();
+                       checkPositionModified();
+                        //mPositionForm.Close();
                     }
                 }
             }
-            
-            if (mMachineForm != null)
+
+            if (Command != "MachineClick")
             {
-                if (mMachineForm.IsDisposed == false)
+                if (mMachineForm != null)
                 {
-                    checkMachineModified();
+                    if (mMachineForm.IsDisposed == false)
+                    {
+                        // mPositionForm.Close();
+                        checkMachineModified();
+                    }
                 }
             }
             
@@ -348,10 +353,13 @@ namespace GTI.Modules.SecurityCenter
         private void MachineMenu_Click(object sender, EventArgs e)
         {
             mIsEditPosition = false;
+            ManageUI("MachineClick");
+
             if (IsFormLoaded("MachineForm"))
             {
                 return;
             }
+
             this.SuspendLayout();
             mMachineForm = new MachineForm();
             mMachineForm.MdiParent = this;
@@ -630,9 +638,7 @@ namespace GTI.Modules.SecurityCenter
         private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mIsEditPosition = false;
-
-            checkPositionModified();       
-            checkMachineModified();
+            ManageUI("NewPosition");
             SetNewPostionContextMenu(true);
             ShowPositionForm(true);
         }
@@ -645,53 +651,8 @@ namespace GTI.Modules.SecurityCenter
         {
             if (mIsEditPosition == false)
             {
-                ManageUI("EditPosition");
-                //this.SuspendLayout();             
-                    //if (mMachineForm != null)
-                    //{
-                    //    if (mMachineForm.IsDisposed == false)
-                    //    {
-                    //    checkMachineModified();//knc
-                    //    }
-                    //}
-
-                    //if (mInitStaffForm != null)
-                    //{
-                    //    if (mInitStaffForm.IsDisposed == false)
-                    //    {
-                    //        mInitStaffForm.Close();
-                    //    }
-                    //}
-
-                    //if (mNewStaffForm != null)
-                    //{
-                    //    if (mNewStaffForm.IsDisposed == false)
-                    //    {
-                    //        mNewStaffForm.Close();
-                    //    }
-                    //}
-
-                //this.ResumeLayout(true);
-                //this.PerformLayout();
-
-                //this.SuspendLayout();
-               //checkPositionModified();
-                //this.ResumeLayout(true);
-                //this.PerformLayout();
-
-
-
-                //this.SuspendLayout();
-                SetNewPostionContextMenu(false);
-                //this.ResumeLayout(true);
-                //this.PerformLayout();    
-
-                if (IsFormLoaded("Position"))
-                {
-                    //Bring the form to the front
-                    return;
-                }
-
+                ManageUI("EditPosition");             
+                SetNewPostionContextMenu(false);               
                 ShowPositionForm(false);
             }
             mIsEditPosition = true;
