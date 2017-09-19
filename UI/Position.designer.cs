@@ -160,6 +160,7 @@ namespace GTI.Modules.SecurityCenter
             this.cancelbutton.Name = "cancelbutton";
             this.cancelbutton.RepeatRate = 150;
             this.cancelbutton.RepeatWhenHeldFor = 750;
+            this.cancelbutton.SecondaryTextPadding = new System.Windows.Forms.Padding(5);
             this.cancelbutton.Size = new System.Drawing.Size(132, 30);
             this.cancelbutton.TabIndex = 4;
             this.cancelbutton.Text = "&Cancel";
@@ -178,6 +179,7 @@ namespace GTI.Modules.SecurityCenter
             this.saveButton.Name = "saveButton";
             this.saveButton.RepeatRate = 150;
             this.saveButton.RepeatWhenHeldFor = 750;
+            this.saveButton.SecondaryTextPadding = new System.Windows.Forms.Padding(5);
             this.saveButton.Size = new System.Drawing.Size(132, 30);
             this.saveButton.TabIndex = 3;
             this.saveButton.Text = "&Save";
@@ -197,6 +199,7 @@ namespace GTI.Modules.SecurityCenter
             this.saveNewImageButton.Name = "saveNewImageButton";
             this.saveNewImageButton.RepeatRate = 150;
             this.saveNewImageButton.RepeatWhenHeldFor = 750;
+            this.saveNewImageButton.SecondaryTextPadding = new System.Windows.Forms.Padding(5);
             this.saveNewImageButton.Size = new System.Drawing.Size(132, 30);
             this.saveNewImageButton.TabIndex = 2;
             this.saveNewImageButton.Text = "Save and &New";
