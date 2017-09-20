@@ -36,7 +36,7 @@ namespace GTI.Modules.SecurityCenter
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.staffMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.manageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newStaffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.psotitionMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newPositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editPositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +75,7 @@ namespace GTI.Modules.SecurityCenter
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(108, 26);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(116, 26);
             this.exitToolStripMenuItem1.Text = "E&xit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.ExitSecurityCenter);
             // 
@@ -93,7 +93,7 @@ namespace GTI.Modules.SecurityCenter
             this.copyToolStripMenuItem.Enabled = false;
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
             this.copyToolStripMenuItem.Text = "&Copy Position";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
@@ -102,26 +102,26 @@ namespace GTI.Modules.SecurityCenter
             this.pasteToolStripMenuItem.Enabled = false;
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
             this.pasteToolStripMenuItem.Text = "&Paste Position";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // staffMenu
             // 
             this.staffMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.manageToolStripMenuItem});
+            this.newStaffToolStripMenuItem});
             this.staffMenu.ImageTransparentColor = System.Drawing.SystemColors.ActiveBorder;
             this.staffMenu.Name = "staffMenu";
             this.staffMenu.Size = new System.Drawing.Size(57, 26);
             this.staffMenu.Text = "S&taff";
             // 
-            // manageToolStripMenuItem
+            // newStaffToolStripMenuItem
             // 
-            this.manageToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
-            this.manageToolStripMenuItem.Name = "manageToolStripMenuItem";
-            this.manageToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
-            this.manageToolStripMenuItem.Text = "Manage";
-            this.manageToolStripMenuItem.Click += new System.EventHandler(this.manageToolStripMenuItem_Click);
+            this.newStaffToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
+            this.newStaffToolStripMenuItem.Name = "newStaffToolStripMenuItem";
+            this.newStaffToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.newStaffToolStripMenuItem.Text = "Manage";
+            this.newStaffToolStripMenuItem.Click += new System.EventHandler(this.newStaffToolStripMenuItem_Click);
             // 
             // psotitionMenu
             // 
@@ -136,7 +136,7 @@ namespace GTI.Modules.SecurityCenter
             // 
             this.newPositionToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.newPositionToolStripMenuItem.Name = "newPositionToolStripMenuItem";
-            this.newPositionToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.newPositionToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
             this.newPositionToolStripMenuItem.Text = "&New";
             this.newPositionToolStripMenuItem.Click += new System.EventHandler(this.newPositionToolStripMenuItem_Click);
             // 
@@ -144,7 +144,7 @@ namespace GTI.Modules.SecurityCenter
             // 
             this.editPositionToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.editPositionToolStripMenuItem.Name = "editPositionToolStripMenuItem";
-            this.editPositionToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.editPositionToolStripMenuItem.Size = new System.Drawing.Size(122, 26);
             this.editPositionToolStripMenuItem.Text = "&Edit";
             this.editPositionToolStripMenuItem.Click += new System.EventHandler(this.editPositionToolStripMenuItem_Click);
             // 
@@ -166,7 +166,7 @@ namespace GTI.Modules.SecurityCenter
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -199,7 +199,7 @@ namespace GTI.Modules.SecurityCenter
 
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem staffMenu;
-        private System.Windows.Forms.ToolStripMenuItem manageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newStaffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem psotitionMenu;
         private System.Windows.Forms.ToolStripMenuItem newPositionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPositionToolStripMenuItem;

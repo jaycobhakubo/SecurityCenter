@@ -29,7 +29,7 @@ namespace GTI.Modules.SecurityCenter
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Position));
-            this.cmbx_PositionName = new System.Windows.Forms.ComboBox();
+            this.positionComboBox = new System.Windows.Forms.ComboBox();
             this.positionNameLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.positionActivityFlagCheckbox = new System.Windows.Forms.CheckBox();
@@ -45,26 +45,26 @@ namespace GTI.Modules.SecurityCenter
             this.permissionGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cmbx_PositionName
+            // positionComboBox
             // 
-            this.cmbx_PositionName.BackColor = System.Drawing.Color.White;
-            this.cmbx_PositionName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-            this.cmbx_PositionName.ForeColor = System.Drawing.Color.Black;
-            this.cmbx_PositionName.FormattingEnabled = true;
-            this.cmbx_PositionName.IntegralHeight = false;
-            this.cmbx_PositionName.ItemHeight = 22;
-            this.cmbx_PositionName.Items.AddRange(new object[] {
+            this.positionComboBox.BackColor = System.Drawing.Color.White;
+            this.positionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.positionComboBox.ForeColor = System.Drawing.Color.Black;
+            this.positionComboBox.FormattingEnabled = true;
+            this.positionComboBox.IntegralHeight = false;
+            this.positionComboBox.ItemHeight = 22;
+            this.positionComboBox.Items.AddRange(new object[] {
             "New Position",
             "Sr. Engineer",
             "Engineer I",
             "Engineer II",
             "Engineer III"});
-            this.cmbx_PositionName.Location = new System.Drawing.Point(12, 73);
-            this.cmbx_PositionName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbx_PositionName.MaxLength = 100;
-            this.cmbx_PositionName.Name = "cmbx_PositionName";
-            this.cmbx_PositionName.Size = new System.Drawing.Size(358, 31);
-            this.cmbx_PositionName.TabIndex = 1;
+            this.positionComboBox.Location = new System.Drawing.Point(12, 73);
+            this.positionComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.positionComboBox.MaxLength = 100;
+            this.positionComboBox.Name = "positionComboBox";
+            this.positionComboBox.Size = new System.Drawing.Size(358, 31);
+            this.positionComboBox.TabIndex = 1;
             // 
             // positionNameLabel
             // 
@@ -85,7 +85,7 @@ namespace GTI.Modules.SecurityCenter
             this.groupBox1.Controls.Add(this.inactiveRadioButton);
             this.groupBox1.Controls.Add(this.positionNameLabel);
             this.groupBox1.Controls.Add(this.allRadioButton);
-            this.groupBox1.Controls.Add(this.cmbx_PositionName);
+            this.groupBox1.Controls.Add(this.positionComboBox);
             this.groupBox1.Controls.Add(this.activeRadioButton);
             this.groupBox1.ForeColor = System.Drawing.Color.Black;
             this.groupBox1.Location = new System.Drawing.Point(255, 9);
@@ -158,8 +158,6 @@ namespace GTI.Modules.SecurityCenter
             this.cancelbutton.Location = new System.Drawing.Point(854, 588);
             this.cancelbutton.MinimumSize = new System.Drawing.Size(30, 30);
             this.cancelbutton.Name = "cancelbutton";
-            this.cancelbutton.RepeatRate = 150;
-            this.cancelbutton.RepeatWhenHeldFor = 750;
             this.cancelbutton.Size = new System.Drawing.Size(132, 30);
             this.cancelbutton.TabIndex = 4;
             this.cancelbutton.Text = "&Cancel";
@@ -176,8 +174,6 @@ namespace GTI.Modules.SecurityCenter
             this.saveButton.Location = new System.Drawing.Point(707, 588);
             this.saveButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.saveButton.Name = "saveButton";
-            this.saveButton.RepeatRate = 150;
-            this.saveButton.RepeatWhenHeldFor = 750;
             this.saveButton.Size = new System.Drawing.Size(132, 30);
             this.saveButton.TabIndex = 3;
             this.saveButton.Text = "&Save";
@@ -195,8 +191,6 @@ namespace GTI.Modules.SecurityCenter
             this.saveNewImageButton.Location = new System.Drawing.Point(560, 588);
             this.saveNewImageButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.saveNewImageButton.Name = "saveNewImageButton";
-            this.saveNewImageButton.RepeatRate = 150;
-            this.saveNewImageButton.RepeatWhenHeldFor = 750;
             this.saveNewImageButton.Size = new System.Drawing.Size(132, 30);
             this.saveNewImageButton.TabIndex = 2;
             this.saveNewImageButton.Text = "Save and &New";
@@ -261,7 +255,7 @@ namespace GTI.Modules.SecurityCenter
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbx_PositionName;
+        private System.Windows.Forms.ComboBox positionComboBox;
         private System.Windows.Forms.Label positionNameLabel;
         private System.Windows.Forms.GroupBox groupBox1;
         private GTI.Controls.ImageButton saveButton;

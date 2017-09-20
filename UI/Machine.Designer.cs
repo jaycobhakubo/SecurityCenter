@@ -47,7 +47,6 @@
             // 
             // MachineListView
             // 
-            this.MachineListView.AllowEraseBackground = true;
             this.MachineListView.BackColor = System.Drawing.SystemColors.Window;
             this.MachineListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.MachineIDHeader,
@@ -141,8 +140,6 @@
             this.MachineRefreshButton.Location = new System.Drawing.Point(522, 563);
             this.MachineRefreshButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.MachineRefreshButton.Name = "MachineRefreshButton";
-            this.MachineRefreshButton.RepeatRate = 150;
-            this.MachineRefreshButton.RepeatWhenHeldFor = 750;
             this.MachineRefreshButton.Size = new System.Drawing.Size(132, 30);
             this.MachineRefreshButton.TabIndex = 2;
             this.MachineRefreshButton.Text = "&Refresh";
@@ -160,8 +157,6 @@
             this.MachineLogoutButton.Location = new System.Drawing.Point(318, 563);
             this.MachineLogoutButton.MinimumSize = new System.Drawing.Size(30, 30);
             this.MachineLogoutButton.Name = "MachineLogoutButton";
-            this.MachineLogoutButton.RepeatRate = 150;
-            this.MachineLogoutButton.RepeatWhenHeldFor = 750;
             this.MachineLogoutButton.Size = new System.Drawing.Size(132, 30);
             this.MachineLogoutButton.TabIndex = 3;
             this.MachineLogoutButton.Text = "&Logout";

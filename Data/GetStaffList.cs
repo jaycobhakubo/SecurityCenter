@@ -283,7 +283,6 @@ namespace GTI.Modules.SecurityCenter.Data
             return null;
 
         }
-
         public int GetLoginNumberByStaffID(int staffID)
         {
             foreach (DataRow staff in mStaffData.StaffTable.Rows)
