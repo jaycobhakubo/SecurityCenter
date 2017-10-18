@@ -20,7 +20,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-
+using System.Linq;
 using GTI.Modules.Shared;
 using GTI.Modules.SecurityCenter.Data;
 using System.Runtime.InteropServices;
@@ -54,8 +54,10 @@ namespace GTI.Modules.SecurityCenter
         private int mAddressID = NEW_ID;
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
+        private bool isReloading; //DE10178      
+        Int16 m_StaffStatus = 1; //Active:1 ; All: -1; 0:Inctive		
+        string mPosition = "";
 
-        private bool isReloading; //DE10178
 
         #endregion
 
@@ -270,6 +272,16 @@ namespace GTI.Modules.SecurityCenter
                     isReloading = false;
                     return;
                 }
+                else
+                {
+                    //db commited succesfully ->  need to update the ListViewControls.
+                    mCurrentSelectedListViewIndex = staffListView.SelectedIndices[0];//Get the selected staff
+                    LoadDataToListView(m_StaffStatus, mPosition);//;->reload the listview controls
+                    staffListView.Items[mCurrentSelectedListViewIndex].Selected = true;//reselect the selected staff
+                    mUnchanged = false;
+                    isReloading = false;
+                    return;
+                }
 
                 isReloading = false;
             }
@@ -303,6 +315,7 @@ namespace GTI.Modules.SecurityCenter
             else if (mIsDirtyForm == true || IsStaffInformationModified() == true)
                 return;//do not reload if it is dirty
 
+          //  int count = staffListView.Items.Count;
             mCurrentSelectedListViewIndex = staffListView.SelectedIndices[0];
             int staffID = int.Parse(staffListView.SelectedItems[0].Tag.ToString());
             DataRow[] selectedStaffRow = mStaffTable.Select(StaffData.STAFF_TALBE_COLUMN_STAFFID + " = '" + staffID.ToString() + "'");
@@ -319,6 +332,7 @@ namespace GTI.Modules.SecurityCenter
             //post the information to the right side 
 
             LoadAStaffInformation(mCurrentSelectedStaffRow);//knc
+            SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             if (mLoginId > 0)
             {
                 SetWhetherControlsLocked();
@@ -375,6 +389,8 @@ namespace GTI.Modules.SecurityCenter
             mIsDirtyForm = true;
             //refresh positions in the list
             positionListBox.Items.Clear();
+            var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+            
             //ListViewItem tmpItem;
             foreach (DataRow p in mAssignedPositions.PositionTable.Rows)
             {
@@ -391,6 +407,7 @@ namespace GTI.Modules.SecurityCenter
         {
             if (activeRadioButton.Checked == true)
             {
+                m_StaffStatus = 1;
                 LoadDataToListView(1, positionComboBox.SelectedItem.ToString());
             }
         }
@@ -399,7 +416,8 @@ namespace GTI.Modules.SecurityCenter
         {
             if (allRadioButton.Checked == true)
             {
-                LoadDataToListView(-1, positionComboBox.SelectedItem.ToString());
+                m_StaffStatus = -1;
+                LoadDataToListView(m_StaffStatus, positionComboBox.SelectedItem.ToString());
             }
         }
 
@@ -407,9 +425,11 @@ namespace GTI.Modules.SecurityCenter
         {
             if (inactiveRadioButton.Checked == true)
             {
-                LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
+                m_StaffStatus = 0;
+                LoadDataToListView(m_StaffStatus, positionComboBox.SelectedItem.ToString());
             }
         }
+
 
         private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -426,6 +446,7 @@ namespace GTI.Modules.SecurityCenter
                 LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
             }
             FocusStaffListView(mCurrentSelectedListViewIndex);
+            mPosition = positionComboBox.SelectedItem.ToString();
         }
 
         #endregion //Events
@@ -732,6 +753,7 @@ namespace GTI.Modules.SecurityCenter
             }
             else //cancel, go back whatever it is before
             {
+                mIsDirtyForm = false;
                 saved = false;
             }
             return saved;
@@ -1340,6 +1362,12 @@ namespace GTI.Modules.SecurityCenter
             {
                 dtPicker.Value = DateTime.Today;
             }
+        }
+
+        public int SelectedStaffId
+        {
+            get;
+            set;
         }
     }
 }
