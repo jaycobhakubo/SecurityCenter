@@ -255,7 +255,7 @@ namespace GTI.Modules.SecurityCenter
 
             //be very careful to change logic here, 
             //we handle Cancel change, this event will fire twice for a change
-            if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
+            if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&//knc
                 mUnchanged == false)
             {
                 //if(passwordTextBox.Text.Trim().Length >0  || verifiedPasswordTextBox.Text.Trim().Length>0)
@@ -317,22 +317,36 @@ namespace GTI.Modules.SecurityCenter
                 return;
             }
             //post the information to the right side 
-            LoadAStaffInformation(mCurrentSelectedStaffRow);
-            SetWhetherControlsLocked();
-        }
 
+            LoadAStaffInformation(mCurrentSelectedStaffRow);//knc
+            if (mLoginId > 0)
+            {
+                SetWhetherControlsLocked();
+            }
+
+            DisableControlForKioskLogin(mLoginId);
+        }
         /// <summary>
         /// Enables or Diables the Controls Based on the Account Lock status.
         /// </summary>
-        private void SetWhetherControlsLocked()
+        private void SetWhetherControlsLocked()//knc
         {
-            foreach (Control c in newStaffGroupBox.Controls)
-            {
-                if (checkBoxlocked.Checked && !(c.Name == "checkBoxlocked"))
-                    c.Enabled = false;
-                else
-                    c.Enabled = true;
-            }
+       
+                foreach (Control c in newStaffGroupBox.Controls)
+                {
+                    if (checkBoxlocked.Checked && !(c.Name == "checkBoxlocked"))
+                        c.Enabled = false;
+                    else
+                        c.Enabled = true;
+                }
+
+                if (mLoginId > 0)//knc
+                {
+                    loginNumericUpDown.Visible = true;
+                    loginNumberLabel.Visible = true;
+
+                }
+            
         }
 
         private void assignPositionButton_Click(object sender, EventArgs e)
@@ -432,6 +446,7 @@ namespace GTI.Modules.SecurityCenter
             {
                 MessageForm.Show(Properties.Resources.errorFailedToGetData + " " + ex.Message, Properties.Resources.securityCenter);
             }
+            var x = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
             loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
 
         }
@@ -557,15 +572,74 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoLeave();
         }
 
-        private void LoadAStaffInformation(DataRow staffRowByID)
+        private void DisableControlForKioskLogin(int loginId)
+        {
+            if (loginId < 0)
+            {
+                //loginNumericUpDown.Value = 0;   
+                if (loginNumericUpDown.Visible == true)
+                {                                  
+                    foreach (Control ctrl in newStaffGroupBox.Controls)
+                    {
+                        if (ctrl is TextBox)
+                        {
+                            if (ctrl.Name == "firstNameTextBox" || ctrl.Name == "lastNameTextBox")
+                            {
+                                continue;
+                            }
+                        }
+
+                        if (ctrl is Label)
+                        {
+                            if (ctrl.Name == "lNamelabel" || ctrl.Name == "fNamelabel")
+                            {
+                                continue;
+                            }
+                        }                      
+                   if (ctrl.Enabled == true)     ctrl.Enabled = false;
+                    }
+
+                    loginNumericUpDown.Visible = false;
+                    loginNumberLabel.Visible = false;
+                }
+            }
+            else
+            {
+                if (loginNumericUpDown.Visible != true)
+                {
+
+                    foreach (Control ctrl in newStaffGroupBox.Controls)
+                    {
+                      if (ctrl.Enabled == false)  ctrl.Enabled = true;
+                    }
+                    loginNumericUpDown.Visible = true;
+                    loginNumberLabel.Visible = true;
+                }
+            }          
+        }
+
+
+        private int mLoginId; 
+        
+        private void LoadAStaffInformation(DataRow staffRowByID)//knc
         {
             Utilities.LogInfoIN();
             //error check
             if (object.ReferenceEquals(staffRowByID, null)) return;
             firstNameTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString();
             lastNameTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString();
-            loginNumericUpDown.Value = int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString());
-            //passwordNumericUpDown.Value = int.Parse(mStaffRowByID[StaffData.STAFF_TALBE_COLUMN_PASSWORD].ToString ());
+            mLoginId = int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString());
+            if (mLoginId < 0)
+            {
+                loginNumericUpDown.Value = 0;
+            }
+            else
+            {
+                loginNumericUpDown.Value = mLoginId;
+            }
+            //DisableControlForKioskLogin(int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString()));
+
+                //passwordNumericUpDown.Value = int.Parse(mStaffRowByID[StaffData.STAFF_TALBE_COLUMN_PASSWORD].ToString ());
             homePhoneTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_HOMEPHONE].ToString();
             otherPhoneTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_OTHERPHONE].ToString();
             SSNTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_SSN].ToString();
@@ -663,7 +737,8 @@ namespace GTI.Modules.SecurityCenter
             return saved;
         }
         private bool ModifyingAccountlock;
-        private bool IsStaffInformationModified()
+        private bool mIsKioskStaff = false;
+        private bool IsStaffInformationModified()//knc
         {
             if (mIsDirtyForm == true) return true;
             if (mCurrentSelectedStaffRow == null) return false;
@@ -676,21 +751,29 @@ namespace GTI.Modules.SecurityCenter
                 return mIsDirtyForm;
             }
 
-
-            if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HOMEPHONE].ToString(), homePhoneTextBox.Text)
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString(), loginNumericUpDown.Value.ToString())
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_ISACTIVE].ToString(), (checkBoxActive.Checked == true ? 1 : 0).ToString())
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HAND].ToString(), (checkBoxLeftHanded.Checked == true ? 1 : 0).ToString())
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_OTHERPHONE].ToString(), otherPhoneTextBox.Text)
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_SSN].ToString(), SSNTextBox.Text)
-                || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_MAGSTRIPNUMBER].ToString(), magNumberTextBox.Text)
-                || IsAddressAndPasswordModified(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()) == true
-                )
+            var x = mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString();
+            if (Convert.ToInt32(x) > 0)
             {
-                mIsDirtyForm = true;
-                return mIsDirtyForm;
+                 mIsKioskStaff = false;
+                if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HOMEPHONE].ToString(), homePhoneTextBox.Text)
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString(), loginNumericUpDown.Value.ToString())
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_ISACTIVE].ToString(), (checkBoxActive.Checked == true ? 1 : 0).ToString())
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HAND].ToString(), (checkBoxLeftHanded.Checked == true ? 1 : 0).ToString())
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_OTHERPHONE].ToString(), otherPhoneTextBox.Text)
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_SSN].ToString(), SSNTextBox.Text)
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_MAGSTRIPNUMBER].ToString(), magNumberTextBox.Text)
+                    || IsAddressAndPasswordModified(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()) == true
+                    )
+                {
+                    mIsDirtyForm = true;
+                    return mIsDirtyForm;
+                }
+            }
+            else
+            {
+                mIsKioskStaff = true;
             }
 
             if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString(), DOBDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
@@ -1195,7 +1278,7 @@ namespace GTI.Modules.SecurityCenter
 
         private void loginNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (loginNumericUpDown.Value < 2)
+            if (loginNumericUpDown.Value < 2 && loginNumericUpDown.Value != 0)
             {
                 SetNextAvailableStaffLoginNumber();
             }
