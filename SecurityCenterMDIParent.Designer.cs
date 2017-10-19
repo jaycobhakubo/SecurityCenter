@@ -122,6 +122,7 @@ namespace GTI.Modules.SecurityCenter
             this.newStaffToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.newStaffToolStripMenuItem.Text = "Manage";
             this.newStaffToolStripMenuItem.Click += new System.EventHandler(this.newStaffToolStripMenuItem_Click);
+           
             // 
             // psotitionMenu
             // 
