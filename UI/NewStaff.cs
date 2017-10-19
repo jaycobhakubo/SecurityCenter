@@ -43,21 +43,23 @@ namespace GTI.Modules.SecurityCenter
 
         #region Private Members
 
+        GTI.Modules.SecurityCenter.Data.Address? mSelectedStaffAddress;
+        private int mCurrentSelectedListViewIndex = 0; 
+        private int mStaffID = NEW_ID;//a new staff
+        private int mAddressID = NEW_ID;           
+        private bool isReloading; //DE10178      
+        private bool ModifyingAccountlock;
+        private bool mIsKioskStaff = false;
+        private bool mIsDirtyForm = false;
         private PositionData mAssignedPositions;
         private DataTable mStaffTable;
-        private DataRow mCurrentSelectedStaffRow;
-        GTI.Modules.SecurityCenter.Data.Address? mSelectedStaffAddress;
-        private bool mIsDirtyForm = false;
-        private int mCurrentSelectedListViewIndex = 0;
-        static bool mUnchanged = false;
-        private int mStaffID = NEW_ID;//a new staff
-        private int mAddressID = NEW_ID;
+        private DataRow mCurrentSelectedStaffRow;      
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
-        private bool isReloading; //DE10178      
-        Int16 m_StaffStatus = 1; //Active:1 ; All: -1; 0:Inctive		
-        string mPosition = "";
 
+        string mPosition = "";
+        Int16 m_StaffStatus = 1; //Active:1 ; All: -1; 0:Inctive
+        static bool mUnchanged = false;
 
         #endregion
 
@@ -483,7 +485,7 @@ namespace GTI.Modules.SecurityCenter
                 MessageForm.Show(Properties.Resources.errorFailedToGetData + " " + ex.Message, Properties.Resources.securityCenter);
             }
             var x = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
-            loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
+            loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;//Setting new staff knc
 
         }
 
@@ -630,8 +632,7 @@ namespace GTI.Modules.SecurityCenter
         private void DisableControlForKioskLogin(int loginId)
         {
             if (loginId < 0)
-            {
-                //loginNumericUpDown.Value = 0;   
+            {  
                 if (loginNumericUpDown.Visible == true)
                 {                                  
                     foreach (Control ctrl in newStaffGroupBox.Controls)
@@ -684,14 +685,18 @@ namespace GTI.Modules.SecurityCenter
             firstNameTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString();
             lastNameTextBox.Text = staffRowByID[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString();
             mLoginId = int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString());
+
             if (mLoginId < 0)
             {
                 loginNumericUpDown.Value = 0;
+                mIsKioskStaff = true;
             }
             else
             {
                 loginNumericUpDown.Value = mLoginId;
+                mIsKioskStaff = false;
             }
+
             //DisableControlForKioskLogin(int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString()));
 
                 //passwordNumericUpDown.Value = int.Parse(mStaffRowByID[StaffData.STAFF_TALBE_COLUMN_PASSWORD].ToString ());
@@ -767,8 +772,9 @@ namespace GTI.Modules.SecurityCenter
         }
 
     
-        private bool ModifyingAccountlock;
-        private bool mIsKioskStaff = false;
+
+
+
         private bool IsStaffInformationModified()//knc
         {
             if (mIsDirtyForm == true) return true;
@@ -805,6 +811,13 @@ namespace GTI.Modules.SecurityCenter
             else
             {
                 mIsKioskStaff = true;
+                if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
+                    || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)                  
+                    )
+                {
+                    mIsDirtyForm = true;
+                    return mIsDirtyForm;
+                }
             }
 
             if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString(), DOBDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
@@ -896,19 +909,20 @@ namespace GTI.Modules.SecurityCenter
             else
                 return String.Equals(test1, test2, StringComparison.CurrentCultureIgnoreCase);
         }
-        private bool ValidateStaff()
+        private bool ValidateStaff()//knc
         {
             bool isValidated = false;
-            if ((passwordTextBox.Text == null ||
+
+            if (((passwordTextBox.Text == null ||
                   passwordTextBox.Text.Trim() == string.Empty) &&
                   mCurrentSelectedStaffRow == null
-                )
+                ) && mIsKioskStaff == false)
             {
                 MessageForm.Show(Properties.Resources.warningPasswordBeforeSave, Properties.Resources.securityCenter);
                 return false;
             }
 
-            if (passwordTextBox.Text.Length > 0 || verifiedPasswordTextBox.Text.Length > 0)
+            if ((passwordTextBox.Text.Length > 0 || verifiedPasswordTextBox.Text.Length > 0) && mIsKioskStaff == false)
             {
                 if (passwordTextBox.Text.Trim().Length < Configuration.mMinimumPasswordLength)
                 {
@@ -942,7 +956,7 @@ namespace GTI.Modules.SecurityCenter
 
             }
 
-            if (!IsSameString(passwordTextBox.Text, verifiedPasswordTextBox.Text))
+            if (!IsSameString(passwordTextBox.Text, verifiedPasswordTextBox.Text)) 
             {
                 MessageForm.Show(Properties.Resources.warningPasswordNotSame, Properties.Resources.securityCenter);
                 return false;
@@ -956,20 +970,28 @@ namespace GTI.Modules.SecurityCenter
             }
             //END RALLY DE 1572
             //validating
-            if (lastNameTextBox.Text == null ||
+            if ((lastNameTextBox.Text == null ||
                 lastNameTextBox.Text.Trim() == "" ||
                 firstNameTextBox.Text == null ||
                 firstNameTextBox.Text.Trim() == "" ||
                 loginNumericUpDown.Value == 0
-               )
+               ) && mLoginId > 0)
             {
-                isValidated = false;
-                MessageForm.Show(Properties.Resources.warningRequiredFiledBeforeSave, Properties.Resources.securityCenter);
+                
+                    isValidated = false;
+                    MessageForm.Show(Properties.Resources.warningRequiredFiledBeforeSave, Properties.Resources.securityCenter);
+                
             }
-            //else if (IsValidatedLoginNumberAndPassword() == false)
-            //{
-            //    isValidated = false;
-            //}
+            else           
+                 if (lastNameTextBox.Text == null ||
+                lastNameTextBox.Text.Trim() == "" ||
+                firstNameTextBox.Text == null ||
+                firstNameTextBox.Text.Trim() == "")
+                   
+                 {
+                       isValidated = false;
+                    MessageForm.Show(Properties.Resources.warningRequiredFiledBeforeSave, Properties.Resources.securityCenter);
+                 }
             else
             {
                 isValidated = true;
@@ -1077,8 +1099,16 @@ namespace GTI.Modules.SecurityCenter
             if (hireDateTimePicker.Value != hireDateTimePicker.MinDate)
                 savestaff.HireDate = hireDateTimePicker.Value;
 
-            savestaff.LoginNumber = (Int32)loginNumericUpDown.Value;
-            savestaff.IsActive = checkBoxActive.Checked;
+            if (mLoginId > 0)
+            {
+                savestaff.LoginNumber = (Int32)loginNumericUpDown.Value;
+            }
+            else
+            {
+                savestaff.LoginNumber = mLoginId;
+            }
+                
+                savestaff.IsActive = checkBoxActive.Checked;
 
             if (homePhoneTextBox.Text.Trim().Length > 0)
                 savestaff.HomePhone = homePhoneTextBox.Text.ToString();

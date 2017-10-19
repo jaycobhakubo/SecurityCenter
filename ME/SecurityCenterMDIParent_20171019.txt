@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -824,8 +824,6 @@ namespace GTI.Modules.SecurityCenter
         }
 
         #endregion
-
-
         #region Assembly Attribute Accessors
 
         public string AssemblyTitle
@@ -915,8 +913,6 @@ namespace GTI.Modules.SecurityCenter
             }
         }
         #endregion
-
-
         //ttp 50053, support copy position function
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -941,7 +937,27 @@ namespace GTI.Modules.SecurityCenter
                     position.Paste();//paste the data from clipboard to current form
                 }
             }
-        }     
+        }
+
+       
+      
+
+      
     }
 }
 
+
+#region SavedForNow
+
+//private void InitStaff_Staff_Click(object sender, int selectedIndex)
+//{
+//    if (selectedIndex > -1)
+//    {
+//        this.editStaffToolStripMenuItem.Enabled = true;
+//    }
+//    else
+//    {
+//        this.editStaffToolStripMenuItem.Enabled = false;
+//    }
+//}
+#endregion 
