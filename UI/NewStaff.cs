@@ -245,6 +245,41 @@ namespace GTI.Modules.SecurityCenter
                 staffListView.Items[index].Selected = true;
         }
 
+        private bool IsSaveStaffInformationChange()
+        {
+            //then do a clean check to save if it is dirty form
+            bool saved = false;
+            //then there is change, ask if user want to save the change
+            DialogResult result = MessageForm.Show(this, Properties.Resources.warningSave, Properties.Resources.securityCenter, MessageFormTypes.YesNoCancel);
+            mUnchanged = true;
+            if (result == DialogResult.Yes)
+            {//save the new staff information and move on
+                if (ValidateStaff())
+                {
+                    if (SaveStaff())
+                    {
+                        //LoadDataToListView(m_StaffStatus, mPosition);
+                        ReloadFormAfterSave();
+
+                        mIsDirtyForm = false;
+                        saved = true;
+                    }
+                }
+            }
+            else if (result == DialogResult.No)
+            { //return true if user do not want to save at all
+                ReloadFormAfterSave();
+                mIsDirtyForm = false;
+                saved = true;
+            }
+            else //cancel, go back whatever it is before
+            {
+                mIsDirtyForm = false;
+                saved = false;
+            }
+            return saved;
+        }
+
 
         private void staffListView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -268,7 +303,6 @@ namespace GTI.Modules.SecurityCenter
                     staffListView.Select();
                     staffListView.SelectedItems[0].Selected = false;
                     staffListView.Items[mCurrentSelectedListViewIndex].Selected = true;
-
                     isReloading = false;
                     return;
                 }
@@ -283,7 +317,7 @@ namespace GTI.Modules.SecurityCenter
                     return;
                 }
 
-                isReloading = false;
+               // isReloading = false;
             }
             else if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
                       mUnchanged == true &&
@@ -295,23 +329,6 @@ namespace GTI.Modules.SecurityCenter
                 mUnchanged = false;
                 return;
             }
-
-            else if (mIsDirtyForm == true && mUnchanged == true)
-            {
-                isReloading = true;
-                if (IsSaveStaffInformationChange() == false)
-                {//set it back before we do anything because it is still dirty       
-                    staffListView.Select();
-                    staffListView.SelectedItems[0].Selected = false;
-                    staffListView.Items[mCurrentSelectedListViewIndex].Selected = true;
-
-                    isReloading = false;
-                    return;
-                }
-
-                isReloading = false;
-            }
-
             else if (mIsDirtyForm == true || IsStaffInformationModified() == true)
                 return;//do not reload if it is dirty
 
@@ -329,7 +346,6 @@ namespace GTI.Modules.SecurityCenter
                 mCurrentSelectedStaffRow = null;
                 return;
             }
-            //post the information to the right side 
 
             LoadAStaffInformation(mCurrentSelectedStaffRow);//knc
             SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
@@ -390,9 +406,8 @@ namespace GTI.Modules.SecurityCenter
             //refresh positions in the list
             positionListBox.Items.Clear();
             var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
-            
-            //ListViewItem tmpItem;
-            foreach (DataRow p in mAssignedPositions.PositionTable.Rows)
+
+            foreach (DataRow p in PositionInOrder)
             {
                 //tmpItem = new ListViewItem(p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                 //tmpItem.Tag = p[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
@@ -557,6 +572,22 @@ namespace GTI.Modules.SecurityCenter
             return positionStrings;
         }
 
+
+        public void ReloadStaffPositionListBox(int staffID)
+        {
+            LoadListBoxPosition(staffID);
+        }
+
+        public void ReloadUIStaffPositionCmbx()
+        {
+            LoadPositionToComboBox();
+
+            if (positionComboBox.SelectedIndex != 0)
+            {
+                positionComboBox.SelectedIndex = 0;
+            }
+        }
+
         /// <summary>
         /// Load all positions to the position combobox
         /// </summary>
@@ -581,7 +612,10 @@ namespace GTI.Modules.SecurityCenter
             //clear up before load
             positionComboBox.Items.Clear();
             positionComboBox.Items.Add("All");
-            foreach (DataRow position in mAvailablePositions.PositionTable.Rows)
+
+            var PositionInOrder = mAvailablePositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+            foreach (DataRow position in PositionInOrder)
             {
                 //FIX: RALLY DE1573 Only Show active postions START
                 if ((bool)position[PositionData.POSITION_COLUMN_ACTIVITYFLAG])
@@ -708,15 +742,21 @@ namespace GTI.Modules.SecurityCenter
                 DOBDateTimePicker.Value = DOBDateTimePicker.MinDate;
             }
 
-            positionListBox.Items.Clear();//clear it
+            LoadListBoxPosition(staffID);          
+        }
+
+        private void LoadListBoxPosition(int staffID)
+        {
+            positionListBox.Items.Clear();
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
             if (mAssignedPositions != null &&
                 mAssignedPositions.PositionTable != null &&
                 mAssignedPositions.PositionTable.Rows.Count > 0)
             {
 
-                // ListViewItem tmpItem;
-                foreach (DataRow position in mAssignedPositions.PositionTable.Rows)
+                var PositionInOrder = mAssignedPositions.PositionTable.Rows.Cast<DataRow>().OrderBy(y => y[PositionData.POSITION_COLUMN_POSITIONNAME]);
+
+                foreach (DataRow position in PositionInOrder)
                 {
                     //tmpItem = new ListViewItem(position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString());
                     //tmpItem.Tag = position[PositionData.POSITION_COLUMN_POSITIONNAME].ToString();
@@ -726,38 +766,7 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoLeave();
         }
 
-        private bool IsSaveStaffInformationChange()
-        {
-            //then do a clean check to save if it is dirty form
-            bool saved = false;
-            //then there is change, ask if user want to save the change
-            DialogResult result = MessageForm.Show(this, Properties.Resources.warningSave, Properties.Resources.securityCenter, MessageFormTypes.YesNoCancel);
-            mUnchanged = true;
-            if (result == DialogResult.Yes)
-            {//save the new staff information and move on
-                if (ValidateStaff())
-                {
-                    if (SaveStaff())
-                    {
-                        ReloadFormAfterSave();
-                        mIsDirtyForm = false;
-                        saved = true;
-                    }
-                }
-            }
-            else if (result == DialogResult.No)
-            { //return true if user do not want to save at all
-                ReloadFormAfterSave();
-                mIsDirtyForm = false;
-                saved = true;
-            }
-            else //cancel, go back whatever it is before
-            {
-                mIsDirtyForm = false;
-                saved = false;
-            }
-            return saved;
-        }
+    
         private bool ModifyingAccountlock;
         private bool mIsKioskStaff = false;
         private bool IsStaffInformationModified()//knc

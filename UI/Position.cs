@@ -411,6 +411,8 @@ namespace GTI.Modules.SecurityCenter
                 DataRow row = mPositionsData.GetPositionRowByID(mPositionIDs[mCurrentPositionIndex]);
                 if (row != null)
                 {
+                    IsPositionNameChanged = (row[PositionData.POSITION_COLUMN_POSITIONNAME].ToString() != positionComboBox.Text);
+        
                     row[PositionData.POSITION_COLUMN_POSITIONNAME] = positionComboBox.Text; // mCurrentPositionName;
                     row[Constants.Status] = Constants.Status_Modified;
                     row[PositionData.POSITION_COLUMN_ACTIVITYFLAG] = positionActivityFlagCheckbox.Checked;
@@ -1270,12 +1272,8 @@ namespace GTI.Modules.SecurityCenter
                 //send the position id, the name and the activity flag to setPosition
             }
         }
-
-
-
-
-
-        public bool IsModified { get; set; }
+		public bool IsModified { get; set; }
+        public bool IsPositionNameChanged { get; set; }
        
     }
 }
