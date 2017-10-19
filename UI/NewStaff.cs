@@ -294,7 +294,7 @@ namespace GTI.Modules.SecurityCenter
 
             //be very careful to change logic here, 
             //we handle Cancel change, this event will fire twice for a change
-            if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&//knc
+            if ((mIsDirtyForm == true || IsStaffInformationModified() == true) &&
                 mUnchanged == false)
             {
                 //if(passwordTextBox.Text.Trim().Length >0  || verifiedPasswordTextBox.Text.Trim().Length>0)
@@ -349,7 +349,7 @@ namespace GTI.Modules.SecurityCenter
                 return;
             }
 
-            LoadAStaffInformation(mCurrentSelectedStaffRow);//knc
+            LoadAStaffInformation(mCurrentSelectedStaffRow);
             SelectedStaffId = Convert.ToInt32(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_STAFFID]);
             if (mLoginId > 0)
             {
@@ -361,7 +361,7 @@ namespace GTI.Modules.SecurityCenter
         /// <summary>
         /// Enables or Diables the Controls Based on the Account Lock status.
         /// </summary>
-        private void SetWhetherControlsLocked()//knc
+        private void SetWhetherControlsLocked()
         {
        
                 foreach (Control c in newStaffGroupBox.Controls)
@@ -372,7 +372,7 @@ namespace GTI.Modules.SecurityCenter
                         c.Enabled = true;
                 }
 
-                if (mLoginId > 0)//knc
+                if (mLoginId > 0)
                 {
                     loginNumericUpDown.Visible = true;
                     loginNumberLabel.Visible = true;
@@ -483,9 +483,8 @@ namespace GTI.Modules.SecurityCenter
             catch (Exception ex)
             {
                 MessageForm.Show(Properties.Resources.errorFailedToGetData + " " + ex.Message, Properties.Resources.securityCenter);
-            }
-            var x = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;
-            loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;//Setting new staff knc
+            }         
+            loginNumericUpDown.Value = (decimal)nextLoginNo.NextAavaiableStaffLoginNumber;//Setting new staff 
 
         }
 
@@ -677,7 +676,7 @@ namespace GTI.Modules.SecurityCenter
 
         private int mLoginId; 
         
-        private void LoadAStaffInformation(DataRow staffRowByID)//knc
+        private void LoadAStaffInformation(DataRow staffRowByID)
         {
             Utilities.LogInfoIN();
             //error check
@@ -771,11 +770,7 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoLeave();
         }
 
-    
-
-
-
-        private bool IsStaffInformationModified()//knc
+        private bool IsStaffInformationModified()
         {
             if (mIsDirtyForm == true) return true;
             if (mCurrentSelectedStaffRow == null) return false;
@@ -909,7 +904,8 @@ namespace GTI.Modules.SecurityCenter
             else
                 return String.Equals(test1, test2, StringComparison.CurrentCultureIgnoreCase);
         }
-        private bool ValidateStaff()//knc
+
+        private bool ValidateStaff()
         {
             bool isValidated = false;
 

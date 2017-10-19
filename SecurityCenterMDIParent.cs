@@ -625,7 +625,7 @@ namespace GTI.Modules.SecurityCenter
             }
 
             //STAFF 
-            private void mNewStaffForm_FormClosed(object sender, FormClosedEventArgs e)//knc
+            private void mNewStaffForm_FormClosed(object sender, FormClosedEventArgs e)
             {
                 newStaffToolStripMenuItem.Enabled = true;
                 //if (isAddedStaff == true)
