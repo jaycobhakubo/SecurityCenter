@@ -49,13 +49,14 @@ namespace GTI.Modules.SecurityCenter
         private int mAddressID = NEW_ID;           
         private bool isReloading; //DE10178      
         private bool ModifyingAccountlock;
-        private bool mIsKioskStaff = false;
+        //private bool mIsKioskStaff = false;
         private bool mIsDirtyForm = false;
         private PositionData mAssignedPositions;
         private DataTable mStaffTable;
         private DataRow mCurrentSelectedStaffRow;      
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
+        private int mLoginId; 
 
         string mPosition = "";
         Int16 m_StaffStatus = 1; //Active:1 ; All: -1; 0:Inctive
@@ -674,7 +675,7 @@ namespace GTI.Modules.SecurityCenter
         }
 
 
-        private int mLoginId; 
+ 
         
         private void LoadAStaffInformation(DataRow staffRowByID)
         {
@@ -688,12 +689,12 @@ namespace GTI.Modules.SecurityCenter
             if (mLoginId < 0)
             {
                 loginNumericUpDown.Value = 0;
-                mIsKioskStaff = true;
+               // mIsKioskStaff = true;
             }
             else
             {
                 loginNumericUpDown.Value = mLoginId;
-                mIsKioskStaff = false;
+                //mIsKioskStaff = false;
             }
 
             //DisableControlForKioskLogin(int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString()));
@@ -784,9 +785,11 @@ namespace GTI.Modules.SecurityCenter
             }
 
             var x = mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString();
-            if (Convert.ToInt32(x) > 0)
+            int tempLoginId = Convert.ToInt32(x);
+
+            if ( tempLoginId> 0)
             {
-                 mIsKioskStaff = false;
+                 //mIsKioskStaff = false;
                 if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
                     || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)
                     || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HOMEPHONE].ToString(), homePhoneTextBox.Text)
@@ -805,7 +808,7 @@ namespace GTI.Modules.SecurityCenter
             }
             else
             {
-                mIsKioskStaff = true;
+               //mIsKioskStaff = true;
                 if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
                     || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)                  
                     )
@@ -815,46 +818,51 @@ namespace GTI.Modules.SecurityCenter
                 }
             }
 
-            if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString(), DOBDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+
+            if (mLoginId > 0)
             {
-                //the dates do not match the currently selected row. 
-
-                bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString());
-                bool valueEqualMinDate = DOBDateTimePicker.Value == DOBDateTimePicker.MinDate;
-
-                //check for null dates and implied null value
-                if (!(stringNullOrEmpty && valueEqualMinDate))
+                if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString(), DOBDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 {
-                    mIsDirtyForm = true;
-                    return true;
+                    //the dates do not match the currently selected row. 
+
+                    bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString());
+                    bool valueEqualMinDate = DOBDateTimePicker.Value == DOBDateTimePicker.MinDate;
+
+                    //check for null dates and implied null value
+                    if (!(stringNullOrEmpty && valueEqualMinDate))
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
+
+                    if (stringNullOrEmpty && valueEqualMinDate == false)
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
                 }
 
-                if (stringNullOrEmpty && valueEqualMinDate == false)
+                if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString(), hireDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 {
-                    mIsDirtyForm = true;
-                    return true;
+                    //the dates do not match the currently selected row. 
+
+                    bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString());
+                    bool valueEqualMinDate = hireDateTimePicker.Value == hireDateTimePicker.MinDate;
+
+                    //check for null dates and implied null value
+                    if (!(stringNullOrEmpty && valueEqualMinDate))
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
+
+                    if (stringNullOrEmpty && valueEqualMinDate == false)
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
                 }
-            }
-
-            if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString(), hireDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
-            {
-                //the dates do not match the currently selected row. 
-
-                bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString());
-                bool valueEqualMinDate = hireDateTimePicker.Value == hireDateTimePicker.MinDate;
-
-                //check for null dates and implied null value
-                if (!(stringNullOrEmpty && valueEqualMinDate))
-                {
-                    mIsDirtyForm = true;
-                    return true;
-                }
-
-                if (stringNullOrEmpty && valueEqualMinDate == false)
-                {
-                    mIsDirtyForm = true;
-                    return true;
-                }
+               
             }
             return false;//it is not modified even get here
         }
@@ -912,13 +920,13 @@ namespace GTI.Modules.SecurityCenter
             if (((passwordTextBox.Text == null ||
                   passwordTextBox.Text.Trim() == string.Empty) &&
                   mCurrentSelectedStaffRow == null
-                ) && mIsKioskStaff == false)
+                ) && /*mIsKioskStaff == false*/ mLoginId > 0)
             {
                 MessageForm.Show(Properties.Resources.warningPasswordBeforeSave, Properties.Resources.securityCenter);
                 return false;
             }
 
-            if ((passwordTextBox.Text.Length > 0 || verifiedPasswordTextBox.Text.Length > 0) && mIsKioskStaff == false)
+            if ((passwordTextBox.Text.Length > 0 || verifiedPasswordTextBox.Text.Length > 0) && /*mIsKioskStaff == false*/ mLoginId > 0)
             {
                 if (passwordTextBox.Text.Trim().Length < Configuration.mMinimumPasswordLength)
                 {
