@@ -250,7 +250,7 @@ namespace GTI.Modules.SecurityCenter
             }
             catch (Exception e)
             {
-                Utilities.Log("Exception.Message =" + e.Message, LoggerLevel.Severe);
+                Utilities.Log("Exception.Message =" + e.Message, LoggerLevel.Severe);//knc
                 Utilities.Log("Exception.Stack=" + e.StackTrace, LoggerLevel.Severe);
                 MessageForm.Show(Properties.Resources.errorStart, Properties.Resources.securityCenter);
             }

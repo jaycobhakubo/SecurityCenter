@@ -495,59 +495,63 @@ namespace GTI.Modules.SecurityCenter
         /// <param name="activeFilter"></param>
         private void LoadDataToListView(Int16 activeFilter, string position)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor;//knc
             Utilities.LogInfoIN();
 
-            try
+
+            if (mLoginId > 0)
             {
-                if (((SecurityCenterMDIParent)this.MdiParent).StaffList == null ||
-                    ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff == null ||
-                    ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable == null)
+                try
                 {
-                    return;
-                }
-                mStaffTable = ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable;
-                string tempString = string.Empty;
-                if (activeFilter == 0 || activeFilter == 1)
-                {
-                    tempString = "IsActive=" + activeFilter.ToString();
-                }
-                DataRow[] staffRows = mStaffTable.Select(tempString, StaffData.STAFF_TALBE_COLUMN_LASTNAME);
-                System.Windows.Forms.ListViewItem tempItem;
-                //clear it out
-                staffListView.Items.Clear();
-                staffListView.BeginUpdate();
-                foreach (DataRow row in staffRows)
-                {
-                    //we would not show up gametech predefied staff, it is not editable
-                    if (int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString().Trim()) < 3)
-                        continue;
-                    tempString = GetPositionStringsOfStaffID(int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()));
-                    //filter for the position, we will only the load the select position
-                    if (!tempString.Contains(position) && !position.ToUpper().Equals("ALL"))
-                        continue;
-                    tempItem = new ListViewItem(new string[] 
+                    if (((SecurityCenterMDIParent)this.MdiParent).StaffList == null ||
+                        ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff == null ||
+                        ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable == null)
+                    {
+                        return;
+                    }
+                    mStaffTable = ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable;
+                    string tempString = string.Empty;
+                    if (activeFilter == 0 || activeFilter == 1)
+                    {
+                        tempString = "IsActive=" + activeFilter.ToString();
+                    }
+                    DataRow[] staffRows = mStaffTable.Select(tempString, StaffData.STAFF_TALBE_COLUMN_LASTNAME);
+                    System.Windows.Forms.ListViewItem tempItem;
+                    //clear it out
+                    staffListView.Items.Clear();
+                    staffListView.BeginUpdate();
+                    foreach (DataRow row in staffRows)
+                    {
+                        //we would not show up gametech predefied staff, it is not editable
+                        if (int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString().Trim()) < 3)
+                            continue;
+                        tempString = GetPositionStringsOfStaffID(int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()));
+                        //filter for the position, we will only the load the select position
+                        if (!tempString.Contains(position) && !position.ToUpper().Equals("ALL"))
+                            continue;
+                        tempItem = new ListViewItem(new string[] 
                                                     { //loginID, firstname, last name
                                                         row[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString(),
                                                         row[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(),
                                                         row [StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString()
                                                     },
-                                                -1);
-                    tempItem.Tag = row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString();
-                    tempItem.Font = staffListView.Font;
-                    staffListView.Items.Add(tempItem);
+                                                    -1);
+                        tempItem.Tag = row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString();
+                        tempItem.Font = staffListView.Font;
+                        staffListView.Items.Add(tempItem);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageForm.Show(this, Properties.Resources.errorGeneral + ex.Message);
-            }
-            finally
-            {
-                staffListView.EndUpdate();
-                Application.DoEvents();
-                Cursor.Current = Cursors.Default;
-                Utilities.LogInfoLeave();
+                catch (Exception ex)
+                {
+                    MessageForm.Show(this, Properties.Resources.errorGeneral + ex.Message);
+                }
+                finally
+                {
+                    staffListView.EndUpdate();
+                    Application.DoEvents();
+                    Cursor.Current = Cursors.Default;
+                    Utilities.LogInfoLeave();
+                }
             }
         }
 
