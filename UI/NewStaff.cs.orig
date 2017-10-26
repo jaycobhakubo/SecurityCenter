@@ -49,13 +49,14 @@ namespace GTI.Modules.SecurityCenter
         private int mAddressID = NEW_ID;           
         private bool isReloading; //DE10178      
         private bool ModifyingAccountlock;
-        private bool mIsKioskStaff = false;
+        //private bool mIsKioskStaff = false;
         private bool mIsDirtyForm = false;
         private PositionData mAssignedPositions;
         private DataTable mStaffTable;
         private DataRow mCurrentSelectedStaffRow;      
         private WaitForm mWaitingForm;
         private MagneticCardReader mMagCardReader; // PDTS 1064
+        private int mLoginId; 
 
         string mPosition = "";
         Int16 m_StaffStatus = 1; //Active:1 ; All: -1; 0:Inctive
@@ -80,7 +81,7 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoIN();
             LoadPositionToComboBox();
 
-            LoadDataToListView(1, "All");
+            LoadDataToListView(1, "All");//knc
             positionComboBox.SelectedIndex = 0;
 
             if (staffListView.Items.Count > 0)
@@ -448,9 +449,9 @@ namespace GTI.Modules.SecurityCenter
         }
 
 
-        private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)//knc
         {
-            if (inactiveRadioButton.Checked == true)
+            if (inactiveRadioButton.Checked == true)//knc
             {
                 LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
             }
@@ -494,60 +495,68 @@ namespace GTI.Modules.SecurityCenter
         /// <param name="activeFilter"></param>
         private void LoadDataToListView(Int16 activeFilter, string position)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor;//knc
             Utilities.LogInfoIN();
 
-            try
-            {
-                if (((SecurityCenterMDIParent)this.MdiParent).StaffList == null ||
-                    ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff == null ||
-                    ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable == null)
+
+            //if (mLoginId > 0)
+            //{
+                try
                 {
-                    return;
-                }
-                mStaffTable = ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable;
-                string tempString = string.Empty;
-                if (activeFilter == 0 || activeFilter == 1)
-                {
-                    tempString = "IsActive=" + activeFilter.ToString();
-                }
-                DataRow[] staffRows = mStaffTable.Select(tempString, StaffData.STAFF_TALBE_COLUMN_LASTNAME);
-                System.Windows.Forms.ListViewItem tempItem;
-                //clear it out
-                staffListView.Items.Clear();
-                staffListView.BeginUpdate();
-                foreach (DataRow row in staffRows)
-                {
-                    //we would not show up gametech predefied staff, it is not editable
-                    if (int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString().Trim()) < 3)
-                        continue;
-                    tempString = GetPositionStringsOfStaffID(int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()));
-                    //filter for the position, we will only the load the select position
-                    if (!tempString.Contains(position) && !position.ToUpper().Equals("ALL"))
-                        continue;
-                    tempItem = new ListViewItem(new string[] 
+                    if (mLoginId > 0)
+                    {
+                        if (((SecurityCenterMDIParent)this.MdiParent).StaffList == null ||
+                            ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff == null ||
+                            ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable == null)
+                        {
+                            return;
+                        }
+                    }
+
+                    mStaffTable = ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable;
+                    string tempString = string.Empty;
+                    if (activeFilter == 0 || activeFilter == 1)
+                    {
+                        tempString = "IsActive=" + activeFilter.ToString();
+                    }
+                    DataRow[] staffRows = mStaffTable.Select(tempString, StaffData.STAFF_TALBE_COLUMN_LASTNAME);
+                    System.Windows.Forms.ListViewItem tempItem;
+                    //clear it out
+                    staffListView.Items.Clear();
+                    staffListView.BeginUpdate();
+                    foreach (DataRow row in staffRows)
+                    {
+                        //we would not show up gametech predefied staff, it is not editable
+                        if (int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString().Trim()) < 3)
+                            continue;
+                        tempString = GetPositionStringsOfStaffID(int.Parse(row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString()));
+                        //filter for the position, we will only the load the select position
+                        if (!tempString.Contains(position) && !position.ToUpper().Equals("ALL"))
+                            continue;
+                        tempItem = new ListViewItem(new string[] 
                                                     { //loginID, firstname, last name
                                                         row[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString(),
                                                         row[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(),
                                                         row [StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString()
                                                     },
-                                                -1);
-                    tempItem.Tag = row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString();
-                    tempItem.Font = staffListView.Font;
-                    staffListView.Items.Add(tempItem);
+                                                    -1); 
+                        tempItem.Tag = row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString();
+                        tempItem.Font = staffListView.Font;
+                        staffListView.Items.Add(tempItem);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageForm.Show(this, Properties.Resources.errorGeneral + ex.Message);
-            }
-            finally
-            {
-                staffListView.EndUpdate();
-                Application.DoEvents();
-                Cursor.Current = Cursors.Default;
-                Utilities.LogInfoLeave();
-            }
+                catch (Exception ex)
+                {
+                    MessageForm.Show(this, Properties.Resources.errorGeneral + ex.Message);
+                }
+                finally
+                {
+                    staffListView.EndUpdate();
+                    Application.DoEvents();
+                    Cursor.Current = Cursors.Default;
+                    Utilities.LogInfoLeave();
+                }
+            //}
         }
 
         /// <summary>
@@ -583,9 +592,9 @@ namespace GTI.Modules.SecurityCenter
         {
             LoadPositionToComboBox();
 
-            if (positionComboBox.SelectedIndex != 0)
+            if (positionComboBox.SelectedIndex != 0)//reset to all
             {
-                positionComboBox.SelectedIndex = 0;
+                positionComboBox.SelectedIndex = 0;//knc
             }
         }
 
@@ -674,9 +683,9 @@ namespace GTI.Modules.SecurityCenter
         }
 
 
-        private int mLoginId; 
+ 
         
-        private void LoadAStaffInformation(DataRow staffRowByID)
+        private void LoadAStaffInformation(DataRow staffRowByID)//knc
         {
             Utilities.LogInfoIN();
             //error check
@@ -688,12 +697,12 @@ namespace GTI.Modules.SecurityCenter
             if (mLoginId < 0)
             {
                 loginNumericUpDown.Value = 0;
-                mIsKioskStaff = true;
+               // mIsKioskStaff = true;
             }
             else
             {
                 loginNumericUpDown.Value = mLoginId;
-                mIsKioskStaff = false;
+                //mIsKioskStaff = false;
             }
 
             //DisableControlForKioskLogin(int.Parse(staffRowByID[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString()));
@@ -749,7 +758,7 @@ namespace GTI.Modules.SecurityCenter
             LoadListBoxPosition(staffID);          
         }
 
-        private void LoadListBoxPosition(int staffID)
+        private void LoadListBoxPosition(int staffID)//knc
         {
             positionListBox.Items.Clear();
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
@@ -784,9 +793,11 @@ namespace GTI.Modules.SecurityCenter
             }
 
             var x = mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LOGINNUMBER].ToString();
-            if (Convert.ToInt32(x) > 0)
+            int tempLoginId = Convert.ToInt32(x);
+
+            if ( tempLoginId> 0)
             {
-                 mIsKioskStaff = false;
+                 //mIsKioskStaff = false;
                 if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
                     || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)
                     || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HOMEPHONE].ToString(), homePhoneTextBox.Text)
@@ -805,7 +816,7 @@ namespace GTI.Modules.SecurityCenter
             }
             else
             {
-                mIsKioskStaff = true;
+               //mIsKioskStaff = true;
                 if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(), firstNameTextBox.Text)
                     || !IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString(), lastNameTextBox.Text)                  
                     )
@@ -815,46 +826,51 @@ namespace GTI.Modules.SecurityCenter
                 }
             }
 
-            if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString(), DOBDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+
+            if (mLoginId > 0)
             {
-                //the dates do not match the currently selected row. 
-
-                bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString());
-                bool valueEqualMinDate = DOBDateTimePicker.Value == DOBDateTimePicker.MinDate;
-
-                //check for null dates and implied null value
-                if (!(stringNullOrEmpty && valueEqualMinDate))
+                if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString(), DOBDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 {
-                    mIsDirtyForm = true;
-                    return true;
+                    //the dates do not match the currently selected row. 
+
+                    bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_BIRTHDATE].ToString());
+                    bool valueEqualMinDate = DOBDateTimePicker.Value == DOBDateTimePicker.MinDate;
+
+                    //check for null dates and implied null value
+                    if (!(stringNullOrEmpty && valueEqualMinDate))
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
+
+                    if (stringNullOrEmpty && valueEqualMinDate == false)
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
                 }
 
-                if (stringNullOrEmpty && valueEqualMinDate == false)
+                if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString(), hireDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
                 {
-                    mIsDirtyForm = true;
-                    return true;
+                    //the dates do not match the currently selected row. 
+
+                    bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString());
+                    bool valueEqualMinDate = hireDateTimePicker.Value == hireDateTimePicker.MinDate;
+
+                    //check for null dates and implied null value
+                    if (!(stringNullOrEmpty && valueEqualMinDate))
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
+
+                    if (stringNullOrEmpty && valueEqualMinDate == false)
+                    {
+                        mIsDirtyForm = true;
+                        return true;
+                    }
                 }
-            }
-
-            if (!IsSameString(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString(), hireDateTimePicker.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
-            {
-                //the dates do not match the currently selected row. 
-
-                bool stringNullOrEmpty = string.IsNullOrEmpty(mCurrentSelectedStaffRow[StaffData.STAFF_TALBE_COLUMN_HIREDATE].ToString());
-                bool valueEqualMinDate = hireDateTimePicker.Value == hireDateTimePicker.MinDate;
-
-                //check for null dates and implied null value
-                if (!(stringNullOrEmpty && valueEqualMinDate))
-                {
-                    mIsDirtyForm = true;
-                    return true;
-                }
-
-                if (stringNullOrEmpty && valueEqualMinDate == false)
-                {
-                    mIsDirtyForm = true;
-                    return true;
-                }
+               
             }
             return false;//it is not modified even get here
         }
@@ -912,13 +928,13 @@ namespace GTI.Modules.SecurityCenter
             if (((passwordTextBox.Text == null ||
                   passwordTextBox.Text.Trim() == string.Empty) &&
                   mCurrentSelectedStaffRow == null
-                ) && mIsKioskStaff == false)
+                ) && /*mIsKioskStaff == false*/ mLoginId > 0)
             {
                 MessageForm.Show(Properties.Resources.warningPasswordBeforeSave, Properties.Resources.securityCenter);
                 return false;
             }
 
-            if ((passwordTextBox.Text.Length > 0 || verifiedPasswordTextBox.Text.Length > 0) && mIsKioskStaff == false)
+            if ((passwordTextBox.Text.Length > 0 || verifiedPasswordTextBox.Text.Length > 0) && /*mIsKioskStaff == false*/ mLoginId > 0)
             {
                 if (passwordTextBox.Text.Trim().Length < Configuration.mMinimumPasswordLength)
                 {
