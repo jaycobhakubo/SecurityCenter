@@ -499,16 +499,20 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoIN();
 
 
-            if (mLoginId > 0)
-            {
+            //if (mLoginId > 0)
+            //{
                 try
                 {
-                    if (((SecurityCenterMDIParent)this.MdiParent).StaffList == null ||
-                        ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff == null ||
-                        ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable == null)
+                    if (mLoginId > 0)
                     {
-                        return;
+                        if (((SecurityCenterMDIParent)this.MdiParent).StaffList == null ||
+                            ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff == null ||
+                            ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable == null)
+                        {
+                            return;
+                        }
                     }
+
                     mStaffTable = ((SecurityCenterMDIParent)this.MdiParent).StaffList.Staff.StaffTable;
                     string tempString = string.Empty;
                     if (activeFilter == 0 || activeFilter == 1)
@@ -535,7 +539,7 @@ namespace GTI.Modules.SecurityCenter
                                                         row[StaffData.STAFF_TALBE_COLUMN_FIRSTNAME].ToString(),
                                                         row [StaffData.STAFF_TALBE_COLUMN_LASTNAME].ToString()
                                                     },
-                                                    -1);
+                                                    -1); 
                         tempItem.Tag = row[StaffData.STAFF_TALBE_COLUMN_STAFFID].ToString();
                         tempItem.Font = staffListView.Font;
                         staffListView.Items.Add(tempItem);
@@ -552,7 +556,7 @@ namespace GTI.Modules.SecurityCenter
                     Cursor.Current = Cursors.Default;
                     Utilities.LogInfoLeave();
                 }
-            }
+            //}
         }
 
         /// <summary>
@@ -590,7 +594,7 @@ namespace GTI.Modules.SecurityCenter
 
             if (positionComboBox.SelectedIndex != 0)
             {
-                positionComboBox.SelectedIndex = 0;
+                positionComboBox.SelectedIndex = 0;//knc
             }
         }
 
