@@ -253,7 +253,7 @@ namespace GTI.Modules.SecurityCenter
             waiting.WaitImage = Properties.Resources.Waiting;
             waiting.CancelButtonVisible = true;
             waiting.ProgressBarVisible = false;
-            mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);
+            mInitStaffForm.ReloadStaffPositionListBox(mInitStaffForm.SelectedStaffId);//knc
             LoadStaffPosition(waiting, Configuration.operatorID);
             waiting.ShowDialog(); //Block until we are done
 
@@ -613,13 +613,19 @@ namespace GTI.Modules.SecurityCenter
                             }
                             else
                             {
+                                WaitForm waiting2 = new WaitForm();
+                                LoadStaffPosition(waiting2, Configuration.operatorID);
+                                waiting2.ShowDialog();
                                 MakeupMDI();
                             }
                         }
                     }
+            
 
-                    mInitStaffForm.ReloadUIStaffPositionCmbx();
-                    ShowStaffForm();
+                        ShowStaffForm();
+                   // ReloadInitStaff();
+                 //   mInitStaffForm.ReloadUIStaffPositionCmbx();//knc
+                 
                 }
                 //MakeupMDI();
             }
@@ -668,7 +674,7 @@ namespace GTI.Modules.SecurityCenter
                  #endregion
             #region Backgroundworkers
 
-            private void LoadStaffPosition(WaitForm waitingForm, int operatorID)
+            private void LoadStaffPosition(WaitForm waitingForm, int operatorID)//knc
             {
 
                 mWaitingForm = waitingForm;

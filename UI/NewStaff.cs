@@ -81,7 +81,7 @@ namespace GTI.Modules.SecurityCenter
             Utilities.LogInfoIN();
             LoadPositionToComboBox();
 
-            LoadDataToListView(1, "All");
+            LoadDataToListView(1, "All");//knc
             positionComboBox.SelectedIndex = 0;
 
             if (staffListView.Items.Count > 0)
@@ -449,9 +449,9 @@ namespace GTI.Modules.SecurityCenter
         }
 
 
-        private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void positionComboBox_SelectedIndexChanged(object sender, EventArgs e)//knc
         {
-            if (inactiveRadioButton.Checked == true)
+            if (inactiveRadioButton.Checked == true)//knc
             {
                 LoadDataToListView(0, positionComboBox.SelectedItem.ToString());
             }
@@ -592,7 +592,7 @@ namespace GTI.Modules.SecurityCenter
         {
             LoadPositionToComboBox();
 
-            if (positionComboBox.SelectedIndex != 0)
+            if (positionComboBox.SelectedIndex != 0)//reset to all
             {
                 positionComboBox.SelectedIndex = 0;//knc
             }
@@ -685,7 +685,7 @@ namespace GTI.Modules.SecurityCenter
 
  
         
-        private void LoadAStaffInformation(DataRow staffRowByID)
+        private void LoadAStaffInformation(DataRow staffRowByID)//knc
         {
             Utilities.LogInfoIN();
             //error check
@@ -758,7 +758,7 @@ namespace GTI.Modules.SecurityCenter
             LoadListBoxPosition(staffID);          
         }
 
-        private void LoadListBoxPosition(int staffID)
+        private void LoadListBoxPosition(int staffID)//knc
         {
             positionListBox.Items.Clear();
             mAssignedPositions = ((SecurityCenterMDIParent)this.MdiParent).StaffList.PositionDatasByStaffID(staffID);
