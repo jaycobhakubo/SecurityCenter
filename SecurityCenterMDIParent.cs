@@ -245,7 +245,7 @@ namespace GTI.Modules.SecurityCenter
 
 
 
-        private void ReloadInitStaff()//knc.29170824Not:being utilized
+        private void ReloadInitStaff()
         {
             this.Cursor = Cursors.WaitCursor;
             WaitForm waiting = new WaitForm();
@@ -620,8 +620,10 @@ namespace GTI.Modules.SecurityCenter
                             }
                         }
                     }
+                    //Count position
 
                     //mInitStaffForm.ReloadUIStaffPositionCmbx();
+                    CheckPositionsCount();
                     ShowStaffForm();
                 }
                 //MakeupMDI();

@@ -136,7 +136,7 @@ namespace GTI.Modules.SecurityCenter
                 return;
             }
             mPositionsData = mPositionList.Positions; // ((SecurityCenterMDIParent)this.MdiParent).PositionList.Positions;          
-           
+      
             LoadModulesAndFeatures();
 
             if (mIsNewPosition == true)//ttp 50053, support copy position function
@@ -955,7 +955,7 @@ namespace GTI.Modules.SecurityCenter
                 IsModified = false;               
             }
         }        
-        private void saveButton_Click(object sender, EventArgs e)
+        private void saveButton_Click(object sender, EventArgs e)//knc
         {
             IsModified = false;
             Utilities.LogInfoIN();
@@ -984,7 +984,8 @@ namespace GTI.Modules.SecurityCenter
             
                 if (IsPositionModified(positionID) == true)
                 {
-                    SaveCurrentPosition(positionID);
+                    bool tempresult = SaveCurrentPosition(positionID);//knc1
+           //mPositionsData.
                 }
                 this.Close();
                 Utilities.LogInfoLeave();
@@ -1274,6 +1275,6 @@ namespace GTI.Modules.SecurityCenter
         }
 		public bool IsModified { get; set; }
         public bool IsPositionNameChanged { get; set; }
-       
+        public bool IsPositionEmpty { get; set; }
     }
 }
