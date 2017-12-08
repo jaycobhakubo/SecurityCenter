@@ -93,7 +93,7 @@ namespace GTI.Modules.SecurityCenter
             //RALLY DE 4806 Allow entry of new staff on loadup if there are no staff
             else
             {
-                InitNewStaffInformation();//knc
+                InitNewStaffInformation();
                 mIsDirtyForm = true;
                 mCurrentSelectedStaffRow = null;
                 firstNameTextBox.Focus(); // DE2283 - Set cursor to First Name.
@@ -207,7 +207,7 @@ namespace GTI.Modules.SecurityCenter
 
         private void newSTaffImageButton_Click(object sender, EventArgs e)
         {//create a new staff data
-            InitNewStaffInformation();//knc
+            InitNewStaffInformation();
             mIsDirtyForm = true;
             mCurrentSelectedStaffRow = null;
             firstNameTextBox.Focus(); // DE2283 - Set cursor to First Name.
@@ -218,7 +218,7 @@ namespace GTI.Modules.SecurityCenter
         {
             if (ValidateStaff() == true)
             {
-                if (SaveStaff() == true)//knc
+                if (SaveStaff() == true)
                 {
                     ReloadFormAfterSave();
                 }
@@ -1243,7 +1243,7 @@ namespace GTI.Modules.SecurityCenter
 
         private void InitNewStaffInformation()
         {
-            SetNextAvailableStaffLoginNumber();//knc
+            SetNextAvailableStaffLoginNumber();
             //Last Name
             lastNameTextBox.Text = string.Empty;
             firstNameTextBox.Text = string.Empty;
