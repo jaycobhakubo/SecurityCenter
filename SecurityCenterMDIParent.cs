@@ -620,8 +620,6 @@ namespace GTI.Modules.SecurityCenter
                             }
                         }
                     }
-                    //Count position
-
                     //mInitStaffForm.ReloadUIStaffPositionCmbx();
                     CheckPositionsCount();
                     ShowStaffForm();
