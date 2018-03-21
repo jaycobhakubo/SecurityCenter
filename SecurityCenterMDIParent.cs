@@ -470,6 +470,21 @@ namespace GTI.Modules.SecurityCenter
 
         private void newPositionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (mInitStaffForm != null)
+            {
+                if (mInitStaffForm.IsDisposed == false)
+                {
+                    mInitStaffForm.Close();
+                }
+            }
+
+            if (mNewStaffForm != null)
+            {
+                if (mNewStaffForm.IsDisposed == false)
+                {
+                    mNewStaffForm.Close();
+                }
+            }
 
             checkPositionModified();
 
@@ -575,7 +590,7 @@ namespace GTI.Modules.SecurityCenter
                 {
                     checkPositionModified();
                     checkMachineModified();
-                    ShowStaffForm();//knc
+                    ShowStaffForm();
                     //ShowNewStaff();
                     editPositionToolStripMenuItem.Enabled = true;
                     newPositionToolStripMenuItem.Enabled = true;
