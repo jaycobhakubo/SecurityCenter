@@ -312,7 +312,11 @@ namespace GTI.Modules.SecurityCenter
         private void ShowStaffForm() //Just created this one
         {
             this.SuspendLayout();
-            mInitStaffForm = new NewStaff();
+            if (mInitStaffForm == null)
+            {
+                mInitStaffForm = new NewStaff();
+            }
+            
             mInitStaffForm.MdiParent = this;
             mInitStaffForm.WindowState = FormWindowState.Maximized;
             mInitStaffForm.Show();
@@ -624,7 +628,11 @@ namespace GTI.Modules.SecurityCenter
                     CheckPositionsCount();
                     ShowStaffForm();
                 }
-                //MakeupMDI();
+                else
+                {
+                    //MakeupMDI();
+                    ShowStaffForm();
+                }
             }
 
             //STAFF 
