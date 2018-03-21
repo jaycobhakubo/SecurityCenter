@@ -312,7 +312,7 @@ namespace GTI.Modules.SecurityCenter
         private void ShowStaffForm() //Just created this one
         {
             this.SuspendLayout();
-            if (mInitStaffForm == null)
+            if (mInitStaffForm == null || mInitStaffForm.IsDisposed)
             {
                 mInitStaffForm = new NewStaff();
             }
