@@ -575,10 +575,14 @@ namespace GTI.Modules.SecurityCenter
                 {
                     checkPositionModified();
                     checkMachineModified();
-                    ShowStaffForm();
+                    ShowStaffForm();//knc
                     //ShowNewStaff();
                     editPositionToolStripMenuItem.Enabled = true;
                     newPositionToolStripMenuItem.Enabled = true;
+                }
+                else
+                {
+                    ShowStaffForm();
                 }
             }
             #endregion
